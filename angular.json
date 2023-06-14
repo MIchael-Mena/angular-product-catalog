@@ -25,7 +25,10 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles/custom-theme.scss",
+              "node_modules/bootstrap/dist/css/bootstrap.css",
+              "node_modules/normalize.css/normalize.css",
+              "src/styles/styles.css"
             ],
             "scripts": []
           },

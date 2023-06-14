@@ -1,0 +1,132 @@
+//@use 'node_modules/@angular/material/index' as mat;
+@use '@angular/material' as mat;
+
+@include mat.core();
+
+// Fonts
+@import url('https://fonts.googleapis.com/css2?family=Asap:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500&display=swap');
+
+$my-typography: mat.define-typography-config(
+  $headline-1: mat.define-typography-level(112px, 112px, 300, $font-family: 'Asap', $letter-spacing:-0.0134em),
+  $headline-2: mat.define-typography-level(56px, 56px, 400, $font-family: 'Asap', $letter-spacing:-0.0089em),
+  $headline-3: mat.define-typography-level(45px, 48px, 400, $font-family: 'Asap', $letter-spacing:0.0000em),
+  $headline-4: mat.define-typography-level(34px, 40px, 400, $font-family: 'Asap', $letter-spacing:0.0074em),
+  $headline-5: mat.define-typography-level(24px, 32px, 400, $font-family: 'Asap', $letter-spacing:0.0000em),
+  $headline-6: mat.define-typography-level(20px, 32px, 500, $font-family: 'Asap', $letter-spacing:0.0075em),
+  $subtitle-1: mat.define-typography-level(16px, 28px, 400, $font-family: 'Montserrat', $letter-spacing:0.0094em),
+  $subtitle-2: mat.define-typography-level(15px, 24px, 500, $font-family: 'Montserrat', $letter-spacing:0.0067em),
+  $body-1: mat.define-typography-level(14px, 24px, 500, $font-family: 'Montserrat', $letter-spacing:0.0179em),
+  $body-2: mat.define-typography-level(14px, 20px, 400, $font-family: 'Montserrat', $letter-spacing:0.0179em),
+  $button: mat.define-typography-level(14px, 14px, 500, $font-family: 'Exo 2', $letter-spacing:0.0893em),
+  $caption: mat.define-typography-level(12px, 20px, 500, $font-family: 'Exo 2', $letter-spacing:0.0333em),
+);
+
+@include mat.all-component-typographies($my-typography);
+
+// Colors
+
+$my-accent-map: (
+  50 : #fff9e0,
+  100 : #fff0b3,
+  200 : #ffe680,
+  300 : #ffdb4d,
+  400 : #ffd426,
+  500 : #ffcc00,
+  600 : #ffc700,
+  700 : #ffc000,
+  800 : #ffb900,
+  900 : #ffad00,
+  A100 : #ffffff,
+  A200 : #fffaf2,
+  A400 : #ffe8bf,
+  A700 : #ffdfa6,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #000000,
+    800 : #000000,
+    900 : #000000,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$md-primary-map: (
+  50 : #ffece4,
+  100 : #fed0ba,
+  200 : #feb08d,
+  300 : #fe905f,
+  400 : #fd793c,
+  500 : #fd611a,
+  600 : #fd5917,
+  700 : #fc4f13,
+  800 : #fc450f,
+  900 : #fc3308,
+  A100 : #ffffff,
+  A200 : #fff2f1,
+  A400 : #ffc6be,
+  A700 : #ffb0a4,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #000000,
+    400 : #000000,
+    500 : #000000,
+    600 : #000000,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #000000,
+    A400 : #000000,
+    A700 : #000000,
+  )
+);
+
+$my-primary: mat.define-palette($md-primary-map);
+$my-accent: mat.define-palette($my-accent-map, 500, 300, 900);
+$my-warn: mat.define-palette(mat.$red-palette);
+
+$my-theme: mat.define-light-theme((
+  color: (
+    primary: $my-primary,
+    accent: $my-accent,
+    warn: $my-warn,
+  )
+));
+
+@include mat.all-component-themes($my-theme);
+
+// Specific component overrides, pieces that are not in line with the general theming
+
+// Handle buttons appropriately, with respect to line-height
+/*.mat-raised-button, .mat-stroked-button, .mat-flat-button {
+  padding: 0 1.15em;
+  margin: 0 .65em;
+  min-width: 3em;
+  line-height: 36.4px
+}
+
+.mat-standard-chip {
+  padding: .5em .85em;
+  min-height: 2.5em;
+}
+
+.material-icons {
+  font-size: 24px;
+  font-family: 'Material Icons', 'Material Icons', sans-serif;
+  .mat-badge-content {
+    font-family: 'Exo 2', sans-serif;
+  }
+}*/
+
