@@ -4,7 +4,7 @@ import {FormControl} from "@angular/forms";
 @Component({
   selector: 'app-finder',
   templateUrl: './finder.component.html',
-  styleUrls: ['./finder.component.css']
+  styleUrls: ['./finder.component.scss']
 })
 export class FinderComponent {
 

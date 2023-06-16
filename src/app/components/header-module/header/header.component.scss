@@ -1,14 +1,21 @@
+@import "src/styles/palete-colors.scss";
+
 #topHeader{
   height: auto;
   box-shadow: 0 1px 3px black;
 }
 
 #bottomHeader{
-  background-color: #09235b;
+  background-color: map-get($my-accent-map, 500);
 }
 
 #menuSideBar{
   color: white;
+}
+
+.utility-icons{
+  background-color: map-get(map-get($my-accent-map, "contrast"), 500);
+  border-radius: 25px
 }
 
 .mat-toolbar-row{
@@ -17,7 +24,7 @@
 }
 
 .nav-active , .nav-link:hover{
-  color: #ffcc00;
+  color: map-get($my-primary-map, 500);
 }
 
 .nav-link{
