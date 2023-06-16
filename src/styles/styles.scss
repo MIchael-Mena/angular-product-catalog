@@ -6,8 +6,10 @@ html, body {
   height: 100%;
 }
 
-mat-icon{
-  //display: flex ;
-  //justify-content: center;
+.mat-icon{
   transform: scale(1.5);
+}
+
+.mat-mdc-menu-panel{
+  border-radius: 0 !important;
 }

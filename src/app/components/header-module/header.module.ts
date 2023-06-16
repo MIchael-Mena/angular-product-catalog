@@ -11,13 +11,15 @@ import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
 import { FinderComponent } from './finder/finder.component';
+import { NavbarComponent } from './navbar/navbar.component';
 
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
-    FinderComponent
+    FinderComponent,
+    NavbarComponent
   ],
   imports: [
     CommonModule,

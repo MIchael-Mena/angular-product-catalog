@@ -23,16 +23,6 @@
   min-height: 64px;
 }
 
-.nav-active , .nav-link:hover{
-  color: map-get($my-primary-map, 500);
-}
-
-.nav-link{
-  text-decoration: none;
-  cursor: pointer;
-  transition: color 0.1s ease-in-out;
-}
-
 .finder-width{
   min-width: 40%;
 }
