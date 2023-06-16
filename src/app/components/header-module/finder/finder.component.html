@@ -1,0 +1,14 @@
+<mat-form-field appearance="fill">
+  <mat-label>Buscar</mat-label>
+  <input matInput placeholder="Buscar producto"
+         (input)="handleInputChange()"
+         [formControl]="searchControl">
+  <span matSuffix (click)="clearInput()"
+        [attr.aria-label]="'search'"
+        class="mx-3" style="cursor: pointer">
+        <mat-icon style="transform: scale(1.1)">{{ pristine ? 'search' : 'close' }}</mat-icon>
+      </span>
+  <mat-error *ngIf="searchControl.hasError('required')" style="display: none">
+    Debe ingresar un valor
+  </mat-error>
+</mat-form-field>

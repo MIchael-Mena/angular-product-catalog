@@ -1,16 +1,16 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { IconsComponent } from './icons.component';
+import { FinderComponent } from './finder.component';
 
-describe('IconsComponent', () => {
-  let component: IconsComponent;
-  let fixture: ComponentFixture<IconsComponent>;
+describe('FinderComponent', () => {
+  let component: FinderComponent;
+  let fixture: ComponentFixture<FinderComponent>;
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [IconsComponent]
+      declarations: [FinderComponent]
     });
-    fixture = TestBed.createComponent(IconsComponent);
+    fixture = TestBed.createComponent(FinderComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

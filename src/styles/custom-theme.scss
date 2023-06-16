@@ -18,7 +18,7 @@ $my-typography: mat.define-typography-config(
   $subtitle-1: mat.define-typography-level(16px, 28px, 400, $font-family: 'Montserrat', $letter-spacing:0.0094em),
   $subtitle-2: mat.define-typography-level(15px, 24px, 500, $font-family: 'Montserrat', $letter-spacing:0.0067em),
   $body-1: mat.define-typography-level(14px, 24px, 500, $font-family: 'Montserrat', $letter-spacing:0.0179em),
-  $body-2: mat.define-typography-level(14px, 20px, 400, $font-family: 'Montserrat', $letter-spacing:0.0179em),
+  $body-2: mat.define-typography-level(14px, 20px, 500, $font-family: 'Montserrat', $letter-spacing:0.0179em),
   $button: mat.define-typography-level(14px, 14px, 500, $font-family: 'Exo 2', $letter-spacing:0.0893em),
   $caption: mat.define-typography-level(12px, 20px, 500, $font-family: 'Exo 2', $letter-spacing:0.0333em),
 );
@@ -27,7 +27,7 @@ $my-typography: mat.define-typography-config(
 
 // Colors
 
-$my-accent-map: (
+$my-warn-map: (
   50 : #fff9e0,
   100 : #fff0b3,
   200 : #ffe680,
@@ -60,7 +60,40 @@ $my-accent-map: (
   )
 );
 
-$md-primary-map: (
+$my-accent-map: (
+  50 : #e1e5eb,
+  100 : #b5bdce,
+  200 : #8491ad,
+  300 : #53658c,
+  400 : #2e4474,
+  500 : #09235b,
+  600 : #081f53,
+  700 : #061a49,
+  800 : #051540,
+  900 : #020c2f,
+  A100 : #687bff,
+  A200 : #354eff,
+  A400 : #0221ff,
+  A700 : #001de7,
+  contrast: (
+    50 : #000000,
+    100 : #000000,
+    200 : #000000,
+    300 : #ffffff,
+    400 : #ffffff,
+    500 : #ffffff,
+    600 : #ffffff,
+    700 : #ffffff,
+    800 : #ffffff,
+    900 : #ffffff,
+    A100 : #000000,
+    A200 : #ffffff,
+    A400 : #ffffff,
+    A700 : #ffffff,
+  )
+);
+
+$my-primary-map: (
   50 : #ffece4,
   100 : #fed0ba,
   200 : #feb08d,
@@ -93,9 +126,14 @@ $md-primary-map: (
   )
 );
 
-$my-primary: mat.define-palette($md-primary-map);
+// Extraigo el color principal de cada paleta y la defino como una variable
+
+
+
+$my-primary: mat.define-palette($my-primary-map);
 $my-accent: mat.define-palette($my-accent-map, 500, 300, 900);
-$my-warn: mat.define-palette(mat.$red-palette);
+//$my-warn: mat.define-palette(mat.$red-palette);
+$my-warn: mat.define-palette($my-warn-map, 500);
 
 $my-theme: mat.define-light-theme((
   color: (
@@ -104,6 +142,9 @@ $my-theme: mat.define-light-theme((
     warn: $my-warn,
   )
 ));
+
+
+
 
 @include mat.all-component-themes($my-theme);
 

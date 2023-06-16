@@ -1,0 +1,11 @@
+:host .mat-mdc-form-field{
+  width: 100%;
+  min-width: 290px;
+  margin-top: 0.8rem;
+}
+
+/* Modifico el input */
+:host ::ng-deep .mdc-text-field {
+  background-color: white;
+  border-radius: 25px;
+}
