@@ -12,7 +12,7 @@
       <img ngSrc="./assets/logo/logo-fix.png" alt="logo" height="67" width="252">
     </a>
 
-    <ng-container *ngIf="isMdOrGreaterThan">
+    <ng-container *ngIf="this.isMdOrGreaterThan">
       <app-finder class="finder-width"></app-finder>
     </ng-container>
 
@@ -41,7 +41,7 @@
   </mat-toolbar-row>
 
   <mat-toolbar-row class="navbar navbar-expand-md d-flex justify-content-center " id="bottomHeader">
-    <ng-container *ngIf="this.isSmOrLower">
+    <ng-container *ngIf="!this.isMdOrGreaterThan">
       <app-finder class="finder-width"></app-finder>
     </ng-container>
 

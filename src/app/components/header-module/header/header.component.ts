@@ -1,6 +1,6 @@
-import {Component, HostListener} from '@angular/core';
-import {Router} from "@angular/router";
-
+import { Component, HostListener } from '@angular/core';
+import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -8,23 +8,29 @@ import {Router} from "@angular/router";
   styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-
-  // @ts-ignore
-  public isMdOrGreaterThan: boolean;
-  // @ts-ignore
-  public isSmOrLower: boolean;
+  public isMdOrGreaterThan: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
     this.updateWindowWidth();
   }
-  constructor(private router: Router) {
+
+  constructor(
+    private breakpointObserver: BreakpointObserver,
+    private router: Router
+  ) {
     this.updateWindowWidth();
   }
 
   private updateWindowWidth() {
+/*    this.breakpointObserver.observe([
+      Breakpoints.Small, // < 600px
+      // Breakpoints.Medium, // >= 960px
+      // Breakpoints.Large, // >= 1280px
+      // Breakpoints.XLarge // >= 1920px
+    ]).subscribe(result => {
+      this.isMdOrGreaterThan = result.matches;
+    });*/
     this.isMdOrGreaterThan = window.innerWidth >= 768;
-    this.isSmOrLower = window.innerWidth < 768;
   }
-
 }

@@ -35,7 +35,8 @@ import { NavbarComponent } from './navbar/navbar.component';
     ReactiveFormsModule,
   ],
   exports: [
-    HeaderComponent
+    HeaderComponent,
+    FinderComponent
   ]
 })
 export class HeaderModule { }
