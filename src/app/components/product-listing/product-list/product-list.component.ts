@@ -36,13 +36,12 @@ export class ProductListComponent {
         this.subcategories = data.subcategories;
         this.assignSubcategories(data.products);
         this.products = data.products;
-        console.log(data.products);
       },
       error: (error) => {
         console.error(error);
       }
     });
   }
-  
+
 
 }

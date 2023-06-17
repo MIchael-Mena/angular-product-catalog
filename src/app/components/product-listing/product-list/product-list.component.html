@@ -1,10 +1,14 @@
-<div class="container">
-  <div class="row">
-    <div class="col-md-3 col-12">
+<section class="container">
+  <div class="row my-3">
+    <div class="col-md-3">
       <app-filter></app-filter>
     </div>
-    <div class="col-md-9 col-12">
-      <app-product-card></app-product-card>
+    <div class="col-md-9">
+      <div class="row">
+        <ng-container *ngFor="let product of products">
+          <app-product-card [product]="product" class="col-card my-2 mx-2"></app-product-card>
+        </ng-container>
+      </div>
     </div>
   </div>
-</div>
+</section>

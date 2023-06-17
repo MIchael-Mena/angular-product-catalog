@@ -13,4 +13,7 @@ export class ProductCardComponent {
   constructor() {
   }
 
+  public addToCart(product: IProduct): void {
+
+  }
 }

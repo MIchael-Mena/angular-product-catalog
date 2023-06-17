@@ -1,0 +1,10 @@
+#filter {
+  height: 300px;
+  min-height: 250px;
+}
+
+@media (max-width: 767px) {
+  #filter {
+    min-height: auto;
+  }
+}

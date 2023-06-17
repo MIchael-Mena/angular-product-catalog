@@ -4,4 +4,5 @@ export interface ISubcategory {
   nombre: string;
   imagen: string;
   orden: number;
+  imageUrl: string;
 }

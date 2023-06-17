@@ -1,9 +1,18 @@
-<div class="card">
-  <!--  <img class="card-img-top" [src]="product.imagenes.nombre" alt="Product Image">
-    <div class="card-body">
-      <h5 class="card-title">{{ product.nombre }}</h5>
-      <p class="card-text">Price: {{ product.precio | currency:'USD':'symbol':'1.2-2' }}</p>
-      <p class="card-text">Category: {{ product. }}</p>
-      <button class="btn btn-primary" (click)="addToCart(product)">Add to Cart</button>
-    </div>-->
-</div>
+<mat-card class="h-100">
+  <mat-card-header>
+    <img [src]="this.product.imagenes[0].url"
+         class="img-fluid" height="200" width="200" alt="Product Image">
+  </mat-card-header>
+  <mat-card-content class="d-flex flex-column justify-content-evenly h-100">
+    <h3>{{ this.product.nombre }}</h3>
+    <p>Precio: {{ this.product.precio |
+      currency:'AR$ ':'symbol':'1.2-2' }}
+    </p>
+    <p>Categoría: {{ product.subcategoria }}</p>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-flat-button color="accent"
+            (click)="this.addToCart(product)">Add to Cart
+    </button>
+  </mat-card-actions>
+</mat-card>
