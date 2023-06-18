@@ -1,9 +1,9 @@
 <mat-card class="h-100">
   <mat-card-header>
     <img [src]="this.product.imagenes[0].url"
-         class="img-fluid" height="200" width="200" alt="Product Image">
+         class="img-fluid mx-auto" height="200" width="200" alt="Product Image">
   </mat-card-header>
-  <mat-card-content class="d-flex flex-column justify-content-evenly h-100">
+  <mat-card-content class="d-flex flex-column justify-content-evenly py-3 h-100">
     <h3>{{ this.product.nombre }}</h3>
     <p>Precio: {{ this.product.precio |
       currency:'AR$ ':'symbol':'1.2-2' }}
@@ -12,7 +12,10 @@
   </mat-card-content>
   <mat-card-actions>
     <button mat-flat-button color="accent"
-            (click)="this.addToCart(product)">Add to Cart
+            class="mx-auto"
+            (click)="this.addToCart(product)">
+      <mat-icon>add_shopping_cart</mat-icon>
+      Agregar al carrito
     </button>
   </mat-card-actions>
 </mat-card>

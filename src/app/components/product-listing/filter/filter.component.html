@@ -1,15 +1,24 @@
-<section class="d-flex flex-column" id="filter">
-  <mat-checkbox class="example-margin">
-    Checked
-  </mat-checkbox>
-  <mat-checkbox class="example-margin">
-    Checked
-  </mat-checkbox>
-  <mat-checkbox class="example-margin">
-    Checked
-  </mat-checkbox>
-  <mat-checkbox class="example-margin">
-    Checked
-  </mat-checkbox>
-</section>
+<form [formGroup]="this.form" class="mt-3">
+  <div class="price-picker">
+    <mat-form-field class="w-50" color="accent" floatLabel="always">
+      <mat-label>Inicial</mat-label>
+      <input matInput formControlName="initialPrice"
+             style="text-align: end"
+             placeholder="0">
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+    <mat-form-field class="w-50" color="accent" floatLabel="always">
+      <mat-label>Final</mat-label>
+      <input matInput formControlName="finalPrice"
+             style="text-align: end"
+             placeholder="0">
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+  </div>
+  <ng-container *ngFor="let subcategory of this.subcategories">
+    <mat-checkbox class="d-block" [formControlName]="this.getFormControlName(subcategory.nombre)">
+      {{subcategory.nombre}}
+    </mat-checkbox>
+  </ng-container>
+</form>
 

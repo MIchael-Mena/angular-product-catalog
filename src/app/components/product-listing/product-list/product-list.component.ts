@@ -1,21 +1,24 @@
 import {Component} from '@angular/core';
 import {ProductService} from "../service/product.service";
-import {IProduct} from "../models/IProduct";
+import {IProduct} from "../model/IProduct";
 import {SubcategoryService} from "../service/subcategory.service";
-import {ISubcategory} from "../models/ISubcategory";
+import {ISubcategory} from "../model/ISubcategory";
 import {forkJoin} from "rxjs";
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
-  styleUrls: ['./product-list.component.scss']
+  styleUrls: ['./product-list.component.scss'],
+  providers: []
 })
 export class ProductListComponent {
 
   public products: IProduct[] = [];
   public subcategories: ISubcategory[] = [];
+  public isLoading: boolean = true;
 
-  constructor(private productService: ProductService, private subcategoryService: SubcategoryService) {
+  constructor(private productService: ProductService,
+              private subcategoryService: SubcategoryService) {
     this.getData();
   }
 
@@ -36,12 +39,12 @@ export class ProductListComponent {
         this.subcategories = data.subcategories;
         this.assignSubcategories(data.products);
         this.products = data.products;
+        this.isLoading = false;
       },
       error: (error) => {
         console.error(error);
       }
     });
   }
-
 
 }

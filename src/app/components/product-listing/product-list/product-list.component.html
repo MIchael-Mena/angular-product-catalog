@@ -1,13 +1,16 @@
 <section class="container">
   <div class="row my-3">
     <div class="col-md-3">
-      <app-filter></app-filter>
+      <ng-container *ngIf="!this.isLoading">
+        <app-filter [subcategories]="this.subcategories"></app-filter>
+      </ng-container>
     </div>
     <div class="col-md-9">
-      <div class="row">
-        <ng-container *ngFor="let product of products">
-          <app-product-card [product]="product" class="col-card my-2 mx-2"></app-product-card>
-        </ng-container>
+      <div class="row row-cols-auto">
+        <app-product-card [product]="product"
+                          *ngFor="let product of products"
+                          class="col-card my-2 mx-2">
+        </app-product-card>
       </div>
     </div>
   </div>

@@ -1,10 +1,11 @@
-#filter {
-  height: 300px;
-  min-height: 250px;
-}
+:host {
+  ::ng-deep .mat-mdc-form-field:first-child .mdc-text-field {
+    border-radius: 25px 0 0 25px;
+    box-shadow: 0px -1px 0 3px #09235b;
+  }
 
-@media (max-width: 767px) {
-  #filter {
-    min-height: auto;
+  ::ng-deep .mat-mdc-form-field:nth-child(2) .mdc-text-field {
+    border-radius: 0 25px 25px 0;
+    box-shadow: 0px -1px 0 3px #09235b;
   }
 }

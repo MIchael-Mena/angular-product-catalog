@@ -7,6 +7,9 @@ import {MatGridListModule} from "@angular/material/grid-list";
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MaterialModule} from "../../shared/material.module";
 import {MatCardModule} from "@angular/material/card";
+import {ReactiveFormsModule} from "@angular/forms";
+import {MatFormFieldModule} from "@angular/material/form-field";
+import {MatInputModule} from "@angular/material/input";
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import {MatCardModule} from "@angular/material/card";
     MatGridListModule,
     MatCheckboxModule,
     MaterialModule,
-    MatCardModule
+    MatCardModule,
+    ReactiveFormsModule,
+    MatFormFieldModule,
+    MatInputModule
   ]
 })
 export class ProductListingModule {
