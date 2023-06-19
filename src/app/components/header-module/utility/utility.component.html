@@ -1,0 +1,34 @@
+<section class="d-inline-flex">
+  <button mat-raised-button [matMenuTriggerFor]="account"
+          class="button-account">
+    <mat-icon color="accent" class="icon-md">
+      account_circle
+    </mat-icon>
+  </button>
+
+  <button mat-raised-button routerLink="/carrito"
+          (click)="this.openDialog()"
+          class="button-shopping-cart">
+    <div [matBadge]="this.shoppingCounter"
+         class="d-flex"
+         matBadgeColor="warn"
+         matBadgeOverlap="true">
+      <mat-icon color="accent" class="icon-md">
+        shopping_cart
+      </mat-icon>
+    </div>
+  </button>
+  <span class="mat-body-1 price">
+    {{ this.totalPrices | currency:'$':true:'1.2-2'}}
+  </span>
+</section>
+<mat-menu #account="matMenu" [hasBackdrop]="true"
+          [overlapTrigger]="false"
+          xPosition="after" yPosition="below">
+  <button mat-menu-item>
+    Ingresar
+  </button>
+  <button mat-menu-item [routerLink]="['/register']">
+    Registrarse
+  </button>
+</mat-menu>

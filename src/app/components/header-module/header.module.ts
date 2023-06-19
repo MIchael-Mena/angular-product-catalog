@@ -1,6 +1,6 @@
-import { NgModule } from '@angular/core';
+import {NgModule} from '@angular/core';
 import {CommonModule, NgOptimizedImage} from '@angular/common';
-import { HeaderComponent } from './header/header.component';
+import {HeaderComponent} from './header/header.component';
 import {AppRoutingModule} from "../../shared/app-routing.module";
 import {MaterialModule} from "../../shared/material.module";
 import {MatMenuModule} from "@angular/material/menu";
@@ -10,16 +10,17 @@ import {MatBadgeModule} from "@angular/material/badge";
 import {MatFormFieldModule} from "@angular/material/form-field";
 import {MatInputModule} from "@angular/material/input";
 import {ReactiveFormsModule} from "@angular/forms";
-import { FinderComponent } from './finder/finder.component';
-import { NavbarComponent } from './navbar/navbar.component';
-
+import {FinderComponent} from './finder/finder.component';
+import {NavbarComponent} from './navbar/navbar.component';
+import {UtilityComponent} from './utility/utility.component';
 
 
 @NgModule({
   declarations: [
     HeaderComponent,
     FinderComponent,
-    NavbarComponent
+    NavbarComponent,
+    UtilityComponent
   ],
   imports: [
     CommonModule,
@@ -39,4 +40,5 @@ import { NavbarComponent } from './navbar/navbar.component';
     FinderComponent
   ]
 })
-export class HeaderModule { }
+export class HeaderModule {
+}

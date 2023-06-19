@@ -8,7 +8,8 @@ import {IconRegistryService} from "./service/icon-registry.service";
 import {HttpClientModule} from "@angular/common/http";
 import {HeaderModule} from "./components/header-module/header.module";
 import {ProductListingModule} from "./components/product-listing/product-listing.module";
-import {MatSidenavModule} from "@angular/material/sidenav";
+import {ShoppingCartService} from "./service/shopping-cart.service";
+import {NgxMaskDirective, NgxMaskPipe} from "ngx-mask";
 
 @NgModule({
   declarations: [
@@ -21,9 +22,9 @@ import {MatSidenavModule} from "@angular/material/sidenav";
     HeaderModule,
     HttpClientModule,
     ProductListingModule,
-    MatSidenavModule
+    NgxMaskDirective, NgxMaskPipe
   ],
-  providers: [IconRegistryService],
+  providers: [IconRegistryService, ShoppingCartService],
   bootstrap: [AppComponent]
 })
 export class AppModule {

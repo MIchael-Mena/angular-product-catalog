@@ -26,13 +26,8 @@ export class ProductListComponent implements OnInit {
     this.getData();
   }
 
-  public filterProducts(subcategories: Map<string, boolean>): void {
-    this.filteredProducts = this.products.filter((product: IProduct) => {
-      const selectedSubcategories = Array.from(subcategories.entries())
-        .filter(([subcategory, isSelected]) => isSelected)
-        .map(([subcategory]) => subcategory);
-      return selectedSubcategories.length === 0 || selectedSubcategories.includes(product.subcategoria!);
-    });
+  public filterProducts(filter: any): void {
+    this.filteredProducts = filter(this.products);
   }
 
   private assignSubcategories(products: IProduct[]): void {

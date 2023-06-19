@@ -16,27 +16,7 @@
       <app-finder class="finder-width"></app-finder>
     </ng-container>
 
-    <div class="d-flex gap-2 px-2 utility-icons">
-      <button mat-icon-button [matMenuTriggerFor]="account" #menuTrigger="matMenuTrigger">
-        <mat-icon color="accent">account_circle</mat-icon>
-      </button>
-      <mat-menu #account="matMenu" [hasBackdrop]="true" [overlapTrigger]="false"
-                xPosition="after" yPosition="below">
-        <button mat-menu-item>
-          Ingresar
-        </button>
-        <button mat-menu-item [routerLink]="['/register']">
-          Registrarse
-        </button>
-      </mat-menu>
-
-      <mat-divider vertical="true"></mat-divider>
-      <button mat-icon-button routerLink="/carrito">
-        <div matBadge="4" matBadgeColor="warn" matBadgeOverlap="true">
-          <mat-icon color="accent">shopping_cart</mat-icon>
-        </div>
-      </button>
-    </div>
+    <app-utility></app-utility>
 
   </mat-toolbar-row>
 

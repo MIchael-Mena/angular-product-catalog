@@ -9,11 +9,6 @@
   background-color: map-get($my-accent-map, 500);
 }
 
-.utility-icons {
-  background-color: map-get(map-get($my-accent-map, "contrast"), 500);
-  border-radius: 25px
-}
-
 .mat-toolbar-row {
   height: auto;
   min-height: 64px;

@@ -6,8 +6,20 @@ html, body {
   height: 100%;
 }
 
-.mat-icon {
+.icon-lg {
   transform: scale(1.5);
+}
+
+.icon-md {
+  transform: scale(1.25);
+}
+
+.mat-icon {
+  margin: 0 !important;
+  padding: 0 !important;
+  font-size: 24px !important;
+  height: 24px !important;
+  width: 24px !important;
 }
 
 .mat-mdc-menu-panel {
