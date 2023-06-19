@@ -8,6 +8,7 @@ import {IconRegistryService} from "./service/icon-registry.service";
 import {HttpClientModule} from "@angular/common/http";
 import {HeaderModule} from "./components/header-module/header.module";
 import {ProductListingModule} from "./components/product-listing/product-listing.module";
+import {MatSidenavModule} from "@angular/material/sidenav";
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import {ProductListingModule} from "./components/product-listing/product-listing
     MaterialModule,
     HeaderModule,
     HttpClientModule,
-    ProductListingModule
+    ProductListingModule,
+    MatSidenavModule
   ],
   providers: [IconRegistryService],
   bootstrap: [AppComponent]

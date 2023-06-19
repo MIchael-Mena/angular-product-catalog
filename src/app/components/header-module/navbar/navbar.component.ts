@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import {CATEGORIES} from "../categories";
+import {Component} from '@angular/core';
+import {CATEGORIES} from "../model/categories";
 
 @Component({
   selector: 'app-navbar',
@@ -11,6 +11,7 @@ export class NavbarComponent {
   public baseUrl = '/productos';
   public readonly categories = CATEGORIES;
 
-  constructor() {}
+  constructor() {
+  }
 
 }

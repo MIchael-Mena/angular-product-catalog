@@ -1,29 +1,33 @@
 <div class="d-flex flex-md-row justify-content-md-center mt-md-0 align-items-center
-      flex-column justify-content-start gap-5 mt-5 mat-subtitle-1 mb-0">
+      flex-column justify-content-start gap-5 mt-5 mat-subtitle-1 mb-0 text-light">
   <!--  Hacer 2 Menu, para diferentes breakpoints. El Menu de abajo seria para mayor a md -->
   <!-- Mat Menu para las categorías -->
-  <a [matMenuTriggerFor]="menu" class="nav-link d-flex align-items-center">
+  <a [matMenuTriggerFor]="menu" class="link d-flex align-items-center test">
     <mat-icon style="transform: scale(1)">
       expand_more
     </mat-icon>
     CATEGORÍAS
   </a>
-  <mat-menu #menu="matMenu" [hasBackdrop]="true">
+  <mat-menu #menu="matMenu" [hasBackdrop]="true" class="menu-style">
     <ng-container *ngFor="let category of categories">
       <button mat-menu-item [matMenuTriggerFor]="subMenu">
-        <mat-icon>arrow_right</mat-icon>
+        <mat-icon color="primary" style="transform: scale(1)">chevron_right</mat-icon>
+        <span>
         {{ category.name }}
+        </span>
       </button>
-      <mat-menu #subMenu="matMenu">
+      <mat-menu #subMenu="matMenu" class="menu-style">
         <button mat-menu-item *ngFor="let subcategory of category.subcategories"
                 [routerLink]="[baseUrl, subcategory.id]">
+          <span>
           {{ subcategory.name }}
+          </span>
         </button>
       </mat-menu>
     </ng-container>
   </mat-menu>
 
-  <a [routerLink]="'/arma-tu-pc'" class="nav-link" routerLinkActive="nav-active"> ARMÁ TU PC </a>
-  <a [routerLink]="'/ayuda'" class="nav-link" routerLinkActive="nav-active"> AYUDA </a>
-  <a [routerLink]="'/marcas-sponsor'" class="nav-link" routerLinkActive="nav-active"> MARCAS SPONSOR </a>
+  <a [routerLink]="'/arma-tu-pc'" class="link" routerLinkActive="nav-active"> ARMÁ TU PC </a>
+  <a [routerLink]="'/ayuda'" class="link" routerLinkActive="nav-active"> AYUDA </a>
+  <a [routerLink]="'/marcas-sponsor'" class="link" routerLinkActive="nav-active"> MARCAS SPONSOR </a>
 </div>

@@ -1,5 +1,7 @@
-<form [formGroup]="this.form" class="mt-3">
-  <div class="price-picker">
+<form [formGroup]="this.form" class="mt-md-2">
+  <mat-divider></mat-divider>
+  <span class="d-block my-2 text-center mat-subtitle-2">Selecciona un rango de precios</span>
+  <div class="price-picker mt-3">
     <mat-form-field class="w-50" color="accent" floatLabel="always">
       <mat-label>Inicial</mat-label>
       <input matInput formControlName="initialPrice"
@@ -15,8 +17,13 @@
       <span matTextPrefix>$&nbsp;</span>
     </mat-form-field>
   </div>
+  <mat-divider></mat-divider>
+  <span class="d-block my-2 text-center mat-subtitle-2">Filtrar por categorías</span>
   <ng-container *ngFor="let subcategory of this.subcategories">
-    <mat-checkbox class="d-block" [formControlName]="this.getFormControlName(subcategory.nombre)">
+    <mat-checkbox class="d-block"
+                  #checkbox
+                  (change)="this.onSubcategoryChange(checkbox.checked, subcategory.nombre)"
+                  [formControlName]="this.getFormControlName(subcategory.nombre)">
       {{subcategory.nombre}}
     </mat-checkbox>
   </ng-container>

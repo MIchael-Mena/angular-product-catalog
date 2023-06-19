@@ -1,4 +1,4 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ProductService} from "../service/product.service";
 import {IProduct} from "../model/IProduct";
 import {SubcategoryService} from "../service/subcategory.service";
@@ -11,15 +11,28 @@ import {forkJoin} from "rxjs";
   styleUrls: ['./product-list.component.scss'],
   providers: []
 })
-export class ProductListComponent {
+export class ProductListComponent implements OnInit {
 
   public products: IProduct[] = [];
+  public filteredProducts: IProduct[] = [];
   public subcategories: ISubcategory[] = [];
   public isLoading: boolean = true;
 
   constructor(private productService: ProductService,
               private subcategoryService: SubcategoryService) {
+  }
+
+  ngOnInit(): void {
     this.getData();
+  }
+
+  public filterProducts(subcategories: Map<string, boolean>): void {
+    this.filteredProducts = this.products.filter((product: IProduct) => {
+      const selectedSubcategories = Array.from(subcategories.entries())
+        .filter(([subcategory, isSelected]) => isSelected)
+        .map(([subcategory]) => subcategory);
+      return selectedSubcategories.length === 0 || selectedSubcategories.includes(product.subcategoria!);
+    });
   }
 
   private assignSubcategories(products: IProduct[]): void {
@@ -32,13 +45,14 @@ export class ProductListComponent {
 
   private getData(): void {
     forkJoin({
-      products: this.productService.products,
-      subcategories: this.subcategoryService.subcategories
+      products: this.productService.getProducts,
+      subcategories: this.subcategoryService.getSubcategories
     }).subscribe({
       next: (data: { products: IProduct[], subcategories: ISubcategory[] }) => {
         this.subcategories = data.subcategories;
         this.assignSubcategories(data.products);
         this.products = data.products;
+        this.filteredProducts = data.products;
         this.isLoading = false;
       },
       error: (error) => {

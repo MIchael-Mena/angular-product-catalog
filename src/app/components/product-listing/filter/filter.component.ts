@@ -1,4 +1,4 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ISubcategory} from "../model/ISubcategory";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 
@@ -10,7 +10,9 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 export class FilterComponent implements OnInit {
 
   @Input() subcategories: ISubcategory[] = [];
+  @Output() onFilterChange: EventEmitter<Map<string, boolean>> = new EventEmitter<Map<string, boolean>>();
   public form: FormGroup = <FormGroup>{};
+  private subcategoriesSelected: Map<string, boolean> = new Map<string, boolean>();
 
   constructor(private fb: FormBuilder) {
   }
@@ -28,6 +30,11 @@ export class FilterComponent implements OnInit {
 
   public getFormControlName(nombre: string): string {
     return nombre.replace(/\s+/g, '_');
+  }
+
+  public onSubcategoryChange(checked: boolean, subcategory: string): void {
+    this.subcategoriesSelected.set(subcategory, checked);
+    this.onFilterChange.emit(this.subcategoriesSelected);
   }
 
 }

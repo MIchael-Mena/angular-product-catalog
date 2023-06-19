@@ -15,7 +15,7 @@ export class SubcategoryService {
   constructor(private http: HttpClient) {
   }
 
-  get subcategories(): Observable<ISubcategory[]> {
+  get getSubcategories(): Observable<ISubcategory[]> {
     return this.http.get<ISubcategory[]>(this.apiUrl).pipe(
       map((subcategories: ISubcategory[]) => {
         this.prepareSubcategories(subcategories);

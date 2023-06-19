@@ -1,39 +1,26 @@
 @import "src/styles/palete-colors.scss";
 
-#topHeader{
+#topHeader {
   height: auto;
-  box-shadow: 0 1px 3px black;
+  border-bottom: 3px solid map-get(map-get($my-accent-map, "contrast"), 500);
 }
 
-#bottomHeader{
+#bottomHeader {
   background-color: map-get($my-accent-map, 500);
 }
 
-#menuSideBar{
-  color: white;
-}
-
-.utility-icons{
+.utility-icons {
   background-color: map-get(map-get($my-accent-map, "contrast"), 500);
   border-radius: 25px
 }
 
-.mat-toolbar-row{
+.mat-toolbar-row {
   height: auto;
   min-height: 64px;
 }
 
-.finder-width{
+.finder-width {
   min-width: 40%;
-}
-
-
-@media (max-width: 768px) {
-
-  #menuSideBar{
-    color: black;
-  }
-
 }
 
 

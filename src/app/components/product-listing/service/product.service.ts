@@ -14,7 +14,7 @@ export class ProductService {
   constructor(private http: HttpClient) {
   }
 
-  get products(): Observable<IProduct[]> {
+  get getProducts(): Observable<IProduct[]> {
     return this.http.get<IProduct[]>(this.apiUrl).pipe(
       map((products: IProduct[]) => {
         this.assembleImagesUrl(products);

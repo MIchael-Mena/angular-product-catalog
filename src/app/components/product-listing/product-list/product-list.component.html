@@ -2,13 +2,15 @@
   <div class="row my-3">
     <div class="col-md-3">
       <ng-container *ngIf="!this.isLoading">
-        <app-filter [subcategories]="this.subcategories"></app-filter>
+        <app-filter [subcategories]="this.subcategories"
+                    (onFilterChange)="this.filterProducts($event)">
+        </app-filter>
       </ng-container>
     </div>
     <div class="col-md-9">
-      <div class="row row-cols-auto">
+      <div class="row row-cols-auto justify-content-center">
         <app-product-card [product]="product"
-                          *ngFor="let product of products"
+                          *ngFor="let product of filteredProducts"
                           class="col-card my-2 mx-2">
         </app-product-card>
       </div>
