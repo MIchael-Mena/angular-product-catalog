@@ -68,8 +68,8 @@ export class UtilityComponent {
     });
 
     dialogRef.afterClosed().subscribe(result => {
-      // Aquí puedes realizar acciones adicionales después de que se cierre el diálogo de registro
     });
   }
+
 
 }

@@ -1,1 +1,27 @@
-<p>login works!</p>
+<form class="login-form">
+  <div class="close-icon" (click)="closeDialog()">
+    <mat-icon>close</mat-icon>
+  </div>
+
+  <h2>Iniciar sesión</h2>
+
+  <mat-form-field class="form-field">
+    <input matInput placeholder="Correo electrónico" type="email" formControlName="email" required>
+    <mat-error
+      *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched)">
+      <span *ngIf="form.controls['email'].hasError('required')">El correo electrónico es requerido.</span>
+      <span *ngIf="form.controls['email'].hasError('email')">El correo electrónico no es válido.</span>
+    </mat-error>
+  </mat-form-field>
+
+  <mat-form-field class="form-field">
+    <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
+    <mat-error
+      *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)">
+      <span *ngIf="form.controls['password'].hasError('required')">La contraseña es requerida.</span>
+    </mat-error>
+  </mat-form-field>
+
+  <button mat-raised-button color="primary" [disabled]="form.invalid">Iniciar sesión</button>
+</form>
+

@@ -1,8 +1,8 @@
-import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { LoginComponent } from './login/login.component';
-import { RegisterComponent } from './register/register.component';
-
+import {NgModule} from '@angular/core';
+import {CommonModule} from '@angular/common';
+import {LoginComponent} from './login/login.component';
+import {RegisterComponent} from './register/register.component';
+import {MaterialModule} from "../../shared/material.module";
 
 
 @NgModule({
@@ -11,7 +11,9 @@ import { RegisterComponent } from './register/register.component';
     RegisterComponent
   ],
   imports: [
+    MaterialModule,
     CommonModule
   ]
 })
-export class LoginRegisterModule { }
+export class LoginRegisterModule {
+}

@@ -7,13 +7,10 @@ import {MatMenuModule} from "@angular/material/menu";
 import {MatListModule} from "@angular/material/list";
 import {MatToolbarModule} from "@angular/material/toolbar";
 import {MatBadgeModule} from "@angular/material/badge";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
-import {ReactiveFormsModule} from "@angular/forms";
 import {FinderComponent} from './finder/finder.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {UtilityComponent} from './utility/utility.component';
-
+import {FormatPricePipe} from "../../pipe/format-price.pipe";
 
 @NgModule({
   declarations: [
@@ -31,9 +28,7 @@ import {UtilityComponent} from './utility/utility.component';
     MatToolbarModule,
     NgOptimizedImage,
     MatBadgeModule,
-    MatFormFieldModule,
-    MatInputModule,
-    ReactiveFormsModule,
+    FormatPricePipe
   ],
   exports: [
     HeaderComponent,

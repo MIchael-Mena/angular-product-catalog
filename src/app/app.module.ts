@@ -9,7 +9,7 @@ import {HttpClientModule} from "@angular/common/http";
 import {HeaderModule} from "./components/header-module/header.module";
 import {ProductListingModule} from "./components/product-listing/product-listing.module";
 import {ShoppingCartService} from "./service/shopping-cart.service";
-import {NgxMaskDirective, NgxMaskPipe} from "ngx-mask";
+import {LoginRegisterModule} from "./components/login-register/login-register.module";
 
 @NgModule({
   declarations: [
@@ -22,9 +22,10 @@ import {NgxMaskDirective, NgxMaskPipe} from "ngx-mask";
     HeaderModule,
     HttpClientModule,
     ProductListingModule,
-    NgxMaskDirective, NgxMaskPipe
+    LoginRegisterModule
   ],
   providers: [IconRegistryService, ShoppingCartService],
+  exports: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {

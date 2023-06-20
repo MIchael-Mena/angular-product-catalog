@@ -7,7 +7,7 @@
     <h3>{{ this.product.nombre }}</h3>
     <span class="price-highlight text-center price-animation">
       <!--            {{ this.product.precio | currency:'AR$ ':'symbol':'1.2-2' }}-->
-      {{formatPrice(this.product.precio) }}
+      {{this.product.precio | formatPrice }}
     </span>
     <span class="mat-caption mt-3">Subcategoría: {{ product.subcategoria }}</span>
   </mat-card-content>

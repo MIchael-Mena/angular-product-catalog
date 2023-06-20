@@ -18,9 +18,4 @@ export class ProductCardComponent {
     this.shoppingCartService.addToCart(this.product);
   }
 
-  public formatPrice(price: number): string {
-    const formattedPrice = price.toLocaleString('es-AR');
-    return `$ ${formattedPrice}`;
-  }
-
 }

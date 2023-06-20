@@ -6,18 +6,15 @@ import {ProductCardComponent} from './product-card/product-card.component';
 import {MatCheckboxModule} from "@angular/material/checkbox";
 import {MaterialModule} from "../../shared/material.module";
 import {MatCardModule} from "@angular/material/card";
-import {ReactiveFormsModule} from "@angular/forms";
-import {MatFormFieldModule} from "@angular/material/form-field";
-import {MatInputModule} from "@angular/material/input";
 import {MatDialogModule} from "@angular/material/dialog";
 import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
-
+import {FormatPricePipe} from "../../pipe/format-price.pipe";
 
 @NgModule({
   declarations: [
     FilterComponent,
     ProductListComponent,
-    ProductCardComponent
+    ProductCardComponent,
   ],
   exports: [
     ProductListComponent
@@ -27,11 +24,9 @@ import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
     MatCheckboxModule,
     MaterialModule,
     MatCardModule,
-    ReactiveFormsModule,
-    MatFormFieldModule,
-    MatInputModule,
     MatDialogModule,
-    NgxMaskDirective, NgxMaskPipe
+    NgxMaskDirective, NgxMaskPipe,
+    FormatPricePipe
   ],
   providers: [provideNgxMask()]
 })
