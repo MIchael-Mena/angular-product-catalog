@@ -1,5 +1,6 @@
 <section class="d-inline-flex">
-  <button mat-raised-button [matMenuTriggerFor]="account"
+  <button mat-raised-button
+          (click)="this.openLoginModal()"
           class="button-account">
     <mat-icon color="accent" class="icon-md">
       account_circle
@@ -22,13 +23,3 @@
     {{ this.totalPrices | currency:'$':true:'1.2-2'}}
   </span>
 </section>
-<mat-menu #account="matMenu" [hasBackdrop]="true"
-          [overlapTrigger]="false"
-          xPosition="after" yPosition="below">
-  <button mat-menu-item>
-    Ingresar
-  </button>
-  <button mat-menu-item [routerLink]="['/register']">
-    Registrarse
-  </button>
-</mat-menu>
