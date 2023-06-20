@@ -1,18 +1,19 @@
-<mat-card class="h-100">
+<mat-card class="h-100 product-card">
   <mat-card-header>
     <img [src]="this.product.imagenes[0].url"
          class="img-fluid mx-auto" height="200" width="200" alt="Product Image">
   </mat-card-header>
   <mat-card-content class="d-flex flex-column justify-content-evenly py-3 h-100">
     <h3>{{ this.product.nombre }}</h3>
-    <p>Precio: {{ this.product.precio |
-      currency:'AR$ ':'symbol':'1.2-2' }}
-    </p>
-    <p>Categoría: {{ product.subcategoria }}</p>
+    <span class="price-highlight text-center price-animation">
+      <!--            {{ this.product.precio | currency:'AR$ ':'symbol':'1.2-2' }}-->
+      {{formatPrice(this.product.precio) }}
+    </span>
+    <span class="mat-caption mt-3">Subcategoría: {{ product.subcategoria }}</span>
   </mat-card-content>
-  <mat-card-actions>
+  <mat-card-actions class="p-0">
     <button mat-flat-button color="accent"
-            class="mx-auto"
+            class="button-add-product"
             (click)="this.addToCart(product)">
       <mat-icon>add_shopping_cart</mat-icon>
       Agregar al carrito

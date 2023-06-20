@@ -27,6 +27,7 @@ export class UtilityComponent {
   }
 
   public openDialog(): void {
+    if (this.shoppingCounter === 0) return;
     const data = {
       title: 'Confirmar',
       message: '¿Estás seguro de que quieres vaciar el carrito?',

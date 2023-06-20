@@ -6,7 +6,7 @@
   <span matSuffix (click)="clearInput()"
         [attr.aria-label]="'search'"
         class="mx-3" style="cursor: pointer">
-        <mat-icon style="transform: scale(1.1)">{{ pristine ? 'search' : 'close' }}</mat-icon>
+        <mat-icon>{{ pristine ? 'search' : 'close' }}</mat-icon>
       </span>
   <mat-error *ngIf="searchControl.hasError('required')" style="display: none">
     Debe ingresar un valor
