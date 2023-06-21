@@ -1,9 +1,10 @@
 import {Component} from '@angular/core';
 import {ShoppingCartService} from "../../../service/shopping-cart.service";
 import {MatDialog} from "@angular/material/dialog";
+import {AuthService} from "../../../service/auth.service";
 import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
 import {ModalLoginRegisterComponent} from "../../login-register/modal-login-register/modal-login-register.component";
-import {AuthService} from "../../../service/auth.service";
+
 
 @Component({
   selector: 'app-utility',
@@ -54,6 +55,10 @@ export class UtilityComponent {
   }
 
   public openLoginRegisterModal(): void {
+    if (this.isLogged) {
+      this.openDialogLogout();
+      return;
+    }
     const dialogRef = this.dialog.open(ModalLoginRegisterComponent, {
       maxWidth: '95vw',
       // panelClass: 'custom-modal',
@@ -62,6 +67,25 @@ export class UtilityComponent {
     dialogRef.afterClosed().subscribe((result: boolean) => {
       if (result) {
         alert(result)
+      }
+    });
+  }
+
+  public openDialogLogout(): void {
+    const data = {
+      title: 'Confirmar',
+      message: '¿Estás seguro de que quieres cerrar sesión?',
+      buttonDismiss: 'Cancelar',
+      buttonConfirm: 'Cerrar sesión',
+    }
+    const dialogRef = this.dialog.open(ConfirmationDialogComponent, {
+      data,
+      width: '350px',
+      maxWidth: '95vw',
+    });
+    dialogRef.afterClosed().subscribe((result: boolean) => {
+      if (result) {
+        this.authService.logout();
       }
     });
   }

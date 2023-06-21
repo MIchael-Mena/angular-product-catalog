@@ -1,3 +1,5 @@
+@import "src/styles/palete-colors";
+
 :host {
   ::ng-deep .mat-mdc-form-field:first-child .mdc-text-field {
     border-radius: 25px 0 0 25px;
@@ -12,3 +14,10 @@
   }
 }
 
+.icon-filter:active {
+  transform: translateY(1px);
+}
+
+.icon-filter:hover {
+  color: map-get($my-primary-map, 500);
+}

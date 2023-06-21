@@ -1,5 +1,5 @@
 import {NgModule} from '@angular/core';
-import {CommonModule} from '@angular/common';
+import {CommonModule, NgOptimizedImage} from '@angular/common';
 import {FilterComponent} from './filter/filter.component';
 import {ProductListComponent} from './product-list/product-list.component';
 import {ProductCardComponent} from './product-card/product-card.component';
@@ -26,7 +26,7 @@ import {FormatPricePipe} from "../../pipe/format-price.pipe";
     MatCardModule,
     MatDialogModule,
     NgxMaskDirective, NgxMaskPipe,
-    FormatPricePipe
+    FormatPricePipe, NgOptimizedImage
   ],
   providers: [provideNgxMask()]
 })

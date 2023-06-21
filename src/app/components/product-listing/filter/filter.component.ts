@@ -15,6 +15,9 @@ export class FilterComponent implements OnInit {
   @Input() subcategories: ISubcategory[] = [];
   @Output() onFilterChange: EventEmitter<any> = new EventEmitter<any>();
 
+  public showRangePrice: boolean = true;
+  public showSubcategories: boolean = true;
+
   private maxPrice: number = 100000000;
   public form: FormGroup = <FormGroup>{};
   private subcategoriesSelected: Map<string, boolean> = new Map<string, boolean>();
@@ -33,9 +36,8 @@ export class FilterComponent implements OnInit {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((formValue) => {
       const initialPriceValue = formValue.initialPrice;
       const finalPriceValue = formValue.finalPrice;
-      if (
-        this.form.valid &&
-        initialPriceValue < finalPriceValue &&
+
+      if (this.form.valid && initialPriceValue < finalPriceValue &&
         this.verifyPriceRangeChanged(initialPriceValue, finalPriceValue)
       ) {
         this.lastRangePrice = {min: initialPriceValue, max: finalPriceValue};
@@ -90,8 +92,8 @@ export class FilterComponent implements OnInit {
     const priceValidators = [Validators.min(0), Validators.max(this.maxPrice),
       Validators.pattern(/^-?(0|[1-9]\d*)(\.\d+)?$/)];
     this.form = this.fb.group({
-      initialPrice: ['', priceValidators],
-      finalPrice: ['', priceValidators],
+      initialPrice: [null, priceValidators],
+      finalPrice: [null, priceValidators],
     });
   }
 
@@ -102,4 +104,11 @@ export class FilterComponent implements OnInit {
     });
   }
 
+  public clearFilters() {
+    this.subcategoriesSelected = new Map<string, boolean>();
+    this.form.reset();
+    this.lastRangePrice = {min: 0, max: this.maxPrice}; // Restablecer el rango de precios
+    this.createCheckboxControls();
+    this.emitFilters();
+  }
 }

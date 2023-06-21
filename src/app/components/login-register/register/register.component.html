@@ -27,8 +27,7 @@
       <input matInput formControlName="dni" required pattern="[0-9]{8}">
       <mat-error *ngIf="this.registerForm.controls['dni'].invalid && registerForm.controls['dni'].touched">
         Ingresa un DNI válido.
-        <mat-icon #tooltip="matTooltip"
-                  class="mx-2 position-absolute end-0"
+        <mat-icon class="mx-2 position-absolute end-0"
                   matTooltip="El DNI debe tener 8 dígitos numéricos."
                   [matTooltipPosition]="'above'"
                   matTooltipHideDelay="10000">
@@ -51,8 +50,7 @@
       <input matInput formControlName="areaCode" required pattern="[0-9]{3}">
       <mat-error *ngIf="this.registerForm.controls['areaCode'].invalid && registerForm.controls['areaCode'].touched">
         Ingresa un código de área válido.
-        <mat-icon #tooltip="matTooltip"
-                  class="mx-2 position-absolute end-0"
+        <mat-icon class="mx-2 position-absolute end-0"
                   matTooltip="El código de área debe tener 3 dígitos numéricos."
                   [matTooltipPosition]="'above'"
                   matTooltipHideDelay="10000">
@@ -66,8 +64,7 @@
       <input matInput formControlName="phone" required pattern="[0-9]{8,}">
       <mat-error *ngIf="this.registerForm.controls['phone'].invalid && registerForm.controls['phone'].touched">
         Ingresa un teléfono válido.
-        <mat-icon #tooltip="matTooltip"
-                  class="mx-2 position-absolute end-0"
+        <mat-icon class="mx-2 position-absolute end-0"
                   matTooltip="El teléfono debe tener al menos 8 dígitos numéricos."
                   [matTooltipPosition]="'above'"
                   matTooltipHideDelay="10000">
@@ -85,8 +82,7 @@
 
         <mat-error *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
           Contraseña inválida.
-          <mat-icon #tooltip="matTooltip"
-                    class="mx-2 position-absolute end-0"
+          <mat-icon class="mx-2 position-absolute end-0"
                     matTooltip="La contraseña debe tener entre 6 y 20 caracteres, al menos una letra mayúscula,
                     una minúscula y un número."
                     [matTooltipPosition]="'above'"
