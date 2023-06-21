@@ -37,6 +37,9 @@ export class RegisterComponent {
   public registerUser(): void {
     if (this.registerForm.invalid) {
       this.registerForm.markAllAsTouched();
+      Object.keys(this.registerForm.controls).forEach(key => {
+        this.registerForm.get(key)?.markAsDirty();
+      });
       return;
     }
     delete this.registerForm.value.confirmPassword;

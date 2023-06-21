@@ -5,25 +5,17 @@
   align-items: center;
   justify-content: space-evenly;
   gap: 1.5rem;
-  padding: 16px;
-  width: 750px;
+  padding: 1rem;
+  width: 400px;
 
-  h2 {
-    margin-bottom: 1rem;
+  .mat-mdc-form-field-error .mat-icon {
+    color: #ffcc00;
+    border-radius: 25px;
   }
 
-  mat-form-field {
-    width: 300px;
+  .mat-mdc-form-field-error .mat-icon:hover {
+    transform: scale(1.2);
+    box-shadow: 0 0 10px #ffcc00;
   }
 
-  button {
-    margin-top: 1rem;
-  }
-
-  .close-icon {
-    position: relative;
-    display: block;
-    align-self: end;
-    cursor: pointer;
-  }
 }

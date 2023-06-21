@@ -28,7 +28,6 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.route.params.subscribe((params: Params) => {
-      console.log(params);
       this.subcategorySelected = params['subcategory']
     });
   }
