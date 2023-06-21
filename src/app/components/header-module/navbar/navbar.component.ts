@@ -8,24 +8,27 @@ import {CATEGORIES} from "../model/categories";
 })
 export class NavbarComponent {
 
-  public baseUrl = '/productos';
   public readonly categories = CATEGORIES;
   private timedOutCloser: any;
 
   constructor() {
   }
 
-  mouseEnter(trigger: any) {
+  public mouseEnter(trigger: any) {
     if (this.timedOutCloser) {
       clearTimeout(this.timedOutCloser);
     }
     trigger.openMenu();
   }
 
-  mouseLeave(trigger: any) {
+  public mouseLeave(trigger: any) {
     this.timedOutCloser = setTimeout(() => {
       trigger.closeMenu();
     }, 250);
+  }
+
+  public transformName(name: string): string {
+    return name.replace(/\s+/g, '_');
   }
 
 }

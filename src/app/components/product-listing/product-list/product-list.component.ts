@@ -4,6 +4,7 @@ import {IProduct} from "../model/IProduct";
 import {SubcategoryService} from "../service/subcategory.service";
 import {ISubcategory} from "../model/ISubcategory";
 import {forkJoin} from "rxjs";
+import {ActivatedRoute, Params} from "@angular/router";
 
 @Component({
   selector: 'app-product-list',
@@ -17,13 +18,19 @@ export class ProductListComponent implements OnInit {
   public filteredProducts: IProduct[] = [];
   public subcategories: ISubcategory[] = [];
   public isLoading: boolean = true;
+  public subcategorySelected: string = '';
 
   constructor(private productService: ProductService,
+              private route: ActivatedRoute,
               private subcategoryService: SubcategoryService) {
   }
 
   ngOnInit(): void {
     this.getData();
+    this.route.params.subscribe((params: Params) => {
+      console.log(params);
+      this.subcategorySelected = params['subcategory']
+    });
   }
 
   public filterProducts(filter: any): void {

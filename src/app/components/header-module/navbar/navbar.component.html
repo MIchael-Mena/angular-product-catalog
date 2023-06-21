@@ -1,7 +1,5 @@
 <div class="d-flex flex-md-row justify-content-md-center mt-md-0 align-items-center
       flex-column justify-content-start gap-5 mt-5 mat-subtitle-1 mb-0 text-light">
-  <!--  Hacer 2 Menu, para diferentes breakpoints. El Menu de abajo seria para mayor a md -->
-  <!-- Mat Menu para las categorías -->
   <a [matMenuTriggerFor]="menu" class="link d-flex align-items-center test" #menuTrigger="matMenuTrigger"
      (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
     <mat-icon>expand_more</mat-icon>
@@ -17,7 +15,7 @@
         <mat-menu #subMenu="matMenu" class="menu-style" [hasBackdrop]="false">
           <div (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
             <button mat-menu-item *ngFor="let subcategory of category.subcategories"
-                    [routerLink]="[baseUrl, subcategory.id]">
+                    [routerLink]="['/lista-productos', this.transformName(subcategory.name)]">
               <span>{{ subcategory.name }}</span>
             </button>
           </div>
@@ -25,7 +23,6 @@
       </ng-container>
     </div>
   </mat-menu>
-
 
   <a [routerLink]="'/arma-tu-pc'" class="link" routerLinkActive="nav-active"> ARMÁ TU PC </a>
   <a [routerLink]="'/ayuda'" class="link" routerLinkActive="nav-active"> AYUDA </a>

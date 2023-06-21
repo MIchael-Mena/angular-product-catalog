@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {ISubcategory} from "../model/ISubcategory";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {debounceTime} from "rxjs";
@@ -10,10 +10,11 @@ import {IProduct} from "../model/IProduct";
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, OnChanges {
 
   @Input() subcategories: ISubcategory[] = [];
   @Output() onFilterChange: EventEmitter<any> = new EventEmitter<any>();
+  @Input() subcategorySelected: string = '';
 
   public showRangePrice: boolean = true;
   public showSubcategories: boolean = true;
@@ -30,6 +31,14 @@ export class FilterComponent implements OnInit {
     this.setupForm();
     this.createCheckboxControls();
     this.setupFormChangeSubscription();
+  }
+
+  ngOnChanges(): void {
+    /*    if (this.subcategorySelected !== undefined && this.subcategorySelected !== '') {
+          this.subcategoriesSelected.set(this.subcategorySelected, true);
+          this.form.controls[this.subcategorySelected].setValue(true);
+          this.emitFilters();
+        }*/
   }
 
   private setupFormChangeSubscription(): void {
