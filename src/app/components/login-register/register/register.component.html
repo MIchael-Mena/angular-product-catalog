@@ -1,1 +1,114 @@
-<p>register works!</p>
+<form [formGroup]="this.registerForm" class="register-form" (ngSubmit)="this.registerUser()">
+  <div class="close-icon" (click)="this.dismissRegister()">
+    <mat-icon>close</mat-icon>
+  </div>
+
+  <div class="d-flex justify-content-evenly w-100">
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>Nombre</mat-label>
+      <input matInput formControlName="name" required>
+      <mat-error *ngIf="this.registerForm.controls['name'].invalid && registerForm.controls['name'].touched">
+        Ingresa un nombre.
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>Apellido</mat-label>
+      <input matInput formControlName="lastName" required>
+      <mat-error *ngIf="this.registerForm.controls['lastName'].invalid && registerForm.controls['lastName'].touched">
+        Ingresa un apellido.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex justify-content-evenly w-100">
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>DNI</mat-label>
+      <input matInput formControlName="dni" required pattern="[0-9]{8}">
+      <mat-error *ngIf="this.registerForm.controls['dni'].invalid && registerForm.controls['dni'].touched">
+        Ingresa un DNI válido.
+        <mat-icon #tooltip="matTooltip"
+                  class="mx-2 position-absolute end-0"
+                  matTooltip="El DNI debe tener 8 dígitos numéricos."
+                  [matTooltipPosition]="'above'"
+                  matTooltipHideDelay="10000">
+          help
+        </mat-icon>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>Email</mat-label>
+      <input matInput formControlName="email" required email>
+      <mat-error *ngIf="this.registerForm.controls['email'].invalid && registerForm.controls['email'].touched">
+        Ingresa un email válido.
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="d-flex justify-content-evenly w-100">
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>Código de área</mat-label>
+      <input matInput formControlName="areaCode" required pattern="[0-9]{3}">
+      <mat-error *ngIf="this.registerForm.controls['areaCode'].invalid && registerForm.controls['areaCode'].touched">
+        Ingresa un código de área válido.
+        <mat-icon #tooltip="matTooltip"
+                  class="mx-2 position-absolute end-0"
+                  matTooltip="El código de área debe tener 3 dígitos numéricos."
+                  [matTooltipPosition]="'above'"
+                  matTooltipHideDelay="10000">
+          help
+        </mat-icon>
+      </mat-error>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>Teléfono</mat-label>
+      <input matInput formControlName="phone" required pattern="[0-9]{8,}">
+      <mat-error *ngIf="this.registerForm.controls['phone'].invalid && registerForm.controls['phone'].touched">
+        Ingresa un teléfono válido.
+        <mat-icon #tooltip="matTooltip"
+                  class="mx-2 position-absolute end-0"
+                  matTooltip="El teléfono debe tener al menos 8 dígitos numéricos."
+                  [matTooltipPosition]="'above'"
+                  matTooltipHideDelay="10000">
+          help
+        </mat-icon>
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <div class="d-flex justify-content-evenly w-100">
+    <div>
+      <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+        <mat-label>Contraseña</mat-label>
+        <input matInput type="password" formControlName="password" required>
+
+        <mat-error *ngIf="registerForm.controls['password'].invalid && registerForm.controls['password'].touched">
+          Contraseña inválida.
+          <mat-icon #tooltip="matTooltip"
+                    class="mx-2 position-absolute end-0"
+                    matTooltip="La contraseña debe tener entre 6 y 20 caracteres, al menos una letra mayúscula,
+                    una minúscula y un número."
+                    [matTooltipPosition]="'above'"
+                    matTooltipHideDelay="10000">
+            help
+          </mat-icon>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <mat-form-field appearance="outline" hideRequiredMarker color="accent">
+      <mat-label>Confirmar contraseña</mat-label>
+      <input matInput type="password" formControlName="confirmPassword" required>
+      <mat-error *ngIf="registerForm.controls['confirmPassword'].hasError('passwordMismatch')
+      && registerForm.controls['confirmPassword'].touched">
+        Las contraseñas no coinciden.
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <button mat-raised-button color="accent" type="submit">Registrarme</button>
+
+</form>
+
+

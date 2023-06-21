@@ -1,8 +1,8 @@
 <section class="d-inline-flex">
   <button mat-raised-button
-          (click)="this.openLoginModal()"
+          (click)="this.openLoginRegisterModal()"
           class="button-account">
-    <mat-icon color="accent" class="icon-md">
+    <mat-icon color="accent" class="icon-md" [ngClass]="{'strong-color': this.isLogged}">
       account_circle
     </mat-icon>
   </button>

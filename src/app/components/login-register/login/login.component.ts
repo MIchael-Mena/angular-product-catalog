@@ -1,6 +1,6 @@
-import {Component, Inject} from '@angular/core';
-import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {Component, EventEmitter, Output} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
+import {AuthService} from "../../../service/auth.service";
 
 
 @Component({
@@ -10,34 +10,32 @@ import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 })
 export class LoginComponent {
 
+  @Output() onClosed: EventEmitter<any> = new EventEmitter<any>();
+
   form: FormGroup;
 
-  constructor(
-    public dialogRef: MatDialogRef<LoginComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: any,
-    private formBuilder: FormBuilder
-  ) {
+  constructor(private formBuilder: FormBuilder, private authService: AuthService) {
     this.form = this.formBuilder.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required]
     });
   }
 
-  closeDialog(): void {
-    this.dialogRef.close();
+  public dismissLogin(): void {
+    this.onClosed.emit(null);
   }
 
-  login(): void {
-    if (this.form.valid) {
-      const email = this.form.value.email;
-      const password = this.form.value.password;
 
-      // Aquí puedes agregar la lógica para el inicio de sesión
-      // Por ejemplo, puedes enviar una solicitud HTTP al backend
-      // para autenticar al usuario y realizar otras acciones necesarias.
+  public login(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      return;
+    }
+
+    if (this.authService.login(this.form.value.email, this.form.value.password)) {
+      this.onClosed.emit('Login exitoso');
     } else {
-      // Si el formulario es inválido, puedes realizar alguna acción,
-      // como mostrar mensajes de error o realizar validaciones adicionales.
+      this.form.setErrors({invalidCredentials: true});
     }
   }
 

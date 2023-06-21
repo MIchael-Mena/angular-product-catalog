@@ -11,6 +11,7 @@ import {FinderComponent} from './finder/finder.component';
 import {NavbarComponent} from './navbar/navbar.component';
 import {UtilityComponent} from './utility/utility.component';
 import {FormatPricePipe} from "../../pipe/format-price.pipe";
+import {MatSlideToggleModule} from "@angular/material/slide-toggle";
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import {FormatPricePipe} from "../../pipe/format-price.pipe";
     MatToolbarModule,
     NgOptimizedImage,
     MatBadgeModule,
-    FormatPricePipe
+    FormatPricePipe,
+    MatSlideToggleModule
   ],
   exports: [
     HeaderComponent,

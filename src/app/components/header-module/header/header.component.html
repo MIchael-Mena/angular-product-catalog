@@ -20,7 +20,7 @@
 
   </mat-toolbar-row>
 
-  <mat-toolbar-row class="navbar navbar-expand-md d-flex justify-content-center" id="bottomHeader">
+  <mat-toolbar-row class="navbar navbar-expand-md d-flex justify-content-evenly" id="bottomHeader">
     <ng-container *ngIf="!this.isMdOrGreaterThan">
       <app-finder class="finder-width"></app-finder>
     </ng-container>
@@ -30,7 +30,13 @@
          id="menuSideBar">
       <app-navbar></app-navbar>
     </div>
+
+    <!--    <mat-slide-toggle [checked]="this.isDarkMode" (change)="this.switchTheme()">
+          <span class="mat-caption text-light">Dark Mode</span>
+        </mat-slide-toggle>-->
+
   </mat-toolbar-row>
+
 
 </mat-toolbar>
 

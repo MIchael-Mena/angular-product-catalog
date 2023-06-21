@@ -12,6 +12,9 @@
                             *ngFor="let product of filteredProducts"
                             class="card-width my-2 mx-2">
           </app-product-card>
+          <div *ngIf="this.filteredProducts.length === 0" class="alert-message">
+            No se encontraron productos
+          </div>
         </div>
       </div>
     </ng-container>

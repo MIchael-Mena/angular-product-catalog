@@ -1,14 +1,15 @@
-import { Component, HostListener } from '@angular/core';
-import { BreakpointObserver, Breakpoints } from '@angular/cdk/layout';
-import { Router } from '@angular/router';
+import {Component, HostListener, OnInit} from '@angular/core';
+import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrls: ['./header.component.scss']
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
   public isMdOrGreaterThan: boolean = false;
+  public isDarkMode: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -22,15 +23,23 @@ export class HeaderComponent {
     this.updateWindowWidth();
   }
 
+  ngOnInit() {
+  }
+
+  public switchTheme() {
+    this.isDarkMode = !this.isDarkMode;
+  }
+
   private updateWindowWidth() {
-/*    this.breakpointObserver.observe([
-      Breakpoints.Small, // < 600px
-      // Breakpoints.Medium, // >= 960px
-      // Breakpoints.Large, // >= 1280px
-      // Breakpoints.XLarge // >= 1920px
-    ]).subscribe(result => {
-      this.isMdOrGreaterThan = result.matches;
-    });*/
+    /*    this.breakpointObserver.observe([
+          Breakpoints.Small, // < 600px
+          // Breakpoints.Medium, // >= 960px
+          // Breakpoints.Large, // >= 1280px
+          // Breakpoints.XLarge // >= 1920px
+        ]).subscribe(result => {
+          this.isMdOrGreaterThan = result.matches;
+        });*/
     this.isMdOrGreaterThan = window.innerWidth >= 768;
   }
+
 }

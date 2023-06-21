@@ -21,16 +21,16 @@ $my-typography: mat.define-typography-config(
   $subtitle-2: mat.define-typography-level(15px, 24px, 600, $font-family: 'Exo 2', $letter-spacing: 0.0067em),
   $body-1: mat.define-typography-level(15px, 24px, 500, $font-family: 'Montserrat', $letter-spacing: 0.0179em),
   $body-2: mat.define-typography-level(14px, 20px, 500, $font-family: 'Montserrat', $letter-spacing: 0.0179em),
-  $button: mat.define-typography-level(15px, 15px, 500, $font-family: 'Asap', $letter-spacing: 0),
-  $caption: mat.define-typography-level(13px, 20px, 600, $font-family: 'Exo 2', $letter-spacing: 0.0333em),
+  $button: mat.define-typography-level(16px, 16px, 500, $font-family: 'Asap', $letter-spacing: 0),
+  $caption: mat.define-typography-level(13px, 20px, 600, $font-family: 'Exo 2', $letter-spacing: 0),
 );
 
 @include mat.all-component-typographies($my-typography);
 
 $my-primary: mat.define-palette($my-primary-map);
 $my-accent: mat.define-palette($my-accent-map, 500, 300, 900);
-//$my-warn: mat.define-palette(mat.$red-palette);
-$my-warn: mat.define-palette($my-warn-map, 500);
+$my-warn: mat.define-palette(mat.$red-palette);
+$my-accent-dark: mat.define-palette($my-accent-dark);
 
 $my-light-theme: mat.define-light-theme((
   color: (
@@ -42,14 +42,15 @@ $my-light-theme: mat.define-light-theme((
 
 $my-dark-theme: mat.define-dark-theme((
   color: (
-    primary: $my-accent,
-    accent: $my-accent,
+    primary: $my-primary,
+    accent: $my-accent-dark,
     warn: $my-warn,
   )
 ));
 
 // Apply the light theme by default
 @include mat.all-component-themes($my-light-theme);
+
 
 // Apply the dark theme only when the user prefers light themes.
 @media (prefers-color-scheme: no-preference) {
@@ -58,6 +59,14 @@ $my-dark-theme: mat.define-dark-theme((
   @include mat.all-component-colors($my-dark-theme);
   //@include mat.button-theme($my-dark-theme);
 }
+
+/*.color-scheme-dark {
+  @include mat.angular-material-theme($my-dark-theme);
+}
+
+.color-scheme-light {
+  @include mat.angular-material-theme($my-light-theme);
+}*/
 
 
 // Specific component overrides, pieces that are not in line with the general theming

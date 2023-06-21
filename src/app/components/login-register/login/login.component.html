@@ -1,11 +1,9 @@
-<form class="login-form">
-  <div class="close-icon" (click)="closeDialog()">
+<form class="login-form" [formGroup]="this.form" (ngSubmit)="this.login()">
+  <div class="close-icon" (click)="this.dismissLogin()">
     <mat-icon>close</mat-icon>
   </div>
 
-  <h2>Iniciar sesión</h2>
-
-  <mat-form-field class="form-field">
+  <mat-form-field class="form-field" appearance="outline" color="accent">
     <input matInput placeholder="Correo electrónico" type="email" formControlName="email" required>
     <mat-error
       *ngIf="form.controls['email'].invalid && (form.controls['email'].dirty || form.controls['email'].touched)">
@@ -14,7 +12,7 @@
     </mat-error>
   </mat-form-field>
 
-  <mat-form-field class="form-field">
+  <mat-form-field class="form-field" appearance="outline" color="accent">
     <input matInput placeholder="Contraseña" type="password" formControlName="password" required>
     <mat-error
       *ngIf="form.controls['password'].invalid && (form.controls['password'].dirty || form.controls['password'].touched)">
@@ -22,6 +20,10 @@
     </mat-error>
   </mat-form-field>
 
-  <button mat-raised-button color="primary" [disabled]="form.invalid">Iniciar sesión</button>
+  <mat-error *ngIf="form.hasError('invalidCredentials')">
+    Credenciales de inicio de sesión incorrectas. Por favor, inténtalo nuevamente.
+  </mat-error>
+
+  <button type="submit" mat-raised-button color="accent">Ingresar</button>
 </form>
 
