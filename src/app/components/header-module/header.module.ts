@@ -12,7 +12,6 @@ import {NavbarComponent} from './navbar/navbar.component';
 import {UtilityComponent} from './utility/utility.component';
 import {FormatPricePipe} from "../../pipe/format-price.pipe";
 import {MatSlideToggleModule} from "@angular/material/slide-toggle";
-import {RouterModule} from "@angular/router";
 
 @NgModule({
   declarations: [
@@ -32,7 +31,6 @@ import {RouterModule} from "@angular/router";
     MatBadgeModule,
     FormatPricePipe,
     MatSlideToggleModule,
-    RouterModule
   ],
   exports: [
     HeaderComponent,

@@ -1,44 +1,73 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 import {ISubcategory} from "../model/ISubcategory";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {debounceTime} from "rxjs";
 import {IPriceRange} from "../model/IPriceRange";
 import {IProduct} from "../model/IProduct";
+import {SharedDataService} from "../../../service/shared-data.service";
+import {IParamFilter} from "../model/IParamFilter";
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit, OnChanges {
+export class FilterComponent implements OnInit {
 
-  @Input() subcategories: ISubcategory[] = [];
+  @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guión bajo
   @Output() onFilterChange: EventEmitter<any> = new EventEmitter<any>();
-  @Input() subcategorySelected: string = '';
 
+  public form: FormGroup = <FormGroup>{}; // Los controles tienen el mismo nombre que los parámetros de la ruta (con guión bajo)
   public showRangePrice: boolean = true;
   public showSubcategories: boolean = true;
 
+  private subcategory: string = '';
+  private product: string = '';
   private maxPrice: number = 100000000;
-  public form: FormGroup = <FormGroup>{};
   private subcategoriesSelected: Map<string, boolean> = new Map<string, boolean>();
   private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private sharedDataService: SharedDataService) {
   }
 
   ngOnInit(): void {
     this.setupForm();
     this.createCheckboxControls();
     this.setupFormChangeSubscription();
+    this.subscribeToDataChanges();
   }
 
-  ngOnChanges(): void {
-    /*    if (this.subcategorySelected !== undefined && this.subcategorySelected !== '') {
-          this.subcategoriesSelected.set(this.subcategorySelected, true);
-          this.form.controls[this.subcategorySelected].setValue(true);
-          this.emitFilters();
-        }*/
+  private subscribeToDataChanges() {
+    this.sharedDataService.getData.subscribe((data: IParamFilter) => {
+      this.subcategory = data.subcategory;
+      this.product = data.product;
+      if (this.subcategory === 'todos') {
+        // 'todos' es el valor que envía finder cuando realiza una búsqueda
+        this.resetSubcategories();
+      } else if (this.isValueDefinedNotEmpty(this.subcategory)) {
+        // Si recibimos una subcategoría, debemos reiniciar los filtros y mostrar solo la subcategoría
+        this.clearFilters()
+        this.selectSubcategory();
+        this.emitFilters();
+      }
+      if (this.isValueDefinedNotEmpty(this.product)) {
+        // Si recibimos la búsqueda de un producto, debemos reiniciar los filtros y mostrar solo el producto
+        this.resetFilterData()
+        this.emitFilters()
+      }
+    });
+  }
+
+  private resetSubcategories() {
+    this.subcategoriesSelected.forEach((value, key) => {
+      this.subcategoriesSelected.set(key, false);
+      this.form.controls[this.formatToTextWithoutSpaces(key)].setValue(false);
+    });
+  }
+
+  private selectSubcategory() {
+    this.subcategoriesSelected.set(this.unFormatToTextWithUnderscores(this.subcategory), true);
+    this.form.controls[this.subcategory].setValue(true);
   }
 
   private setupFormChangeSubscription(): void {
@@ -57,15 +86,26 @@ export class FilterComponent implements OnInit, OnChanges {
 
   public onSubcategoryChange(checked: boolean, subcategory: string): void {
     this.subcategoriesSelected.set(subcategory, checked);
+    this.product = '';
     this.emitFilters();
   }
 
   private emitFilters(): void {
     this.onFilterChange.emit((products: IProduct[]) => {
       return products.filter((product: IProduct) => {
-        return this.filterBySubcategories(product) && this.filterByPriceRange(product);
+        return this.filterBySubcategories(product) &&
+          this.filterByPriceRange(product) && this.filterByProduct(product);
       });
     });
+  }
+
+  private filterByProduct(product: IProduct): boolean {
+    return (
+      (this.product === '' || this.product === undefined) || (
+        product.nombre.toLowerCase().includes(this.product.toLowerCase()) ||
+        product.subcategoria!.toLowerCase().includes(this.product.toLowerCase())
+      )
+    );
   }
 
   private filterBySubcategories(product: IProduct): boolean {
@@ -93,10 +133,6 @@ export class FilterComponent implements OnInit, OnChanges {
     this.form.updateValueAndValidity();
   }
 
-  public getFormControlName(nombre: string): string {
-    return nombre.replace(/\s+/g, '_');
-  }
-
   private setupForm() {
     const priceValidators = [Validators.min(0), Validators.max(this.maxPrice),
       Validators.pattern(/^-?(0|[1-9]\d*)(\.\d+)?$/)];
@@ -108,16 +144,37 @@ export class FilterComponent implements OnInit, OnChanges {
 
   private createCheckboxControls(): void {
     this.subcategories.forEach((subcategory: ISubcategory) => {
-      const controlName = this.getFormControlName(subcategory.nombre);
+      const controlName = this.formatToTextWithoutSpaces(subcategory.nombre);
       this.form.addControl(controlName, this.fb.control(false));
     });
   }
 
-  public clearFilters() {
+  public clearFiltersAndEmit() {
+    this.clearFilters();
+    this.emitFilters();
+  }
+
+  private clearFilters() {
+    this.resetFilterData();
+    this.product = '';
+  }
+
+  private resetFilterData() {
     this.subcategoriesSelected = new Map<string, boolean>();
     this.form.reset();
     this.lastRangePrice = {min: 0, max: this.maxPrice}; // Restablecer el rango de precios
-    this.createCheckboxControls();
-    this.emitFilters();
   }
+
+  public formatToTextWithoutSpaces(nombre: string): string {
+    return nombre.replace(/\s+/g, '_');
+  }
+
+  private unFormatToTextWithUnderscores(text: string): string {
+    return text.replace(/_/g, ' ');
+  }
+
+  private isValueDefinedNotEmpty(item: string): boolean {
+    return item !== undefined && item !== '';
+  }
+
 }

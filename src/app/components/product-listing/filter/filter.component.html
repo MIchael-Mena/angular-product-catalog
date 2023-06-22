@@ -3,7 +3,7 @@
     <h2 class="m-0 p-0">Filtros</h2>
     <mat-icon color="accent" class="icon-md icon-filter"
               title="Limpiar filtros"
-              (click)="this.clearFilters()">
+              (click)="this.clearFiltersAndEmit()">
       clear_all
     </mat-icon>
   </div>
@@ -50,7 +50,7 @@
       <mat-checkbox class="d-block"
                     #checkbox
                     (change)="this.onSubcategoryChange(checkbox.checked, subcategory.nombre)"
-                    [formControlName]="this.getFormControlName(subcategory.nombre)">
+                    [formControlName]="this.formatToTextWithoutSpaces(subcategory.nombre)">
         {{subcategory.nombre}}
       </mat-checkbox>
     </ng-container>

@@ -3,7 +3,6 @@
     <ng-container *ngIf="!this.isLoading">
       <div class="col-md-3">
         <app-filter [subcategories]="this.subcategories"
-                    [subcategorySelected]="this.subcategorySelected"
                     (onFilterChange)="this.filterProducts($event)">
         </app-filter>
       </div>

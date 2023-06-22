@@ -5,12 +5,13 @@ import {SubcategoryService} from "../service/subcategory.service";
 import {ISubcategory} from "../model/ISubcategory";
 import {forkJoin} from "rxjs";
 import {ActivatedRoute, Params} from "@angular/router";
+import {SharedDataService} from "../../../service/shared-data.service";
 
 @Component({
   selector: 'app-product-list',
   templateUrl: './product-list.component.html',
   styleUrls: ['./product-list.component.scss'],
-  providers: []
+  providers: [SharedDataService]
 })
 export class ProductListComponent implements OnInit {
 
@@ -18,9 +19,9 @@ export class ProductListComponent implements OnInit {
   public filteredProducts: IProduct[] = [];
   public subcategories: ISubcategory[] = [];
   public isLoading: boolean = true;
-  public subcategorySelected: string = '';
 
   constructor(private productService: ProductService,
+              private sharedDataService: SharedDataService,
               private route: ActivatedRoute,
               private subcategoryService: SubcategoryService) {
   }
@@ -28,7 +29,12 @@ export class ProductListComponent implements OnInit {
   ngOnInit(): void {
     this.getData();
     this.route.params.subscribe((params: Params) => {
-      this.subcategorySelected = params['subcategory']
+      this.sharedDataService.updateData(
+        {
+          subcategory: params['subcategory'],
+          product: params['product']
+        }
+      );
     });
   }
 

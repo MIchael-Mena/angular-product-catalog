@@ -1,13 +1,12 @@
-<mat-form-field appearance="fill">
+<mat-form-field appearance="fill" hideRequiredMarker>
   <mat-label>Buscar</mat-label>
   <input matInput placeholder="Buscar producto"
-         (input)="handleInputChange()"
-         [formControl]="searchControl">
+         [formControl]="searchControl"
+         (keyup.enter)="performSearch()">
   <span matSuffix (click)="clearInput()"
-        [attr.aria-label]="'search'"
         class="mx-3" style="cursor: pointer">
-        <mat-icon>{{ pristine ? 'search' : 'close' }}</mat-icon>
-      </span>
+    <mat-icon>{{ searchControl.dirty ? 'close' : 'search' }}</mat-icon>
+  </span>
   <mat-error *ngIf="searchControl.hasError('required')" style="display: none">
     Debe ingresar un valor
   </mat-error>

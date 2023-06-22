@@ -22,7 +22,7 @@ export const CATEGORIES = [
     id: 5,
     name: 'Monitores y Pantallas',
     subcategories: [
-      {id: 5, name: 'Monitores y Pantallas', image: 'monitores.jpg'}
+      {id: 5, name: 'Monitores y pantallas', image: 'monitores.jpg'}
     ]
   },
   {
@@ -44,7 +44,8 @@ export const CATEGORIES = [
     subcategories: [
       {id: 15, name: 'Memorias', image: 'ram4.jpeg'},
       {id: 16, name: 'Discos Externos', image: 'discos portables.jpg'},
-      {id: 19, name: 'Discos Rígidos', image: 'discos.jpg'}
+      {id: 19, name: 'Discos Rígidos', image: 'discos.jpg'},
+      {id: 7, name: 'Gabinetes', image: 'gabinetes.jpg'},
     ]
   },
   {
