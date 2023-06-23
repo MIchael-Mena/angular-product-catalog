@@ -1,0 +1,12 @@
+.position-close-button {
+  position: absolute;
+  top: 0;
+  right: 0;
+  transform: translateX(50px);
+  z-index: 1000;
+}
+
+// Para poder mostrar el button de cerrar en el modal
+::ng-deep .mat-mdc-dialog-surface {
+  overflow: visible !important;
+}

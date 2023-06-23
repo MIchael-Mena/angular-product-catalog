@@ -1,8 +1,4 @@
 <form [formGroup]="this.registerForm" class="register-form" (ngSubmit)="this.registerUser()">
-  <div class="close-icon" (click)="this.dismissRegister()">
-    <mat-icon>close</mat-icon>
-  </div>
-
   <mat-form-field appearance="outline" hideRequiredMarker color="accent" class="w-100">
     <mat-label>Email</mat-label>
     <input matInput formControlName="email" required email>

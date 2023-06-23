@@ -5,10 +5,11 @@
 
 @import 'src/styles/palete-colors';
 
-// Fonts
-@import url('https://fonts.googleapis.com/css2?family=Asap:wght@300;400;500;600;700;800&display=swap');
+// Fonts, Genera un error en consola pero funciona. Se esta cargando en el index.html
+/*@import url('https://fonts.googleapis.com/css2?family=Asap:wght@300;400;500;600;700;800&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:wght@300;400;500;600;700;800&display=swap');*/
+
 
 $my-typography: mat.define-typography-config(
   $headline-1: mat.define-typography-level(112px, 112px, 300, $font-family: 'Asap', $letter-spacing: -0.0134em),

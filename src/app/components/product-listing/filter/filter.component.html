@@ -1,5 +1,5 @@
 <form [formGroup]="this.form" class="mt-md-2">
-  <div class="d-inline-flex justify-content-between w-100 align-items-center my-2">
+  <div class="d-inline-flex justify-content-between w-100 px-3 align-items-center my-2">
     <h2 class="m-0 p-0">Filtros</h2>
     <mat-icon color="accent" class="icon-md icon-filter"
               title="Limpiar filtros"
@@ -8,52 +8,53 @@
     </mat-icon>
   </div>
 
-  <mat-divider></mat-divider>
+  <mat-expansion-panel [expanded]="showRangePrice">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Rango de precio
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <div class="price-picker">
+      <mat-form-field class="w-50" color="accent" floatLabel="always">
+        <mat-label>Inicial</mat-label>
+        <input matInput formControlName="initialPrice"
+               (change)="onPriceChange()"
+               [mask]="'separator.0'"
+               style="text-align: end"
+               placeholder="0">
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
+      <mat-form-field class="w-50" color="accent" floatLabel="always">
+        <mat-label>Final</mat-label>
+        <input matInput formControlName="finalPrice"
+               (change)="onPriceChange()"
+               [mask]="'separator.2'"
+               style="text-align: end"
+               placeholder="0">
+        <span matTextPrefix>$&nbsp;</span>
+      </mat-form-field>
+    </div>
+  </mat-expansion-panel>
 
-  <span class="d-block my-2 mat-subtitle-2">
-    Rango de precio
-    <mat-icon class="icon-md float-end icon-filter" (click)="this.showRangePrice = !this.showRangePrice">
-      {{this.showRangePrice ? 'expand_more' : 'expand_less'}}
-    </mat-icon>
-  </span>
-  <div class="price-picker mt-3" [hidden]="!this.showRangePrice">
-    <mat-form-field class="w-50" color="accent" floatLabel="always">
-      <mat-label>Inicial</mat-label>
-      <input matInput formControlName="initialPrice"
-             (change)="this.onPriceChange()"
-             [mask]="'separator.0'"
-             style="text-align: end"
-             placeholder="0">
-      <span matTextPrefix>$&nbsp;</span>
-    </mat-form-field>
-    <mat-form-field class="w-50" color="accent" floatLabel="always">
-      <mat-label>Final</mat-label>
-      <input matInput formControlName="finalPrice"
-             (change)="this.onPriceChange()"
-             [mask]="'separator.2'"
-             style="text-align: end"
-             placeholder="0">
-      <span matTextPrefix>$&nbsp;</span>
-    </mat-form-field>
-  </div>
-
-  <mat-divider></mat-divider>
-
-  <span class="d-block my-2 mat-subtitle-2">
-    Subcategorías
-    <mat-icon class="icon-md float-end icon-filter" (click)="this.showSubcategories = !this.showSubcategories">
-      {{this.showSubcategories ? 'expand_more' : 'expand_less'}}
-    </mat-icon>
-  </span>
-  <div [hidden]="!this.showSubcategories">
-    <ng-container *ngFor="let subcategory of this.subcategories">
+  <mat-expansion-panel [expanded]="showSubcategories">
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Subcategorías
+      </mat-panel-title>
+      <mat-panel-description>
+      </mat-panel-description>
+    </mat-expansion-panel-header>
+    <ng-container *ngFor="let subcategory of subcategories">
       <mat-checkbox class="d-block"
                     #checkbox
-                    (change)="this.onSubcategoryChange(checkbox.checked, subcategory.nombre)"
-                    [formControlName]="this.formatToTextWithoutSpaces(subcategory.nombre)">
-        {{subcategory.nombre}}
+                    (change)="onSubcategoryChange(checkbox.checked, subcategory.nombre)"
+                    [formControlName]="formatToTextWithoutSpaces(subcategory.nombre)">
+        {{ subcategory.nombre }}
       </mat-checkbox>
     </ng-container>
-  </div>
+  </mat-expansion-panel>
+  
 </form>
 

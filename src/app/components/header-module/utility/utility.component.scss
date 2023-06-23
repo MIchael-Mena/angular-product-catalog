@@ -29,3 +29,8 @@
 .strong-color {
   color: map-get($my-accent-map, 200) !important;
 }
+
+.mat-badge-content {
+  background-color: map-get($my-accent-dark, 500);
+  color: map-get(map-get($my-accent-dark, "contrast"), 500);
+}

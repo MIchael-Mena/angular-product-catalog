@@ -6,3 +6,8 @@
     <app-register (onClosed)="this.closeModal()"></app-register>
   </mat-tab>
 </mat-tab-group>
+<span class="position-close-button">
+    <button mat-icon-button class="close-icon" color="accent" (click)="this.closeModal()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </span>

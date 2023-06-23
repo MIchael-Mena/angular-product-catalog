@@ -42,26 +42,17 @@ export class FilterComponent implements OnInit {
       this.subcategory = data.subcategory;
       this.product = data.product;
       if (this.subcategory === 'todos') {
+        // Caso en el que se busco un producto en el buscador, debemos reiniciar los filtros y mostrar solo el producto
         // 'todos' es el valor que envía finder cuando realiza una búsqueda
-        this.resetSubcategories();
+        this.resetFilterData()
+        this.emitFilters()
+        // this.resetSubcategories();
       } else if (this.isValueDefinedNotEmpty(this.subcategory)) {
-        // Si recibimos una subcategoría, debemos reiniciar los filtros y mostrar solo la subcategoría
+        // Caso donde viene una subcategoría elegida del menu, debemos reiniciar los filtros y mostrar solo la subcategoría
         this.clearFilters()
         this.selectSubcategory();
         this.emitFilters();
       }
-      if (this.isValueDefinedNotEmpty(this.product)) {
-        // Si recibimos la búsqueda de un producto, debemos reiniciar los filtros y mostrar solo el producto
-        this.resetFilterData()
-        this.emitFilters()
-      }
-    });
-  }
-
-  private resetSubcategories() {
-    this.subcategoriesSelected.forEach((value, key) => {
-      this.subcategoriesSelected.set(key, false);
-      this.form.controls[this.formatToTextWithoutSpaces(key)].setValue(false);
     });
   }
 

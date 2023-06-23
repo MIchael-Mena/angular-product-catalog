@@ -9,6 +9,7 @@ import {MatCardModule} from "@angular/material/card";
 import {MatDialogModule} from "@angular/material/dialog";
 import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 import {FormatPricePipe} from "../../pipe/format-price.pipe";
+import {MatExpansionModule} from "@angular/material/expansion";
 
 @NgModule({
   declarations: [
@@ -26,7 +27,7 @@ import {FormatPricePipe} from "../../pipe/format-price.pipe";
     MatCardModule,
     MatDialogModule,
     NgxMaskDirective, NgxMaskPipe,
-    FormatPricePipe, NgOptimizedImage
+    FormatPricePipe, NgOptimizedImage, MatExpansionModule
   ],
   providers: [provideNgxMask()]
 })
