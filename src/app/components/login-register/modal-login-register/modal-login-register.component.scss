@@ -1,12 +1,17 @@
-.position-close-button {
+.position-button-back {
   position: absolute;
   top: 0;
-  right: 0;
-  transform: translateX(50px);
+  left: 5px;
+  transform: translateY(-38px);
   z-index: 1000;
 }
 
-// Para poder mostrar el button de cerrar en el modal
+.bottom-back {
+  border-radius: 5px 5px 0 0;
+  margin: 0;
+}
+
+// Para poder mostrar el button de volverr en el modal
 ::ng-deep .mat-mdc-dialog-surface {
   overflow: visible !important;
 }

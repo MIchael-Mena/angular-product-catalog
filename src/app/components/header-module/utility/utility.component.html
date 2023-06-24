@@ -1,4 +1,4 @@
-<section class="d-inline-flex">
+<section class="d-inline-flex my-alternate-theme">
   <button mat-raised-button
           (click)="this.openLoginRegisterModal()"
           class="button-account">
@@ -11,14 +11,15 @@
           (click)="this.openDialog()"
           class="button-shopping-cart">
     <div [matBadge]="this.shoppingCounter"
-         class="d-flex"
+         class="d-flex "
+         matBadgeColor="warn"
          matBadgeOverlap="true">
       <mat-icon color="accent" class="icon-md">
         shopping_cart
       </mat-icon>
     </div>
   </button>
-  <span class="mat-body-1 price">
+  <span class="mat-body-1 price background-alt">
     {{ this.totalPrices | formatPrice }}
   </span>
 </section>

@@ -1,14 +1,27 @@
-@import "src/styles/palete-colors.scss";
+@import 'src/styles/palette-colors';
 
-:host .mat-mdc-form-field {
-  width: 100%;
-  min-width: 290px;
-  margin-top: 0.8rem;
+:host {
+  .mat-mdc-form-field {
+    width: 100%;
+    min-width: 290px;
+    margin: 1rem 0;
+    border: 2px solid white;
+    border-radius: 26px;
+    transition: border 0.3s ease;
+  }
+
+  //Modifico el input
+  ::ng-deep .mdc-text-field {
+    border-radius: 25px;
+  }
+
+  //Oculto el texto de ayuda
+  ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+    display: none;
+  }
+
+  /*  .mat-mdc-form-field:hover {
+      border: map-get($my-accent-dark, 500) 2px solid;
+    }*/
+
 }
-
-/* Modifico el input */
-:host ::ng-deep .mdc-text-field {
-  //background-color: map-get(map-get($my-accent-map, "contrast"), 500);
-  border-radius: 25px;
-}
-

@@ -31,22 +31,11 @@ html, body {
 }
 
 .mat-mdc-form-field-error {
-  color: white;
+  color: white !important;
   background-color: #FF6E31;
   border-radius: 4px;
   margin-top: 0.2rem;
   padding: 0.2rem 0.4rem;
-}
-
-.close-icon {
-  background-color: #06183e !important;
-  color: white !important;
-  border-radius: 0 50% 50% 0 !important;
-  box-shadow: 0 0 5px #d7d7d7;
-}
-
-.close-icon:hover {
-  background-color: #0c3077 !important;
 }
 
 .mat-expansion-panel-spacing {
@@ -55,4 +44,10 @@ html, body {
 
 .mat-expansion-panel {
   border-radius: 0 !important;
+}
+
+// El otro background es el de material
+.background-alt {
+  background-color: white;
+  color: black;
 }

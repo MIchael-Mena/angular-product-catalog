@@ -1,5 +1,4 @@
-<div class="d-flex flex-md-row justify-content-md-center mt-md-0 align-items-center
-      flex-column justify-content-start gap-5 mt-5 mat-subtitle-1 mb-0 text-light">
+<nav class="d-inline-flex my-0 gap-5 mat-subtitle-1">
   <a [matMenuTriggerFor]="menu" class="link d-flex align-items-center"
      #menuTrigger="matMenuTrigger" routerLinkActive="nav-active"
      (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
@@ -11,13 +10,13 @@
       <ng-container *ngFor="let category of categories">
         <button mat-menu-item [matMenuTriggerFor]="subMenu">
           <mat-icon color="primary">chevron_right</mat-icon>
-          <span>{{ category.name }}</span>
+          <span class="menu-text">{{ category.name }}</span>
         </button>
         <mat-menu #subMenu="matMenu" class="menu-style" [hasBackdrop]="false">
           <div (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
             <button mat-menu-item *ngFor="let subcategory of category.subcategories"
                     [routerLink]="['/lista-productos', this.transformName(subcategory.name)]">
-              <span>{{ subcategory.name }}</span>
+              <span class="menu-text">{{ subcategory.name }}</span>
             </button>
           </div>
         </mat-menu>
@@ -28,4 +27,4 @@
   <a [routerLink]="'/arma-tu-pc'" class="link" routerLinkActive="nav-active"> ARMÁ TU PC </a>
   <a [routerLink]="'/ayuda'" class="link" routerLinkActive="nav-active"> AYUDA </a>
   <a [routerLink]="'/marcas-sponsor'" class="link" routerLinkActive="nav-active"> MARCAS SPONSOR </a>
-</div>
+</nav>

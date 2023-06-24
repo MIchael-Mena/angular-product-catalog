@@ -1,8 +1,9 @@
-@import "src/styles/palete-colors.scss";
+@import "src/styles/palette-colors";
 
 #topHeader {
   height: auto;
   border-bottom: 3px solid map-get(map-get($my-accent-map, "contrast"), 500);
+  background-color: map-get($my-accent-map, 400);
 }
 
 #bottomHeader {
@@ -17,5 +18,3 @@
 .finder-width {
   min-width: 40%;
 }
-
-

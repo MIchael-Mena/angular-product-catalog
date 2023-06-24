@@ -1,11 +1,10 @@
-<mat-toolbar color="primary">
+<mat-toolbar color="accent">
   <mat-toolbar-row id="topHeader"
                    class="d-flex justify-content-md-center gap-sm-3 gap-lg-5
                    gap-0  justify-content-evenly py-2 flex-wrap">
-    <button mat-icon-button class="navbar-toggler d-md-none"
-            type="button" data-bs-toggle="offcanvas"
-            data-bs-target="#menuSideBar">
-      <mat-icon>menu</mat-icon>
+
+    <button mat-icon-button class="d-md-none">
+      <mat-icon class="icon-md">menu</mat-icon>
     </button>
 
     <a [routerLink]="'/home'">
@@ -20,23 +19,18 @@
 
   </mat-toolbar-row>
 
-  <mat-toolbar-row class="navbar navbar-expand-md d-flex justify-content-evenly" id="bottomHeader">
+  <mat-toolbar-row class="d-inline-flex justify-content-evenly flex-wrap" id="bottomHeader">
     <ng-container *ngIf="!this.isMdOrGreaterThan">
       <app-finder class="finder-width"></app-finder>
     </ng-container>
 
-    <div class="offcanvas offcanvas-start"
-         data-bs-scroll="true" tabindex="-1"
-         id="menuSideBar">
-      <app-navbar></app-navbar>
-    </div>
+    <app-navbar *ngIf="this.isMdOrGreaterThan"></app-navbar>
 
-    <!--    <mat-slide-toggle [checked]="this.isDarkMode" (change)="this.switchTheme()">
-          <span class="mat-caption text-light">Dark Mode</span>
-        </mat-slide-toggle>-->
+    <mat-slide-toggle (change)="this.switchTheme()" color="primary" class="d-inline-block mb-2">
+      <span class="mat-caption text-light">Dark Mode</span>
+    </mat-slide-toggle>
 
   </mat-toolbar-row>
-
 
 </mat-toolbar>
 

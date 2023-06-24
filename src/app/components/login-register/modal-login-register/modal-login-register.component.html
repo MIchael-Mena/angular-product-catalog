@@ -6,8 +6,9 @@
     <app-register (onClosed)="this.closeModal()"></app-register>
   </mat-tab>
 </mat-tab-group>
-<span class="position-close-button">
-    <button mat-icon-button class="close-icon" color="accent" (click)="this.closeModal()">
-      <mat-icon>close</mat-icon>
-    </button>
-  </span>
+
+<button mat-flat-button class="position-button-back bottom-back" color="accent" (click)="this.closeModal()">
+  <mat-icon class="icon-md">arrow_back</mat-icon>
+  <span class="mx-2">Volver</span>
+</button>
+

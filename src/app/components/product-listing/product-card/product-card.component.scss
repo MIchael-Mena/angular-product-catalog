@@ -1,4 +1,4 @@
-@import "src/styles/palete-colors.scss";
+@import "src/styles/palette-colors";
 
 .product-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
@@ -49,4 +49,10 @@
 
 .product-card:hover .price-highlight {
   color: map-get(map-get($my-accent-map, "contrast"), 500);
+}
+
+.position-shopping-cart {
+  position: absolute;
+  left: 20px;
+  top: 7px
 }

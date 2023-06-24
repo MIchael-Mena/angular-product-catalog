@@ -1,6 +1,7 @@
 import {Component, HostListener, OnInit} from '@angular/core';
 import {BreakpointObserver, Breakpoints} from '@angular/cdk/layout';
 import {Router} from '@angular/router';
+import {ThemeService} from "../../../service/theme.service";
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,6 @@ import {Router} from '@angular/router';
 })
 export class HeaderComponent implements OnInit {
   public isMdOrGreaterThan: boolean = false;
-  public isDarkMode: boolean = false;
 
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -18,7 +18,8 @@ export class HeaderComponent implements OnInit {
 
   constructor(
     private breakpointObserver: BreakpointObserver,
-    private router: Router
+    private router: Router,
+    private themeService: ThemeService
   ) {
     this.updateWindowWidth();
   }
@@ -27,7 +28,7 @@ export class HeaderComponent implements OnInit {
   }
 
   public switchTheme() {
-    this.isDarkMode = !this.isDarkMode;
+    this.themeService.changeTheme();
   }
 
   private updateWindowWidth() {

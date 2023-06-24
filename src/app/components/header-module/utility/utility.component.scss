@@ -1,4 +1,4 @@
-@import "src/styles/custom-theme.scss";
+@import "src/styles/palette-colors";
 
 .button-account {
   padding: 1.5rem 0;
@@ -19,7 +19,6 @@
   height: auto;
   min-width: 64px;
   width: 110px;
-  background-color: white;
   border-radius: 0 25px 25px 0;
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2),
   0 2px 2px 0px rgba(0, 0, 0, 0.14),
@@ -27,10 +26,5 @@
 }
 
 .strong-color {
-  color: map-get($my-accent-map, 200) !important;
-}
-
-.mat-badge-content {
-  background-color: map-get($my-accent-dark, 500);
-  color: map-get(map-get($my-accent-dark, "contrast"), 500);
+  color: map-get($my-warn-alt, 500) !important;;
 }

@@ -8,7 +8,7 @@ import {Router} from "@angular/router";
   styleUrls: ['./finder.component.scss']
 })
 export class FinderComponent {
-  public searchControl: FormControl = new FormControl('', Validators.required);
+  public searchControl: FormControl = new FormControl('');
 
   constructor(private router: Router) {
   }
@@ -18,7 +18,7 @@ export class FinderComponent {
   }
 
   performSearch(): void {
-    if (this.searchControl.valid) {
+    if (this.searchControl.value !== '') {
       const value = this.searchControl.value;
       this.router.navigate(['lista-productos', 'todos', value]);
     }

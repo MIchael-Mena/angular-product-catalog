@@ -1,4 +1,4 @@
-@import "src/styles/palete-colors.scss";
+@import "src/styles/palette-colors";
 
 .link:hover {
   color: map-get($my-primary-map, 500);
@@ -16,18 +16,17 @@
 }
 
 ::ng-deep .menu-style {
-  background-color: map-get($my-accent-map, 500);
+  background-color: map-get($my-accent-map, 500) !important;
 }
 
-::ng-deep .menu-style span {
-  color: map-get(map-get($my-accent-map, "contrast"), 500);
+::ng-deep .menu-style .menu-text {
+  color: map-get(map-get($my-accent-map, "contrast"), 500) !important;
   transition: color 0.1s ease-in-out;
 }
 
-::ng-deep .menu-style .mat-mdc-menu-item:hover span {
-  color: map-get($my-primary-map, 500);
+::ng-deep .menu-style .mat-mdc-menu-item:hover .menu-text {
+  color: map-get($my-primary-map, 500) !important;
 }
-
 
 /*
 :ng-deep .mdc-list-item__primary-text {
@@ -35,4 +34,3 @@
   color: white !important;
 }
 */
-

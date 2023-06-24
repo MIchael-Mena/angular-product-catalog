@@ -4,6 +4,7 @@ import {MatDialog} from "@angular/material/dialog";
 import {AuthService} from "../../../service/auth.service";
 import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
 import {ModalLoginRegisterComponent} from "../../login-register/modal-login-register/modal-login-register.component";
+import {ThemeService} from "../../../service/theme.service";
 
 
 @Component({
@@ -19,6 +20,7 @@ export class UtilityComponent {
 
   constructor(private shoppingCartService: ShoppingCartService,
               private authService: AuthService,
+              private themeService: ThemeService,
               private dialog: MatDialog) {
     this.shoppingCartService.getCartItemCount().subscribe((currentCounter: number) => {
         this.shoppingCounter = currentCounter;
