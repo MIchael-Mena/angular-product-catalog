@@ -1,10 +1,11 @@
-import {Component, Inject} from '@angular/core';
+import {Component, Inject, ViewEncapsulation} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
 
 @Component({
   selector: 'app-modal-login-register',
   templateUrl: './modal-login-register.component.html',
-  styleUrls: ['./modal-login-register.component.scss']
+  styleUrls: ['./modal-login-register.component.scss'],
+  encapsulation: ViewEncapsulation.Emulated
 })
 export class ModalLoginRegisterComponent {
 

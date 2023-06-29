@@ -54,11 +54,11 @@ $my-dark-theme: mat.define-dark-theme((
 ));
 
 @include mat.all-component-themes($my-light-theme);
-@include mat.strong-focus-indicators-theme($my-light-theme);
+//@include mat.strong-focus-indicators-theme($my-light-theme);
 
 .dark-theme {
   @include mat.all-component-colors($my-dark-theme);
-  @include mat.strong-focus-indicators-color($my-dark-theme);
+  //@include mat.strong-focus-indicators-color($my-dark-theme);
 
   .background-alt {
     background-color: #424242 !important;

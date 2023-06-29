@@ -6,22 +6,24 @@
     min-width: 290px;
     margin: 1rem 0;
     border: 2px solid white;
-    border-radius: 26px;
-    transition: border 0.3s ease;
+    //box-shadow: 0 0 1px 2px rgba(255, 255, 255, 0.5);
+    border-radius: 50px;
+    transition: all 0.5s ease-in-out;
   }
 
   //Modifico el input
   ::ng-deep .mdc-text-field {
-    border-radius: 25px;
+    border-radius: 50px;
+  }
+
+  .mat-mdc-form-field:hover {
+    border: map-get($my-accent-map, 500) 2px solid;
+    //box-shadow: 0 0 1px 2px map-get($my-accent-map, 500)
   }
 
   //Oculto el texto de ayuda
-  ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
-    display: none;
-  }
-
-  /*  .mat-mdc-form-field:hover {
-      border: map-get($my-accent-dark, 500) 2px solid;
+  /*  ::ng-deep .mat-mdc-form-field .mat-mdc-form-field-subscript-wrapper {
+      display: none;
     }*/
 
 }

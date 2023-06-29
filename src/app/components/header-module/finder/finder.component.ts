@@ -18,6 +18,7 @@ export class FinderComponent {
   }
 
   performSearch(): void {
+    // I don't use validators because I don't want to show the warning color in the input
     if (this.searchControl.value !== '') {
       const value = this.searchControl.value;
       this.router.navigate(['lista-productos', 'todos', value]);

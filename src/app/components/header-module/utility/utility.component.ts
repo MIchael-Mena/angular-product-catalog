@@ -5,6 +5,7 @@ import {AuthService} from "../../../service/auth.service";
 import {ConfirmationDialogComponent} from "../../confirmation-dialog/confirmation-dialog.component";
 import {ModalLoginRegisterComponent} from "../../login-register/modal-login-register/modal-login-register.component";
 import {ThemeService} from "../../../service/theme.service";
+import {DialogContent} from "../../confirmation-dialog/DialogContent";
 
 
 @Component({
@@ -38,7 +39,7 @@ export class UtilityComponent {
 
   public openDialog(): void {
     if (this.shoppingCounter === 0) return;
-    const data = {
+    const data: DialogContent = {
       title: 'Confirmar',
       message: '¿Estás seguro de que quieres vaciar el carrito?',
       buttonDismiss: 'Cancelar',
@@ -74,7 +75,7 @@ export class UtilityComponent {
   }
 
   public openDialogLogout(): void {
-    const data = {
+    const data: DialogContent = {
       title: 'Confirmar',
       message: '¿Estás seguro de que quieres cerrar sesión?',
       buttonDismiss: 'Cancelar',
@@ -91,6 +92,5 @@ export class UtilityComponent {
       }
     });
   }
-
 
 }

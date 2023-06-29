@@ -8,9 +8,10 @@
       </div>
       <div class="col-md-9">
         <div class="row row-cols-auto justify-content-center">
+          <app-card-sorting class="w-100"></app-card-sorting>
           <app-product-card [product]="product"
                             *ngFor="let product of filteredProducts"
-                            class="card-width my-2 mx-2">
+                            class="card-width m-2 p-0">
           </app-product-card>
           <div *ngIf="this.filteredProducts.length === 0" class="alert-message">
             No se encontraron productos

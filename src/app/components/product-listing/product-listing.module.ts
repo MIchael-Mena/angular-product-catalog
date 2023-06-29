@@ -10,12 +10,16 @@ import {MatDialogModule} from "@angular/material/dialog";
 import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 import {FormatPricePipe} from "../../pipe/format-price.pipe";
 import {MatExpansionModule} from "@angular/material/expansion";
+import {MatChipsModule} from "@angular/material/chips";
+import {CardSortingComponent} from './card-sorting/card-sorting.component';
+import {MatSelectModule} from "@angular/material/select";
 
 @NgModule({
   declarations: [
     FilterComponent,
     ProductListComponent,
     ProductCardComponent,
+    CardSortingComponent,
   ],
   exports: [
     ProductListComponent
@@ -27,7 +31,11 @@ import {MatExpansionModule} from "@angular/material/expansion";
     MatCardModule,
     MatDialogModule,
     NgxMaskDirective, NgxMaskPipe,
-    FormatPricePipe, NgOptimizedImage, MatExpansionModule
+    FormatPricePipe,
+    NgOptimizedImage,
+    MatExpansionModule,
+    MatChipsModule,
+    MatSelectModule
   ],
   providers: [provideNgxMask()]
 })

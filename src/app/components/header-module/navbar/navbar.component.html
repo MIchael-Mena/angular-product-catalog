@@ -1,5 +1,5 @@
 <nav class="d-inline-flex my-0 gap-5 mat-subtitle-1">
-  <a [matMenuTriggerFor]="menu" class="link d-flex align-items-center"
+  <a [matMenuTriggerFor]="menu" class="link-bar d-flex align-items-center"
      #menuTrigger="matMenuTrigger" routerLinkActive="nav-active"
      (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
     <mat-icon>expand_more</mat-icon>
@@ -24,7 +24,7 @@
     </div>
   </mat-menu>
 
-  <a [routerLink]="'/arma-tu-pc'" class="link" routerLinkActive="nav-active"> ARMÁ TU PC </a>
-  <a [routerLink]="'/ayuda'" class="link" routerLinkActive="nav-active"> AYUDA </a>
-  <a [routerLink]="'/marcas-sponsor'" class="link" routerLinkActive="nav-active"> MARCAS SPONSOR </a>
+  <a [routerLink]="'/arma-tu-pc'" class="link-bar" routerLinkActive="nav-active"> ARMÁ TU PC </a>
+  <a [routerLink]="'/ayuda'" class="link-bar" routerLinkActive="nav-active"> AYUDA </a>
+  <a [routerLink]="'/marcas-sponsor'" class="link-bar" routerLinkActive="nav-active"> MARCAS SPONSOR </a>
 </nav>

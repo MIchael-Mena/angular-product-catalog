@@ -1,0 +1,19 @@
+.select-sort ::ng-deep {
+
+  .mat-mdc-select-arrow {
+    display: none;
+  }
+
+  .mdc-text-field {
+    border-radius: 0;
+  }
+
+}
+
+::ng-deep .my-custom-checkbox {
+  mat-pseudo-checkbox {
+    display: none !important;
+  }
+}
+
+
