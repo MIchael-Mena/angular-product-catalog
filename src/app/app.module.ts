@@ -3,7 +3,6 @@ import {BrowserModule} from '@angular/platform-browser';
 
 import {AppRoutingModule} from './shared/app-routing.module';
 import {AppComponent} from './app.component';
-import {MaterialModule} from "./shared/material.module";
 import {IconRegistryService} from "./service/icon-registry.service";
 import {HttpClientModule} from "@angular/common/http";
 import {HeaderModule} from "./components/header-module/header.module";
@@ -18,7 +17,6 @@ import {LoginRegisterModule} from "./components/login-register/login-register.mo
   imports: [
     BrowserModule,
     AppRoutingModule,
-    MaterialModule,
     HeaderModule,
     HttpClientModule,
     ProductListingModule,

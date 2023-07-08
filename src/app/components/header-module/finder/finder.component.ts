@@ -1,11 +1,11 @@
 import {Component} from '@angular/core';
-import {FormControl, Validators} from "@angular/forms";
+import {FormControl} from "@angular/forms";
 import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-finder',
   templateUrl: './finder.component.html',
-  styleUrls: ['./finder.component.scss']
+  styleUrls: ['./finder.component.scss'],
 })
 export class FinderComponent {
   public searchControl: FormControl = new FormControl('');

@@ -1,6 +1,9 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { FilterComponent } from './filter.component';
+import {FilterComponent} from './filter.component';
+import {MatExpansionModule} from "@angular/material/expansion";
+import {MaterialModule} from "../../../shared/material.module";
+import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 
 describe('FilterComponent', () => {
   let component: FilterComponent;
@@ -8,7 +11,9 @@ describe('FilterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [FilterComponent]
+      declarations: [FilterComponent],
+      imports: [MaterialModule, MatExpansionModule, NgxMaskDirective, NgxMaskPipe],
+      providers: [provideNgxMask()]
     });
     fixture = TestBed.createComponent(FilterComponent);
     component = fixture.componentInstance;

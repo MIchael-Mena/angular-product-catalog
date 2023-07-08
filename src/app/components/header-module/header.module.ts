@@ -30,11 +30,10 @@ import {MatSlideToggleModule} from "@angular/material/slide-toggle";
     NgOptimizedImage,
     MatBadgeModule,
     FormatPricePipe,
-    MatSlideToggleModule,
+    MatSlideToggleModule
   ],
   exports: [
     HeaderComponent,
-    FinderComponent
   ]
 })
 export class HeaderModule {

@@ -1,6 +1,7 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { RegisterComponent } from './register.component';
+import {RegisterComponent} from './register.component';
+import {MaterialModule} from "../../../shared/material.module";
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -8,7 +9,8 @@ describe('RegisterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [RegisterComponent]
+      declarations: [RegisterComponent],
+      imports: [MaterialModule]
     });
     fixture = TestBed.createComponent(RegisterComponent);
     component = fixture.componentInstance;

@@ -1,5 +1,14 @@
 @import "src/styles/palette-colors";
 
+
+//height="134" width="150"
+.img-container {
+  height: 134px;
+  width: 150px;
+  overflow: hidden;
+  position: relative;
+}
+
 .product-card {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
   transition: all 0.3s ease;

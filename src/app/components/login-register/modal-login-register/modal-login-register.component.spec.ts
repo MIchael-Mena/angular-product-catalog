@@ -1,6 +1,8 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
+import {ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { ModalLoginRegisterComponent } from './modal-login-register.component';
+import {ModalLoginRegisterComponent} from './modal-login-register.component';
+import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
+import {LoginRegisterModule} from "../login-register.module";
 
 describe('ModalLoginRegisterComponent', () => {
   let component: ModalLoginRegisterComponent;
@@ -8,7 +10,12 @@ describe('ModalLoginRegisterComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [ModalLoginRegisterComponent]
+      // declarations: [ModalLoginRegisterComponent],
+      imports: [LoginRegisterModule],
+      providers: [
+        {provide: MatDialogRef, useValue: {}}, // Cuando se llama a MatDialogRef.close(), se llama a un método vacío.
+        {provide: MAT_DIALOG_DATA, useValue: []},
+      ]
     });
     fixture = TestBed.createComponent(ModalLoginRegisterComponent);
     component = fixture.componentInstance;

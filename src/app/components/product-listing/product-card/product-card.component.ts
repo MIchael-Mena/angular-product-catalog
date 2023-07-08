@@ -9,13 +9,13 @@ import {ShoppingCartService} from "../../../service/shopping-cart.service";
 })
 export class ProductCardComponent {
 
-  @Input() product: IProduct = <IProduct>{};
+  @Input() product: IProduct = <IProduct>{}
 
   constructor(private shoppingCartService: ShoppingCartService) {
   }
 
   public addToCart(product: IProduct): void {
-    this.shoppingCartService.addToCart(this.product);
+    this.shoppingCartService.addToCart(product);
   }
 
 }

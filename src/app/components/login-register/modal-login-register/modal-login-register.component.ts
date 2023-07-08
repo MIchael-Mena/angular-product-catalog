@@ -5,7 +5,6 @@ import {MAT_DIALOG_DATA, MatDialogRef} from "@angular/material/dialog";
   selector: 'app-modal-login-register',
   templateUrl: './modal-login-register.component.html',
   styleUrls: ['./modal-login-register.component.scss'],
-  encapsulation: ViewEncapsulation.Emulated
 })
 export class ModalLoginRegisterComponent {
 
@@ -17,6 +16,5 @@ export class ModalLoginRegisterComponent {
   public closeModal(): void {
     this.dialogRef.close(false);
   }
-
 
 }

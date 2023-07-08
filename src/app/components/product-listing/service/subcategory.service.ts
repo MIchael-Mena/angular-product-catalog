@@ -9,8 +9,8 @@ import {ISubcategory} from "../model/ISubcategory";
 })
 export class SubcategoryService {
 
-  private apiUrl: string = environment.baseURL + '/test/subcategorias.json';
-  private apiUrlImg: string = environment.baseURLImgSubcategories;
+  readonly apiUrl: string = environment.baseURL + '/test/subcategorias.json';
+  readonly apiUrlImg: string = environment.baseURLImgSubcategories;
 
   constructor(private http: HttpClient) {
   }
@@ -30,6 +30,5 @@ export class SubcategoryService {
       subcategory.imageUrl = this.apiUrlImg + subcategory.imagen;
     });
   }
-
 
 }

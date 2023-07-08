@@ -19,6 +19,9 @@ import {MatTooltipModule} from "@angular/material/tooltip";
     CommonModule,
     MatTabsModule,
     MatTooltipModule
+  ],
+  exports: [
+    ModalLoginRegisterComponent
   ]
 })
 export class LoginRegisterModule {
