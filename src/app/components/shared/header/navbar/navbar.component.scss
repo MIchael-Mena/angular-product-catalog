@@ -1,0 +1,59 @@
+@import 'src/styles/palette-colors';
+
+.link-bar:hover {
+  color: map-get($my-primary-map, 500);
+}
+
+.link-bar {
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.1s ease-in-out;
+  color: map-get(map-get($my-accent-map, "contrast"), 500);
+}
+
+::ng-deep .menu-style {
+  background-color: map-get($my-accent-map, 500) !important;
+
+  .mat-mdc-menu-submenu-icon {
+    display: none;
+  }
+
+  .menu-text {
+    color: map-get(map-get($my-accent-map, "contrast"), 500) !important;
+    transition: color 0.1s ease-in-out;
+  }
+
+  .mat-mdc-menu-item:hover .menu-text {
+    color: map-get($my-primary-map, 500) !important;
+  }
+
+  /*  .mdc-list-item__primary-text {
+    // cambia el color del texto del menu
+    color: white !important;
+  }*/
+
+}
+
+/*::ng-deep .mat-mdc-menu-submenu-icon {
+  display: none;
+}
+
+::ng-deep .menu-style {
+  background-color: map-get($my-accent-map, 500) !important;
+}
+
+::ng-deep .menu-style .menu-text {
+  color: map-get(map-get($my-accent-map, "contrast"), 500) !important;
+  transition: color 0.1s ease-in-out;
+}
+
+::ng-deep .menu-style .mat-mdc-menu-item:hover .menu-text {
+  color: map-get($my-primary-map, 500) !important;
+}*/
+
+/*
+:ng-deep .mdc-list-item__primary-text {
+  // cambia el color del texto del menu
+  color: white !important;
+}
+*/

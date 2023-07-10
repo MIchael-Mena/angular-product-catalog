@@ -1,0 +1,30 @@
+<nav class="d-inline-flex my-0 gap-5 mat-subtitle-1">
+  <a [matMenuTriggerFor]="menu" class="link-bar d-flex align-items-center"
+     #menuTrigger="matMenuTrigger" routerLinkActive="nav-active"
+     (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
+    <mat-icon>expand_more</mat-icon>
+    CATEGORÍAS
+  </a>
+  <mat-menu #menu="matMenu" [hasBackdrop]="false" class="menu-style">
+    <div (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
+      <ng-container *ngFor="let category of categories">
+        <button mat-menu-item [matMenuTriggerFor]="subMenu">
+          <mat-icon color="primary">chevron_right</mat-icon>
+          <span class="menu-text">{{ category.name }}</span>
+        </button>
+        <mat-menu #subMenu="matMenu" class="menu-style" [hasBackdrop]="false">
+          <div (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
+            <button mat-menu-item *ngFor="let subcategory of category.subcategories"
+                    [routerLink]="['/productos/listado', this.transformName(subcategory.name)]">
+              <span class="menu-text">{{ subcategory.name }}</span>
+            </button>
+          </div>
+        </mat-menu>
+      </ng-container>
+    </div>
+  </mat-menu>
+
+  <a [routerLink]="'/arma-tu-pc'" class="link-bar" routerLinkActive="nav-active"> ARMÁ TU PC </a>
+  <a [routerLink]="'/ayuda'" class="link-bar" routerLinkActive="nav-active"> AYUDA </a>
+  <a [routerLink]="'/marcas-sponsor'" class="link-bar" routerLinkActive="nav-active"> MARCAS SPONSOR </a>
+</nav>
