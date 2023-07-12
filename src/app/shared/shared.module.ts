@@ -1,5 +1,5 @@
 import {NgModule} from "@angular/core";
-import {FormatPricePipe} from "../pipe/format-price.pipe";
+import {FormatPricePipe} from "./pipes/format-price.pipe";
 
 @NgModule(
   {
