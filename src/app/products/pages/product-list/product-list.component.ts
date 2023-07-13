@@ -28,7 +28,9 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.getData();
+    // console.log('ngOnInit')
     this.route.params.subscribe((params: Params) => {
+      // debugger
       this.sharedDataService.updateData(
         {
           subcategory: params['subcategory'],
@@ -51,7 +53,6 @@ export class ProductListComponent implements OnInit {
   }
 
   private getData(): void {
-    debugger;
     forkJoin({
       products: this.productService.getProducts,
       subcategories: this.subcategoryService.getSubcategories
