@@ -6,6 +6,7 @@ import {ISubcategory} from "../../models/ISubcategory";
 import {forkJoin} from "rxjs";
 import {ActivatedRoute, Params} from "@angular/router";
 import {SharedDataService} from "../../../shared/services/shared-data.service";
+import {IParamFilter} from "../../models/IParamFilter";
 
 @Component({
   selector: 'app-product-list',
@@ -21,7 +22,7 @@ export class ProductListComponent implements OnInit {
   public isLoading: boolean = true;
 
   constructor(private productService: ProductService,
-              private sharedDataService: SharedDataService,
+              private sharedDataService: SharedDataService<IParamFilter>,
               private route: ActivatedRoute,
               private subcategoryService: SubcategoryService) {
   }
@@ -30,7 +31,7 @@ export class ProductListComponent implements OnInit {
     this.getData();
     // console.log('ngOnInit')
     this.route.params.subscribe((params: Params) => {
-      // debugger
+      debugger
       this.sharedDataService.updateData(
         {
           subcategory: params['subcategory'],

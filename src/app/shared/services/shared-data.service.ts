@@ -1,23 +1,23 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, Observable} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 
 @Injectable({
   providedIn: 'root'
 })
-export class SharedDataService {
+export class SharedDataService<T> {
 
-  private dataSource = new BehaviorSubject(null);
-  private data = this.dataSource.asObservable();
+  private dataSource: Subject<T> = new Subject();
+  private data: Observable<T> = this.dataSource.asObservable();
 
   constructor() {
   }
 
-  public updateData(data: any): void {
+  public updateData(data: T): void {
     this.dataSource.next(data);
   }
 
-  get getData(): Observable<any> {
+  get getData(): Observable<T> {
     return this.data;
   }
-  
+
 }

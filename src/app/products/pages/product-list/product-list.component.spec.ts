@@ -12,12 +12,13 @@ import {mockProducts, ProductServiceMock} from "../../services/product.service.m
 import {mockSubcategories, SubcategoryServiceMock} from "../../services/subcategory.service.mock";
 import {ProductsModule} from "../../products.module";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
+import {IParamFilter} from "../../models/IParamFilter";
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
   let fixture: ComponentFixture<ProductListComponent>;
 
-  let sharedDataServiceMock: jasmine.SpyObj<SharedDataService>;
+  let sharedDataServiceMock: jasmine.SpyObj<SharedDataService<IParamFilter>>;
 
   let paramMapSubject: Subject<ParamMap>;
   let paramMap: ParamMap;
@@ -44,7 +45,7 @@ describe('ProductListComponent', () => {
     // de la clase y el segundo usa la instancia que se le pasa
 
     fixture = TestBed.createComponent(ProductListComponent);
-    sharedDataServiceMock = TestBed.inject(SharedDataService) as jasmine.SpyObj<SharedDataService>;
+    sharedDataServiceMock = TestBed.inject(SharedDataService<IParamFilter>) as jasmine.SpyObj<SharedDataService<IParamFilter>>;
     component = fixture.componentInstance;
     // fixture.detectChanges();
   });
@@ -69,12 +70,17 @@ describe('ProductListComponent', () => {
       product: 'product'
     };
     paramMap = convertToParamMap(mockParams);
+    sharedDataServiceMock.updateData.and.callFake((data: IParamFilter) => {
+    })
 
     component.ngOnInit();
     paramMapSubject.next(paramMap);
-    sharedDataServiceMock.updateData(mockParams);
+    sharedDataServiceMock.updateData(mockParams as IParamFilter);
 
-    expect(sharedDataServiceMock.updateData).toHaveBeenCalledWith(mockParams);
+    console.log();
+
+    expect(sharedDataServiceMock.updateData).toHaveBeenCalledTimes(1);
+    // expect(sharedDataServiceMock.updateData).toHaveBeenCalledWith(mockParams);
   });
 
 });

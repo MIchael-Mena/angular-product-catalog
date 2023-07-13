@@ -27,7 +27,7 @@ export class FilterComponent implements OnInit {
   private subcategoriesSelected: Map<string, boolean> = new Map<string, boolean>();
   private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
 
-  constructor(private fb: FormBuilder, private sharedDataService: SharedDataService) {
+  constructor(private fb: FormBuilder, private sharedDataService: SharedDataService<IParamFilter>) {
   }
 
   ngOnInit(): void {
