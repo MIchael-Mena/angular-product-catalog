@@ -13,6 +13,7 @@ export class SharedDataService<T> {
   }
 
   public updateData(data: T): void {
+    console.log('updateData', data)
     this.dataSource.next(data);
   }
 

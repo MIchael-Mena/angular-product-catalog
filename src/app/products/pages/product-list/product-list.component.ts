@@ -21,19 +21,17 @@ export class ProductListComponent implements OnInit {
   public subcategories: ISubcategory[] = [];
   public isLoading: boolean = true;
 
-  constructor(private productService: ProductService,
-              private sharedDataService: SharedDataService<IParamFilter>,
-              private route: ActivatedRoute,
-              private subcategoryService: SubcategoryService) {
+  constructor(public productService: ProductService,
+              public sharedDataService: SharedDataService<IParamFilter>,
+              public route: ActivatedRoute,
+              public subcategoryService: SubcategoryService) {
   }
 
   ngOnInit(): void {
     this.getData();
-    // console.log('ngOnInit')
     this.route.params.subscribe((params: Params) => {
-      debugger
       this.sharedDataService.updateData(
-        {
+        <IParamFilter>{
           subcategory: params['subcategory'],
           product: params['product']
         }
