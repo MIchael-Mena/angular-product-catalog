@@ -1,4 +1,4 @@
-<form [formGroup]="this.form" class="mt-md-2">
+<section class="mt-md-2">
   <div class="d-inline-flex justify-content-between w-100 px-3 align-items-center my-2">
     <h2 class="m-0 p-0">Filtros</h2>
     <mat-icon color="accent" class="icon-md icon-filter"
@@ -8,53 +8,10 @@
     </mat-icon>
   </div>
 
-  <mat-expansion-panel [expanded]="showRangePrice">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Rango de precio
-      </mat-panel-title>
-      <mat-panel-description>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <div class="price-picker">
-      <mat-form-field class="w-50" color="accent" floatLabel="always">
-        <mat-label>Inicial</mat-label>
-        <input matInput formControlName="initialPrice"
-               (change)="onPriceChange()"
-               [mask]="'separator.0'"
-               style="text-align: end"
-               placeholder="0">
-        <span matTextPrefix>$&nbsp;</span>
-      </mat-form-field>
-      <mat-form-field class="w-50" color="accent" floatLabel="always">
-        <mat-label>Final</mat-label>
-        <input matInput formControlName="finalPrice"
-               (change)="onPriceChange()"
-               [mask]="'separator.2'"
-               style="text-align: end"
-               placeholder="0">
-        <span matTextPrefix>$&nbsp;</span>
-      </mat-form-field>
-    </div>
-  </mat-expansion-panel>
+  <app-price-range (onFilterChange)="this.emitFilters()"></app-price-range>
 
-  <mat-expansion-panel [expanded]="showSubcategories">
-    <mat-expansion-panel-header>
-      <mat-panel-title>
-        Subcategorías
-      </mat-panel-title>
-      <mat-panel-description>
-      </mat-panel-description>
-    </mat-expansion-panel-header>
-    <ng-container *ngFor="let subcategory of subcategories">
-      <mat-checkbox class="d-block"
-                    #checkbox
-                    (change)="onSubcategoryChange(checkbox.checked, subcategory.nombre)"
-                    [formControlName]="formatToTextWithoutSpaces(subcategory.nombre)">
-        {{ subcategory.nombre }}
-      </mat-checkbox>
-    </ng-container>
-  </mat-expansion-panel>
+  <app-subcategory (onFilterChange)="this.emitFilters()"
+                   [subcategories]="this.subcategories"></app-subcategory>
 
-</form>
+</section>
 

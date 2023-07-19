@@ -1,142 +1,70 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
-import {ISubcategory} from "../../models/ISubcategory";
-import {FormBuilder, FormGroup, Validators} from "@angular/forms";
-import {debounceTime} from "rxjs";
-import {IPriceRange} from "../../models/IPriceRange";
+import {AfterViewInit, Component, EventEmitter, Input, OnInit, Output, ViewChild} from '@angular/core';
 import {IProduct} from "../../models/IProduct";
+import {Filter} from "../../models/Filter";
+import {ISubcategory} from "../../models/ISubcategory";
 import {SharedDataService} from "../../../shared/services/shared-data.service";
-import {IParamFilter} from "../../models/IParamFilter";
+import {Params} from "@angular/router";
+import {ParamFilter} from "../../models/ParamFilter";
+import {SubcategoryComponent} from "./subcategory/subcategory.component";
+import {PriceRangeComponent} from "./price-range/price-range.component";
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss']
 })
-export class FilterComponent implements OnInit {
+export class FilterComponent implements OnInit, AfterViewInit {
+  // ViewChild permite obtener una referencia a un componente hijo, solo a la primera instancia de un componente
+  @ViewChild(PriceRangeComponent, {static: false}) priceFilter!: PriceRangeComponent;
+  @ViewChild(SubcategoryComponent, {static: false}) subcategoryFilter!: SubcategoryComponent;
+  private paramFilter!: ParamFilter;
 
-  @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guión bajo
-  @Output() onFilterChange: EventEmitter<any> = new EventEmitter<any>();
+  private filters: Filter[] = [];
 
-  public form: FormGroup = <FormGroup>{}; // Los controles tienen el mismo nombre que los parámetros de la ruta (con guión bajo)
-  public showRangePrice: boolean = true;
-  public showSubcategories: boolean = true;
+  @Input() subcategories: ISubcategory[] = [];
+  @Output() onFilterChange: EventEmitter<(products: IProduct[]) => IProduct[]> =
+    new EventEmitter<(products: IProduct[]) => IProduct[]>(); // Emite la función que filtra los productos
 
-  private subcategory: string = '';
-  private product: string = '';
-  private maxPrice: number = 100000000;
-  private subcategoriesSelected: Map<string, boolean> = new Map<string, boolean>();
-  private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
+  constructor(private sharedDataService: SharedDataService<Params>) {
+  }
 
-  constructor(private fb: FormBuilder, private sharedDataService: SharedDataService<IParamFilter>) {
+  ngAfterViewInit(): void {
+    // Se inicializa después de que Angular ha inicializado la vista del componente y las vistas secundarias
+    // Al utilizar setTimeout con un tiempo de espera de 0 ms, se asegura que las suscripciones y los cambios se
+    // realicen después de que Angular haya completado el ciclo de detección de cambios inicial.
+    setTimeout(() => {
+      this.paramFilter = new ParamFilter(this.subcategoryFilter);
+      this.subscribeToDataChanges();
+      this.filters = [this.priceFilter, this.subcategoryFilter];
+    });
   }
 
   ngOnInit(): void {
-    this.setupForm();
-    this.createCheckboxControls();
-    this.setupFormChangeSubscription();
-    this.subscribeToDataChanges();
   }
 
   private subscribeToDataChanges() {
-    this.sharedDataService.getData.subscribe((data: IParamFilter) => {
-      this.subcategory = data.subcategory;
-      this.product = data.product;
-      if (this.subcategory === 'todos') {
-        // Caso en el que se busco un producto en el buscador, debemos reiniciar los filtros y mostrar solo el producto
-        // 'todos' es el valor que envía finder cuando realiza una búsqueda
-        this.resetFilterData()
-        this.emitFilters()
-        // this.resetSubcategories();
-      } else if (this.isValueDefinedNotEmpty(this.subcategory)) {
-        // Caso donde viene una subcategoría elegida del menu, debemos reiniciar los filtros y mostrar solo la subcategoría
-        this.clearFilters()
-        this.selectSubcategory();
-        this.emitFilters();
-      }
-    });
-  }
-
-  private selectSubcategory() {
-    this.subcategoriesSelected.set(this.unFormatToTextWithUnderscores(this.subcategory), true);
-    this.form.controls[this.subcategory].setValue(true);
-  }
-
-  private setupFormChangeSubscription(): void {
-    this.form.valueChanges.pipe(debounceTime(500)).subscribe((formValue) => {
-      const initialPriceValue = formValue.initialPrice;
-      const finalPriceValue = formValue.finalPrice;
-
-      if (this.form.valid && initialPriceValue < finalPriceValue &&
-        this.verifyPriceRangeChanged(initialPriceValue, finalPriceValue)
-      ) {
-        this.lastRangePrice = {min: initialPriceValue, max: finalPriceValue};
-        this.emitFilters();
-      }
-    });
-  }
-
-  public onSubcategoryChange(checked: boolean, subcategory: string): void {
-    this.subcategoriesSelected.set(subcategory, checked);
-    this.product = '';
-    this.emitFilters();
-  }
-
-  private emitFilters(): void {
-    this.onFilterChange.emit((products: IProduct[]) => {
-      return products.filter((product: IProduct) => {
-        return this.filterBySubcategories(product) &&
-          this.filterByPriceRange(product) && this.filterByProduct(product);
+    this.sharedDataService.getData.subscribe((data: Params) => {
+      this.clearFilters();
+      this.paramFilter.setParams(data['subcategory'], data['product'])
+      this.onFilterChange.emit((products: IProduct[]) => {
+        return products.filter((product: IProduct) => this.paramFilter.applyFilter(product));
       });
     });
   }
 
-  private filterByProduct(product: IProduct): boolean {
-    return (
-      (this.product === '' || this.product === undefined) || (
-        product.nombre.toLowerCase().includes(this.product.toLowerCase()) ||
-        product.subcategoria!.toLowerCase().includes(this.product.toLowerCase())
-      )
-    );
-  }
-
-  private filterBySubcategories(product: IProduct): boolean {
-    const selectedSubcategories = Array.from(this.subcategoriesSelected.entries())
-      .filter(([subcategory, isSelected]) => isSelected)
-      .map(([subcategory]) => subcategory);
-    return (
-      selectedSubcategories.length === 0 ||
-      selectedSubcategories.includes(product.subcategoria!)
-    );
-  }
-
-  private filterByPriceRange(product: IProduct): boolean {
-    return (
-      product.precio >= this.lastRangePrice.min &&
-      product.precio <= this.lastRangePrice.max
-    );
-  }
-
-  private verifyPriceRangeChanged(initialPriceValue: number, finalPriceValue: number): boolean {
-    return this.lastRangePrice.min !== initialPriceValue || this.lastRangePrice.max !== finalPriceValue;
-  }
-
-  public onPriceChange(): void {
-    this.form.updateValueAndValidity();
-  }
-
-  private setupForm() {
-    const priceValidators = [Validators.min(0), Validators.max(this.maxPrice),
-      Validators.pattern(/^-?(0|[1-9]\d*)(\.\d+)?$/)];
-    this.form = this.fb.group({
-      initialPrice: [null, priceValidators],
-      finalPrice: [null, priceValidators],
+  public emitFilters(): void {
+    console.log('emit filters');
+    this.paramFilter.clearFilter();
+    this.onFilterChange.emit((products: IProduct[]) => {
+      return this.applyFilters(products);
     });
   }
 
-  private createCheckboxControls(): void {
-    this.subcategories.forEach((subcategory: ISubcategory) => {
-      const controlName = this.formatToTextWithoutSpaces(subcategory.nombre);
-      this.form.addControl(controlName, this.fb.control(false));
+  private applyFilters(products: IProduct[]): IProduct[] {
+    return products.filter((product: IProduct) => {
+      return this.filters.every((filter: Filter) => {
+        return filter.applyFilter(product);
+      });
     });
   }
 
@@ -145,27 +73,10 @@ export class FilterComponent implements OnInit {
     this.emitFilters();
   }
 
-  private clearFilters() {
-    this.resetFilterData();
-    this.product = '';
-  }
-
-  private resetFilterData() {
-    this.subcategoriesSelected = new Map<string, boolean>();
-    this.form.reset();
-    this.lastRangePrice = {min: 0, max: this.maxPrice}; // Restablecer el rango de precios
-  }
-
-  public formatToTextWithoutSpaces(nombre: string): string {
-    return nombre.replace(/\s+/g, '_');
-  }
-
-  private unFormatToTextWithUnderscores(text: string): string {
-    return text.replace(/_/g, ' ');
-  }
-
-  private isValueDefinedNotEmpty(item: string): boolean {
-    return item !== undefined && item !== '';
+  private clearFilters(): void {
+    this.filters.forEach((filter: Filter) => {
+      filter.clearFilter();
+    });
   }
 
 }

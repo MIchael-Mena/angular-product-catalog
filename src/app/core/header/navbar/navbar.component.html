@@ -15,7 +15,7 @@
         <mat-menu #subMenu="matMenu" class="menu-style" [hasBackdrop]="false">
           <div (mouseenter)="mouseEnter(menuTrigger)" (mouseleave)="mouseLeave(menuTrigger)">
             <button mat-menu-item *ngFor="let subcategory of category.subcategories"
-                    [routerLink]="['/productos/listado', this.transformName(subcategory.name)]">
+                    [routerLink]="['/productos/listado', formatToTextWithoutSpaces(subcategory.name)]">
               <span class="menu-text">{{ subcategory.name }}</span>
             </button>
           </div>

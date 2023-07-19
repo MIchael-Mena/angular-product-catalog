@@ -11,13 +11,12 @@ import {SharedDataService} from "../../../shared/services/shared-data.service";
 import {mockProducts, ProductServiceMock} from "../../services/product.service.mock";
 import {mockSubcategories, SubcategoryServiceMock} from "../../services/subcategory.service.mock";
 import {NoopAnimationsModule} from "@angular/platform-browser/animations";
-import {IParamFilter} from "../../models/IParamFilter";
 
 describe('ProductListComponent', () => {
   let component: ProductListComponent;
   let fixture: ComponentFixture<ProductListComponent>;
 
-  let sharedDataServiceMock: jasmine.SpyObj<SharedDataService<IParamFilter>>;
+  let sharedDataServiceMock: jasmine.SpyObj<SharedDataService<Params>>;
 
   let paramMapSubject: Subject<Params> = new Subject<Params>();
 
@@ -59,18 +58,21 @@ describe('ProductListComponent', () => {
   });
 
   it('should load products and subcategories on initialization', () => {
+    expect(component.isLoading).toBeTrue();
     // NgOnInit se ejecuta automáticamente con fixture.detectChanges()
     component.ngOnInit();
 
     expect(component.products).toEqual(mockProducts);
     expect(component.filteredProducts).toEqual(mockProducts);
     expect(component.subcategories).toEqual(mockSubcategories);
+    // El primer producto tiene la subcategoria 'Mouses'
+    expect(component.products[0].subcategoria).toEqual(mockSubcategories[0].nombre);
     expect(component.isLoading).toBeFalse();
   });
 
   it('should update shared data when route params change', () => {
     const mockParams: Params = {
-      subcategory: 'Mouses',
+      subcategory: 'Subcategory',
       product: 'product'
     };
 
@@ -81,7 +83,17 @@ describe('ProductListComponent', () => {
     paramMapSubject.next(mockParams);
 
     expect(sharedDataServiceMock.updateData).toHaveBeenCalledTimes(1);
-    expect(sharedDataServiceMock.updateData).toHaveBeenCalledWith(mockParams as IParamFilter);
+    expect(sharedDataServiceMock.updateData).toHaveBeenCalledWith(mockParams);
+  });
+
+  it('should update filtered products when filterProducts is called', () => {
+    // Inicialmente los productos devueltos por el servicio tienen la subcategoria vacía
+    const mockProductsFiltered = [{...mockProducts[0], subcategoria: 'Mouses'}]
+
+    component.ngOnInit();
+    component.filterProducts((products) => products.filter((product) => product.subcategoria === 'Mouses'));
+
+    expect(component.filteredProducts).toEqual(mockProductsFiltered);
   });
 
 });

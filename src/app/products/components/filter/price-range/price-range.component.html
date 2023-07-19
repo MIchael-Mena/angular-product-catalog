@@ -1,0 +1,29 @@
+<mat-expansion-panel [expanded]="showRangePrice" [formGroup]="this.form" class="custom-panel">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      Rango de precio
+    </mat-panel-title>
+    <mat-panel-description>
+    </mat-panel-description>
+  </mat-expansion-panel-header>
+  <div class="price-picker">
+    <mat-form-field class="w-50" color="accent" floatLabel="always">
+      <mat-label>Inicial</mat-label>
+      <input matInput formControlName="initialPrice"
+             (change)="onPriceChange()"
+             [mask]="'separator.0'"
+             style="text-align: end"
+             placeholder="0">
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+    <mat-form-field class="w-50" color="accent" floatLabel="always">
+      <mat-label>Final</mat-label>
+      <input matInput formControlName="finalPrice"
+             (change)="onPriceChange()"
+             [mask]="'separator.2'"
+             style="text-align: end"
+             placeholder="0">
+      <span matTextPrefix>$&nbsp;</span>
+    </mat-form-field>
+  </div>
+</mat-expansion-panel>

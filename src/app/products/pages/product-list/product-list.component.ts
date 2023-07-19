@@ -6,7 +6,6 @@ import {ISubcategory} from "../../models/ISubcategory";
 import {forkJoin} from "rxjs";
 import {ActivatedRoute, Params} from "@angular/router";
 import {SharedDataService} from "../../../shared/services/shared-data.service";
-import {IParamFilter} from "../../models/IParamFilter";
 
 @Component({
   selector: 'app-product-list',
@@ -20,26 +19,25 @@ export class ProductListComponent implements OnInit {
   public filteredProducts: IProduct[] = [];
   public subcategories: ISubcategory[] = [];
   public isLoading: boolean = true;
+  private paramsIsSet: boolean = false;
 
   constructor(public productService: ProductService,
-              public sharedDataService: SharedDataService<IParamFilter>,
+              public sharedDataService: SharedDataService<Params>,
               public route: ActivatedRoute,
               public subcategoryService: SubcategoryService) {
   }
 
   ngOnInit(): void {
-    this.getData();
     this.route.params.subscribe((params: Params) => {
+      this.paramsIsSet = params['subcategory'] !== undefined || params['product'] !== undefined;
       this.sharedDataService.updateData(
-        <IParamFilter>{
-          subcategory: params['subcategory'],
-          product: params['product']
-        }
+        params
       );
     });
+    this.getData();
   }
 
-  public filterProducts(filter: any): void {
+  public filterProducts(filter: (products: IProduct[]) => IProduct[]): void {
     this.filteredProducts = filter(this.products);
   }
 
@@ -60,7 +58,7 @@ export class ProductListComponent implements OnInit {
         this.subcategories = data.subcategories;
         this.assignSubcategories(data.products);
         this.products = data.products;
-        this.filteredProducts = data.products;
+        if (!this.paramsIsSet) this.filteredProducts = data.products;
         this.isLoading = false;
       },
       error: (error) => {

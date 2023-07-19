@@ -1,5 +1,6 @@
 import {Component} from '@angular/core';
 import {CATEGORIES} from "../model/categories";
+import {formatToTextWithoutSpaces} from "../../../shared/functions/stringUtils";
 
 @Component({
   selector: 'app-navbar',
@@ -9,6 +10,7 @@ import {CATEGORIES} from "../model/categories";
 export class NavbarComponent {
 
   public readonly categories = CATEGORIES;
+  protected readonly formatToTextWithoutSpaces = formatToTextWithoutSpaces;
   private timedOutCloser: any;
 
   constructor() {
@@ -27,8 +29,5 @@ export class NavbarComponent {
     }, 250);
   }
 
-  public transformName(name: string): string {
-    return name.replace(/\s+/g, '_');
-  }
 
 }

@@ -38,13 +38,18 @@ html, body {
   padding: 0.2rem 0.4rem;
 }
 
-.mat-expansion-panel-spacing {
-  margin: 0;
+.custom-panel {
+  border-radius: 0 !important;
+
+  .mat-expansion-panel-spacing {
+    margin: 0;
+  }
+
+  .mat-expansion-panel-header-title {
+    flex-basis: auto;
+  }
 }
 
-.mat-expansion-panel {
-  border-radius: 0 !important;
-}
 
 // El otro background es el de material
 .background-alt {

@@ -6,19 +6,17 @@ import {BehaviorSubject, Observable, Subject} from "rxjs";
 })
 export class SharedDataService<T> {
 
-  private dataSource: Subject<T> = new Subject();
-  private data: Observable<T> = this.dataSource.asObservable();
+  private dataSource: BehaviorSubject<T> = new BehaviorSubject({} as T);
 
   constructor() {
   }
 
   public updateData(data: T): void {
-    console.log('updateData', data)
     this.dataSource.next(data);
   }
 
   get getData(): Observable<T> {
-    return this.data;
+    return this.dataSource.asObservable();
   }
 
 }
