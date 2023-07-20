@@ -15,7 +15,7 @@ export class ParamFilter implements Filter {
 
   public setParams(subcategory: string, search: string): void {
     if (subcategory === 'todos') {
-      // Caso en el que se buscó un producto en el buscador,y mostrar solo el producto
+      // Caso en el que se buscó un producto en el buscador, y mostrar solo el producto
       // 'todos' es el valor que envía finder cuando realiza una búsqueda
       this.search = unFormatToTextWithUnderscores(search);
       this.filterToApply = this.filterBySearch;
@@ -36,17 +36,15 @@ export class ParamFilter implements Filter {
   }
 
   private filterBySubcategory(product: IProduct): boolean {
-    return (
-      this.subcategory.includes(product.subcategoria!)
-    );
+    // La verificación se está haciendo en SubcategoryComponent
+    // return true;
+    return this.subcategory.includes(product.subcategoria!);
   }
 
   private filterBySearch(product: IProduct): boolean {
     return (
-      (this.isSearchDefinedNotEmpty(this.search)) || (
-        product.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
-        product.subcategoria!.toLowerCase().includes(this.search.toLowerCase())
-      )
+      product.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
+      product.subcategoria!.toLowerCase().includes(this.search.toLowerCase())
     );
   }
 

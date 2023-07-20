@@ -31,7 +31,11 @@ export class SubcategoryComponent implements OnInit, Filter {
   }
 
   public markSubcategory(subcategory: string): void {
-    this.form.controls[subcategory].setValue(true);
+    if (this.form.controls.hasOwnProperty(subcategory)) {
+      this.form.controls[subcategory].setValue(true);
+    } else {
+      console.error(`La subcategoría '${subcategory}' no se encuentra en el formulario.`);
+    }
   }
 
   public clearFilter(): void {

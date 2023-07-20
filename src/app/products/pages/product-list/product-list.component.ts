@@ -29,6 +29,7 @@ export class ProductListComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.params.subscribe((params: Params) => {
+      console.log(params);
       this.paramsIsSet = params['subcategory'] !== undefined || params['product'] !== undefined;
       this.sharedDataService.updateData(
         params

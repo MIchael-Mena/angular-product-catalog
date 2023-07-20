@@ -1,6 +1,6 @@
 import {Component} from '@angular/core';
 import {FormControl} from "@angular/forms";
-import {Router} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
   selector: 'app-finder',
@@ -10,7 +10,7 @@ import {Router} from "@angular/router";
 export class FinderComponent {
   public searchControl: FormControl = new FormControl('');
 
-  constructor(private router: Router) {
+  constructor(private router: Router, private route: ActivatedRoute) {
   }
 
   public clearInput(): void {
@@ -21,7 +21,7 @@ export class FinderComponent {
     // I don't use validators because I don't want to show the warning color in the input
     if (this.searchControl.value !== '') {
       const value = this.searchControl.value;
-      this.router.navigate(['lista-productos', 'todos', value]);
+      this.router.navigate(['/productos/listado', 'todos', value])
     }
   }
 }

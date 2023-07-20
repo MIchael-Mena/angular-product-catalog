@@ -53,7 +53,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   public emitFilters(): void {
-    console.log('emit filters');
     this.paramFilter.clearFilter();
     this.onFilterChange.emit((products: IProduct[]) => {
       return this.applyFilters(products);
@@ -62,9 +61,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   private applyFilters(products: IProduct[]): IProduct[] {
     return products.filter((product: IProduct) => {
-      return this.filters.every((filter: Filter) => {
-        return filter.applyFilter(product);
-      });
+      return this.filters.every((filter: Filter) => filter.applyFilter(product));
     });
   }
 
