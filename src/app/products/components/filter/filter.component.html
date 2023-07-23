@@ -1,4 +1,7 @@
 <section class="mt-md-2">
+
+  <app-active-filter></app-active-filter>
+
   <div class="d-inline-flex justify-content-between w-100 px-3 align-items-center my-2">
     <h2 class="m-0 p-0">Filtros</h2>
     <mat-icon color="accent" class="icon-md icon-filter"
@@ -8,9 +11,11 @@
     </mat-icon>
   </div>
 
-  <app-price-range (onFilterChange)="this.emitFilters()"></app-price-range>
+  <app-price-range (onFilterChange)="this.emitFilters($event)"
+                   (onLoadFilter)="this.addFilter($event)"></app-price-range>
 
-  <app-subcategory (onFilterChange)="this.emitFilters()"
+  <app-subcategory (onFilterChange)="this.emitFilters($event)"
+                   (onLoadFilter)="this.addFilter($event)"
                    [subcategories]="this.subcategories"></app-subcategory>
 
 </section>

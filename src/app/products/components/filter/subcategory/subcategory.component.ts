@@ -1,9 +1,11 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
 import {IProduct} from "../../../models/IProduct";
 import {ISubcategory} from "../../../models/ISubcategory";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Filter} from "../../../models/Filter";
 import {formatToTextWithoutSpaces, unFormatToTextWithUnderscores} from "../../../../shared/functions/stringUtils";
+import {FilterOption} from "../../../models/FilterOption";
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-subcategory',
@@ -12,29 +14,40 @@ import {formatToTextWithoutSpaces, unFormatToTextWithUnderscores} from "../../..
 })
 export class SubcategoryComponent implements OnInit, Filter {
 
-  @Output() onFilterChange: EventEmitter<boolean> = new EventEmitter();
+  @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
+  @Output() onFilterChange: EventEmitter<number> = new EventEmitter();
   @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guion bajo
   public form: FormGroup; // Los controles tienen el mismo nombre que los parámetros de la ruta (con guion bajo)
   public showSubcategories: boolean = true;
-  protected readonly formatToTextWithoutSpaces = formatToTextWithoutSpaces; // Para usarlo en el template
+  private changeCount: number = 0; // para emitir un cambio cuando se inicializa el componente
+  public readonly formatToTextWithoutSpaces = formatToTextWithoutSpaces; // Para usarlo en el template
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
     this.form = this.fb.group({});
   }
 
   ngOnInit(): void {
+    this.onLoadFilter.emit(this);
     this.createCheckboxControls();
+    this.route.params.subscribe((params) => {
+      // Caso donde viene una subcategoría elegida del menu, y mostrar solo la subcategoría
+      if (params['subcategory']) {
+        this.clearFilter()
+        this.markSubcategory(params['subcategory']);
+        this.emitChange();
+      }
+    });
   }
 
   public emitChange(): void {
-    this.onFilterChange.emit();
+    this.onFilterChange.emit(this.changeCount++);
   }
 
   public markSubcategory(subcategory: string): void {
     if (this.form.controls.hasOwnProperty(subcategory)) {
       this.form.controls[subcategory].setValue(true);
     } else {
-      console.error(`La subcategoría '${subcategory}' no se encuentra en el formulario.`);
+      console.error(`La subcategoría '${subcategory}' no existe`);
     }
   }
 
@@ -61,6 +74,10 @@ export class SubcategoryComponent implements OnInit, Filter {
       const controlName = formatToTextWithoutSpaces(subcategory.nombre);
       this.form.addControl(controlName, new FormControl(false));
     });
+  }
+
+  get filterOption(): FilterOption {
+    return {name: 'subcategory', value: this.form.value};
   }
 
 }

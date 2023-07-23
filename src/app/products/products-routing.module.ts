@@ -7,7 +7,6 @@ const routes: Routes = [{
   children: [
     {path: 'listado', component: ProductListComponent},
     {path: 'listado/:subcategory', component: ProductListComponent},
-    {path: 'listado/:subcategory/:product', component: ProductListComponent},
     // {path: 'detalle/:id', component: DetailComponent},
     // {path: 'carrito', component: CartComponent},
     // {path: 'agregar-producto', component: AddProductComponent},

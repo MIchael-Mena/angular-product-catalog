@@ -20,7 +20,6 @@ export class LoaderComponentService {
   public toggleLoad(statusLoading: boolean, component: string) {
     this.componentsLoading.set(component, statusLoading);
     this.checkStatusComponents();
-    console.log(this.loading);
   }
 
   private checkStatusComponents(): void {

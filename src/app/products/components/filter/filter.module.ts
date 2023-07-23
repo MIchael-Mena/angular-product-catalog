@@ -9,13 +9,15 @@ import {NgxMaskDirective, NgxMaskPipe, provideNgxMask} from "ngx-mask";
 import {MatChipsModule} from "@angular/material/chips";
 import {MatSelectModule} from "@angular/material/select";
 import {MaterialModule} from "../../../shared/material.module";
+import { ActiveFilterComponent } from './active-filter/active-filter.component';
 
 
 @NgModule({
   declarations: [
     FilterComponent,
     PriceRangeComponent,
-    SubcategoryComponent
+    SubcategoryComponent,
+    ActiveFilterComponent
   ],
   imports: [
     CommonModule,

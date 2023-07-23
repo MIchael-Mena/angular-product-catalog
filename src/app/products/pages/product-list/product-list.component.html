@@ -3,6 +3,7 @@
     <ng-container *ngIf="!this.isLoading">
       <div class="col-md-3">
         <app-filter [subcategories]="this.subcategories"
+                    (isLoading)="this.filtersIsLoading = $event"
                     (onFilterChange)="this.filterProducts($event)">
         </app-filter>
       </div>
@@ -13,7 +14,7 @@
                             *ngFor="let product of filteredProducts"
                             class="card-width m-2 p-0">
           </app-product-card>
-          <div *ngIf="this.filteredProducts.length === 0" class="alert-message">
+          <div *ngIf="this.filtersIsLoading && this.filteredProducts.length === 0" class="alert-message">
             No se encontraron productos
           </div>
         </div>
