@@ -12,10 +12,11 @@ export class SearchFilter implements Filter {
 
   public setParam(search: string): void {
     if (search) {
-      // Caso en el que se buscó un producto en el buscador, y mostrar solo el producto
-      // 'todos' es el valor que envía finder cuando realiza una búsqueda
       this.search = unFormatToTextWithUnderscores(search);
       this.filterToApply = this.filterBySearch;
+    } else {
+      this.search = '';
+      this.filterToApply = (product: IProduct) => true;
     }
   }
 
@@ -28,10 +29,6 @@ export class SearchFilter implements Filter {
       product.nombre.toLowerCase().includes(this.search.toLowerCase()) ||
       product.subcategoria!.toLowerCase().includes(this.search.toLowerCase())
     );
-  }
-
-  private isSearchDefinedNotEmpty(search: string): boolean {
-    return search !== undefined && search !== '';
   }
 
   public clearFilter(): void {

@@ -15,11 +15,10 @@ import {ActivatedRoute} from "@angular/router";
 export class SubcategoryComponent implements OnInit, Filter {
 
   @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
-  @Output() onFilterChange: EventEmitter<number> = new EventEmitter();
+  @Output() onFilterChange: EventEmitter<null> = new EventEmitter();
   @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guion bajo
   public form: FormGroup; // Los controles tienen el mismo nombre que los parámetros de la ruta (con guion bajo)
   public showSubcategories: boolean = true;
-  private changeCount: number = 0; // para emitir un cambio cuando se inicializa el componente
   public readonly formatToTextWithoutSpaces = formatToTextWithoutSpaces; // Para usarlo en el template
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
@@ -40,7 +39,7 @@ export class SubcategoryComponent implements OnInit, Filter {
   }
 
   public emitChange(): void {
-    this.onFilterChange.emit(this.changeCount++);
+    this.onFilterChange.emit();
   }
 
   public markSubcategory(subcategory: string): void {

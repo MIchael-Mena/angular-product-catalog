@@ -24,8 +24,8 @@ import {combineLatest, debounceTime} from "rxjs";
 })
 export class FilterComponent implements OnInit, AfterViewInit {
   // ViewChild permite obtener una referencia a un componente hijo, solo a la primera instancia de un componente
-  @ViewChild(PriceRangeComponent, {static: false}) priceFilter!: PriceRangeComponent;
-  @ViewChild(SubcategoryComponent, {static: false}) subcategoryFilter!: SubcategoryComponent;
+  // @ViewChild(PriceRangeComponent, {static: false}) priceFilter!: PriceRangeComponent;
+  // @ViewChild(SubcategoryComponent, {static: false}) subcategoryFilter!: SubcategoryComponent;
 
   private readonly searchFilter: SearchFilter;
   private filters: Filter[] = [];
@@ -41,8 +41,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
-    console.log(this.filters.length);
     this.subscribeToParamSearchChanges();
     this.subscribeToParamChanges(); // Si se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
     this.isLoading.emit(false);
@@ -72,19 +70,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
       .subscribe(
         ([queryParams, params]) => {
           console.log('combineLatest');
-          this.emitChanges();
+          this.emitFilters();
         });
   }
 
-  public emitFilters(changeCount: number): void {
-    // Se ignora el primer cambio (el que viene con la url), ya que se emite al inicializar el componente
-    if (changeCount < 1) {
-      return
-    }
-    this.emitChanges();
-  }
-
-  private emitChanges() {
+  public emitFilters(): void {
     console.log('emitChanges');
     this.onFilterChange.emit((products: IProduct[]) => {
       return this.applyFilters(products);
@@ -100,7 +90,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   public clearFiltersAndEmit() {
     this.clearFilters();
-    this.emitChanges();
+    this.emitFilters();
   }
 
   private clearFilters(): void {
@@ -114,7 +104,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   public addFilter(filter: Filter) {
-    console.log('addFilter');
     this.filters.push(filter);
   }
 }

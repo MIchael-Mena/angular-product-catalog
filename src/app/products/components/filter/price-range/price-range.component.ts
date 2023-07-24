@@ -15,12 +15,11 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class PriceRangeComponent implements OnInit, Filter {
 
   @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
-  @Output() onFilterChange: EventEmitter<number> = new EventEmitter();
+  @Output() onFilterChange: EventEmitter<null> = new EventEmitter();
   private maxPrice: number = 100000000;
   private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
   public showRangePrice: boolean = true;
   public form: FormGroup = <FormGroup>{};
-  private changeCount: number = 0;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
   }
@@ -29,20 +28,19 @@ export class PriceRangeComponent implements OnInit, Filter {
     this.onLoadFilter.emit(this);
     this.setupForm();
     this.setupFormChangeSubscription();
-    console.log(this.route.snapshot.queryParams)
     this.route.queryParams.subscribe((params) => {
       const priceRange = params['priceRange'];
       if (priceRange) {
         if (this.verifyFormatPriceRange(priceRange)) {
-          const [initialPrice, finalPrice] = priceRange.split('-');
-          if (!this.verifyPriceRangeChanged(+initialPrice, +finalPrice)) {
+          const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
+          if (!this.verifyPriceRangeChanged(initialPrice, finalPrice)) {
+            // Si la url tiene el mismo rango de precios que el filtro, no se hace nada
             return;
           }
-          // El + antes de la variable es para convertir el string a number
-          this.lastRangePrice = {min: +initialPrice, max: +finalPrice};
-          this.form.controls['initialPrice'].setValue(+initialPrice);
-          this.form.controls['finalPrice'].setValue(+finalPrice);
-          console.log('asignando valores');
+          // Se puede poner + antes de la variable para convertir el string a number
+          this.lastRangePrice = {min: initialPrice, max: finalPrice};
+          this.form.controls['initialPrice'].setValue(initialPrice);
+          this.form.controls['finalPrice'].setValue(finalPrice);
         } else {
           // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia el filtro
           this.clearUrl();
@@ -56,14 +54,14 @@ export class PriceRangeComponent implements OnInit, Filter {
 
   private setupFormChangeSubscription(): void {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((formValue) => {
-      const initialPriceValue = formValue.initialPrice;
-      const finalPriceValue = formValue.finalPrice;
-      if (this.form.valid && initialPriceValue < finalPriceValue &&
+      const initialPriceValue = formValue.initialPrice ? formValue.initialPrice : 0;
+      const finalPriceValue = formValue.finalPrice ? formValue.finalPrice : this.maxPrice;
+      if (
+        this.form.valid && initialPriceValue < finalPriceValue &&
         this.verifyPriceRangeChanged(initialPriceValue, finalPriceValue)
       ) {
         this.lastRangePrice = {min: initialPriceValue, max: finalPriceValue};
         // this.onFilterChange.emit(this.changeCount++);
-        console.log('antes de actualizar url');
         this.updateUrl(this.lastRangePrice.min, this.lastRangePrice.max);
       }
     });
@@ -76,7 +74,11 @@ export class PriceRangeComponent implements OnInit, Filter {
 
   private updateUrl(initialPrice: number, finalPrice: number): void {
     const queryParams = {priceRange: `${initialPrice}-${finalPrice}`};
-    this.router.navigate([], {relativeTo: this.route, queryParams, queryParamsHandling: 'merge'});
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+    });
   }
 
   private verifyPriceRangeChanged(initialPriceValue: number, finalPriceValue: number): boolean {
@@ -91,8 +93,8 @@ export class PriceRangeComponent implements OnInit, Filter {
     const priceValidators = [Validators.min(0), Validators.max(this.maxPrice),
       Validators.pattern(/^-?(0|[1-9]\d*)(\.\d+)?$/)];
     this.form = this.fb.group({
-      initialPrice: [null, priceValidators],
-      finalPrice: [null, priceValidators],
+      initialPrice: [0, priceValidators],
+      finalPrice: [0, priceValidators],
     });
   }
 
