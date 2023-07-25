@@ -1,5 +1,7 @@
-import {Component, OnInit} from '@angular/core';
-import {ActivatedRoute} from "@angular/router";
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {FilterService} from "../../../services/filter.service";
+import {Filter} from "../../../models/Filter";
+import {QueryParam} from "../../../models/QueryParam";
 
 @Component({
   selector: 'app-active-filter',
@@ -8,21 +10,23 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class ActiveFilterComponent implements OnInit {
 
-  filters: string[] = ['Filtro 1', 'Filtro 2', 'Filtro 3']
+  // @Input() activeFilters: string[] = ['Filtro 1', 'Filtro 2', 'Filtro 3']
+  @Input() activeFilters: QueryParam[] = [];
+  @Output() onDeactivateFilter: EventEmitter<string> = new EventEmitter<string>();
 
-  constructor(private route: ActivatedRoute) {
+  constructor(private filterService: FilterService) {
   }
 
   ngOnInit(): void {
-    this.route.params.subscribe(params => {
-      // console.log(params);
-    });
+    /*    this.filterService.filtersActivated.subscribe((paramFilters: QueryParam[]) => {
+          this.activeFilters = paramFilters
+        });*/
   }
 
-  deactivateFilter(filter: string) {
-    const index = this.filters.indexOf(filter);
-    this.filters.splice(index, 1);
-
+  deactivateFilter(param: QueryParam) {
+    const index = this.activeFilters.indexOf(param);
+    this.activeFilters.splice(index, 1);
+    // this.onDeactivateFilter.emit(param.name);
     console.log('deactivateFilter');
   }
 }

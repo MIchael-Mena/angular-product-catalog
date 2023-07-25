@@ -18,7 +18,6 @@ export class ProductListComponent implements OnInit {
   public subcategories: ISubcategory[] = [];
   public isLoading: boolean = true;
   public filtersIsLoading: boolean = true;
-  private paramsIsSet: boolean = false;
 
   constructor(public productService: ProductService,
               public subcategoryService: SubcategoryService) {

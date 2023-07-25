@@ -11,11 +11,11 @@
     </mat-icon>
   </div>
 
-  <app-price-range (onFilterChange)="this.emitFilters()"
+  <app-price-range (onFilterChange)="this.updateFilterState($event)"
                    (onInvalidUrl)="this.addParamToRemoveOfUrl($event)"
                    (onLoadFilter)="this.addFilter($event)"></app-price-range>
 
-  <app-subcategory (onFilterChange)="this.emitFilters()"
+  <app-subcategory (onFilterChange)="this.updateFilterState($event)"
                    (onLoadFilter)="this.addFilter($event)"
                    [subcategories]="this.subcategories"></app-subcategory>
 

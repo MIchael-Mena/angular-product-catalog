@@ -16,6 +16,7 @@ import {SearchFilter} from "../../models/SearchFilter";
 import {SubcategoryComponent} from "./subcategory/subcategory.component";
 import {PriceRangeComponent} from "./price-range/price-range.component";
 import {combineLatest, debounceTime} from "rxjs";
+import {QueryParam} from "../../models/QueryParam";
 
 @Component({
   selector: 'app-filter',
@@ -30,6 +31,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   private searchFilter: SearchFilter;
   private filters: Filter[] = [];
   private initialParamsToRemove: string[] = [];
+  public activeFilters: QueryParam[] = [];
 
   @Input() subcategories: ISubcategory[] = [];
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
@@ -42,9 +44,17 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit(): void {
+    console.log('ngOnInit');
     this.subscribeToParamChanges(); // Si  se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
-    this.isLoading.emit(false);
     this.clearParamsAndEmit(this.initialParamsToRemove);
+
+    /*    this.filters.forEach((filter: Filter) => {
+          if (filter.isActivated()) {
+            this.activeFilters.push(filter.paramOption);
+          }
+        });*/
+
+    this.isLoading.emit(false);
   }
 
   ngAfterViewInit(): void {
@@ -57,6 +67,15 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         }, 0);*/
     // this.cd.detectChanges(); // Detecta los cambios en la vista del componente (No funciono en este caso)
+  }
+
+  public updateFilterState(filter: Filter): void {
+    if (filter.isActivated()) {
+      this.activeFilters.push(filter.paramOption);
+    } else {
+      const index = this.activeFilters.indexOf(filter.paramOption);
+      this.activeFilters.splice(index, 1);
+    }
   }
 
   private subscribeToParamChanges() {
@@ -89,7 +108,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   private clearFilters(): void {
-    const paramsToRemove = this.filters.map((filter: Filter) => filter.paramName);
+    const paramsToRemove = this.filters.map((filter: Filter) => filter.paramOption.name);
     this.clearParamsAndEmit(paramsToRemove);
     /*    const queryParams = {...this.route.snapshot.queryParams};
         this.filters.forEach((filter: Filter) => {

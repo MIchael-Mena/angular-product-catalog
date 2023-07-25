@@ -1,7 +1,7 @@
 import {IProduct} from "./IProduct";
 import {Filter} from "./Filter";
 import {unFormatToTextWithUnderscores} from "../../shared/functions/stringUtils";
-import {FilterOption} from "./FilterOption";
+import {QueryParam} from "./QueryParam";
 import {ActivatedRoute, Router} from "@angular/router";
 
 export class SearchFilter implements Filter {
@@ -43,12 +43,12 @@ export class SearchFilter implements Filter {
     // this.search = '';
   }
 
-  get filterOption(): FilterOption {
-    return {name: 'param', value: 'search'};
+  get paramOption(): QueryParam {
+    return {name: 'search', value: 'search'};
   }
 
-  get paramName(): string {
-    return 'search';
+  public isActivated(): boolean {
+    return this.search !== '';
   }
 
 }

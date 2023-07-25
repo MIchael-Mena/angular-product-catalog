@@ -1,4 +1,4 @@
-export interface FilterOption {
+export interface QueryParam {
   name: string;
   value: string;
 }

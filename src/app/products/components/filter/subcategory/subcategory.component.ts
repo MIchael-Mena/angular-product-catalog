@@ -4,7 +4,7 @@ import {ISubcategory} from "../../../models/ISubcategory";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
 import {Filter} from "../../../models/Filter";
 import {formatToTextWithoutSpaces, unFormatToTextWithUnderscores} from "../../../../shared/functions/stringUtils";
-import {FilterOption} from "../../../models/FilterOption";
+import {QueryParam} from "../../../models/QueryParam";
 import {ActivatedRoute} from "@angular/router";
 
 @Component({
@@ -15,7 +15,7 @@ import {ActivatedRoute} from "@angular/router";
 export class SubcategoryComponent implements OnInit, Filter {
 
   @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
-  @Output() onFilterChange: EventEmitter<null> = new EventEmitter();
+  @Output() onFilterChange: EventEmitter<Filter> = new EventEmitter();
   @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guion bajo
   public form: FormGroup; // Los controles tienen el mismo nombre que los parámetros de la ruta (con guion bajo)
   public showSubcategories: boolean = true;
@@ -28,6 +28,7 @@ export class SubcategoryComponent implements OnInit, Filter {
   ngOnInit(): void {
     this.onLoadFilter.emit(this);
     this.createCheckboxControls();
+    console.log('subcategory');
     this.route.params.subscribe((params) => {
       // Caso donde viene una subcategoría elegida del menu, y mostrar solo la subcategoría
       if (params['subcategory']) {
@@ -39,7 +40,7 @@ export class SubcategoryComponent implements OnInit, Filter {
   }
 
   public emitChange(): void {
-    this.onFilterChange.emit();
+    this.onFilterChange.emit(this);
   }
 
   public markSubcategory(subcategory: string): void {
@@ -75,12 +76,12 @@ export class SubcategoryComponent implements OnInit, Filter {
     });
   }
 
-  get filterOption(): FilterOption {
+  get paramOption(): QueryParam {
     return {name: 'subcategory', value: this.form.value};
   }
 
-  get paramName(): string {
-    return 'subcategory';
+  public isActivated(): boolean {
+    return Object.keys(this.form.controls).some((controlName) => this.form.controls[controlName].value);
   }
 
 }

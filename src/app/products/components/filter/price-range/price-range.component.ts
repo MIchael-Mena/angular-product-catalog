@@ -4,7 +4,7 @@ import {debounceTime} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {IProduct} from "../../../models/IProduct";
 import {Filter} from "../../../models/Filter";
-import {FilterOption} from "../../../models/FilterOption";
+import {QueryParam} from "../../../models/QueryParam";
 import {ActivatedRoute, Router} from "@angular/router";
 
 @Component({
@@ -16,11 +16,12 @@ export class PriceRangeComponent implements OnInit, Filter {
 
   @Output() onInvalidUrl: EventEmitter<string> = new EventEmitter();
   @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
-  @Output() onFilterChange: EventEmitter<null> = new EventEmitter();
+  @Output() onFilterChange: EventEmitter<Filter> = new EventEmitter();
   private maxPrice: number = 100000000;
   private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
   public showRangePrice: boolean = true;
   public form: FormGroup = <FormGroup>{};
+  private firstTime: boolean = true;
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
   }
@@ -29,17 +30,21 @@ export class PriceRangeComponent implements OnInit, Filter {
     this.onLoadFilter.emit(this);
     this.setupForm();
     this.setupFormChangeSubscription();
+    console.log('priceRange');
     this.route.queryParams.subscribe((params) => {
       const priceRange = params['priceRange'];
       if (priceRange) {
         if (this.verifyFormatPriceRange(priceRange)) {
-          const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
-          if (!this.verifyPriceRangeChanged(initialPrice, finalPrice)) {
-            // Si la url tiene el mismo rango de precios que el filtro, no se hace nada
-            return;
-          }
+          // Caso donde la url tiene el parámetro priceRange con un formato correcto al inicializar el componente
           // Se puede poner + antes de la variable para convertir el string a number
-          this.lastRangePrice = {min: initialPrice, max: finalPrice};
+          const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
+
+          // Esta línea se vuelven a repetir debido al debounceTime que causa un retraso en la actualización
+          // e inicialmente se debe emitir al padre el estado del filtro
+          if (this.firstTime) {
+            this.lastRangePrice = {min: initialPrice, max: finalPrice};
+          }
+
           this.form.controls['initialPrice'].setValue(initialPrice);
           this.form.controls['finalPrice'].setValue(finalPrice);
         } else {
@@ -52,6 +57,7 @@ export class PriceRangeComponent implements OnInit, Filter {
         this.cleanControlFilter();
       }
     });
+    this.firstTime = false;
   }
 
   private setupFormChangeSubscription(): void {
@@ -59,12 +65,13 @@ export class PriceRangeComponent implements OnInit, Filter {
       const initialPriceValue = formValue.initialPrice ? formValue.initialPrice : 0;
       const finalPriceValue = formValue.finalPrice ? formValue.finalPrice : this.maxPrice;
       if (
+        !this.firstTime &&
         this.form.valid && initialPriceValue < finalPriceValue &&
         this.verifyPriceRangeChanged(initialPriceValue, finalPriceValue)
       ) {
         this.lastRangePrice = {min: initialPriceValue, max: finalPriceValue};
-        // this.onFilterChange.emit(this.changeCount++);
         this.updateUrl(this.lastRangePrice.min, this.lastRangePrice.max);
+        this.onFilterChange.emit(this);
       }
     });
   }
@@ -128,12 +135,12 @@ export class PriceRangeComponent implements OnInit, Filter {
       ));
   }
 
-  get filterOption(): FilterOption {
+  get paramOption(): QueryParam {
     return {name: 'priceRange', value: this.lastRangePrice.min + '-' + this.lastRangePrice.max};
   }
 
-  get paramName(): string {
-    return 'priceRange';
+  public isActivated(): boolean {
+    return this.form.controls['initialPrice'].value !== 0 || this.form.controls['finalPrice'].value !== 0;
   }
 
 }
