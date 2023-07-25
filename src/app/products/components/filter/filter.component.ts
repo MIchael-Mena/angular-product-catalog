@@ -11,7 +11,7 @@ import {
 import {IProduct} from "../../models/IProduct";
 import {Filter} from "../../models/Filter";
 import {ISubcategory} from "../../models/ISubcategory";
-import {ActivatedRoute} from "@angular/router";
+import {ActivatedRoute, Router} from "@angular/router";
 import {SearchFilter} from "../../models/SearchFilter";
 import {SubcategoryComponent} from "./subcategory/subcategory.component";
 import {PriceRangeComponent} from "./price-range/price-range.component";
@@ -27,23 +27,24 @@ export class FilterComponent implements OnInit, AfterViewInit {
   // @ViewChild(PriceRangeComponent, {static: false}) priceFilter!: PriceRangeComponent;
   // @ViewChild(SubcategoryComponent, {static: false}) subcategoryFilter!: SubcategoryComponent;
 
-  private readonly searchFilter: SearchFilter;
+  private searchFilter: SearchFilter;
   private filters: Filter[] = [];
+  private initialParamsToRemove: string[] = [];
 
   @Input() subcategories: ISubcategory[] = [];
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onFilterChange: EventEmitter<(products: IProduct[]) => IProduct[]> =
     new EventEmitter<(products: IProduct[]) => IProduct[]>(); // Emite la función que filtra los productos
 
-  constructor(private route: ActivatedRoute, private cd: ChangeDetectorRef) {
-    this.searchFilter = new SearchFilter();
+  constructor(private route: ActivatedRoute, private router: Router, private cd: ChangeDetectorRef) {
+    this.searchFilter = new SearchFilter(this.router, this.route);
     this.filters.push(this.searchFilter);
   }
 
   ngOnInit(): void {
-    this.subscribeToParamSearchChanges();
-    this.subscribeToParamChanges(); // Si se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
+    this.subscribeToParamChanges(); // Si  se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
     this.isLoading.emit(false);
+    this.clearParamsAndEmit(this.initialParamsToRemove);
   }
 
   ngAfterViewInit(): void {
@@ -56,12 +57,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         }, 0);*/
     // this.cd.detectChanges(); // Detecta los cambios en la vista del componente (No funciono en este caso)
-  }
-
-  private subscribeToParamSearchChanges() {
-    this.route.queryParams.subscribe((params) => {
-      this.searchFilter.setParam(params['search']);
-    });
   }
 
   private subscribeToParamChanges() {
@@ -94,13 +89,42 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   private clearFilters(): void {
-    this.filters.forEach((filter: Filter) => {
-      filter.clearFilter();
-    });
+    const paramsToRemove = this.filters.map((filter: Filter) => filter.paramName);
+    this.clearParamsAndEmit(paramsToRemove);
+    /*    const queryParams = {...this.route.snapshot.queryParams};
+        this.filters.forEach((filter: Filter) => {
+          filter.clearFilter();
+          delete queryParams[filter.paramName];
+        });
+        this.updateQueryParams(queryParams);*/
   }
 
   public clearFilter(filter: string): void {
-    this.filters.find((f: Filter) => f.filterOption.name === filter)?.clearFilter();
+    // this.filters.find((f: Filter) => f.filterOption.name === filter)?.clearFilter();
+  }
+
+  public addParamToRemoveOfUrl(paramName: string): void {
+    if (this.isLoading) {
+      this.initialParamsToRemove.push(paramName);
+    } else {
+      this.clearParamsAndEmit([paramName]);
+    }
+  }
+
+  private clearParamsAndEmit(paramsToRemove: string[]): void {
+    const queryParams = {...this.route.snapshot.queryParams};
+    paramsToRemove.forEach((paramName: string) => {
+      delete queryParams[paramName];
+    });
+    this.updateQueryParams(queryParams);
+  }
+
+  private updateQueryParams(queryParams: { [key: string]: string | number | boolean }): void {
+    this.router.navigate([], {relativeTo: this.route, queryParams, replaceUrl: true}).then(
+      (value => {
+          console.log('urlNavigate', value);
+        }
+      ));
   }
 
   public addFilter(filter: Filter) {

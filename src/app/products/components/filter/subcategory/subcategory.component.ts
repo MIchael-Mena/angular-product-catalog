@@ -33,7 +33,7 @@ export class SubcategoryComponent implements OnInit, Filter {
       if (params['subcategory']) {
         this.clearFilter()
         this.markSubcategory(params['subcategory']);
-        this.emitChange();
+        // this.emitChange();
       }
     });
   }
@@ -77,6 +77,10 @@ export class SubcategoryComponent implements OnInit, Filter {
 
   get filterOption(): FilterOption {
     return {name: 'subcategory', value: this.form.value};
+  }
+
+  get paramName(): string {
+    return 'subcategory';
   }
 
 }

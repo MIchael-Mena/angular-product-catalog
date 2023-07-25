@@ -21,7 +21,6 @@ export class ProductListComponent implements OnInit {
   private paramsIsSet: boolean = false;
 
   constructor(public productService: ProductService,
-              public route: ActivatedRoute,
               public subcategoryService: SubcategoryService) {
   }
 

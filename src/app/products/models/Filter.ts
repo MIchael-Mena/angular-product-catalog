@@ -9,4 +9,6 @@ export interface Filter {
 
   get filterOption(): FilterOption
 
+  get paramName(): string
+
 }

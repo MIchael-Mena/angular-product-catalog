@@ -12,6 +12,7 @@
   </div>
 
   <app-price-range (onFilterChange)="this.emitFilters()"
+                   (onInvalidUrl)="this.addParamToRemoveOfUrl($event)"
                    (onLoadFilter)="this.addFilter($event)"></app-price-range>
 
   <app-subcategory (onFilterChange)="this.emitFilters()"

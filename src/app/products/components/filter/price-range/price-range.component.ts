@@ -14,6 +14,7 @@ import {ActivatedRoute, Router} from "@angular/router";
 })
 export class PriceRangeComponent implements OnInit, Filter {
 
+  @Output() onInvalidUrl: EventEmitter<string> = new EventEmitter();
   @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
   @Output() onFilterChange: EventEmitter<null> = new EventEmitter();
   private maxPrice: number = 100000000;
@@ -43,7 +44,8 @@ export class PriceRangeComponent implements OnInit, Filter {
           this.form.controls['finalPrice'].setValue(finalPrice);
         } else {
           // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia el filtro
-          this.clearUrl();
+          // this.clearUrl();
+          this.onInvalidUrl.emit('priceRange');
         }
       } else {
         // Caso donde la url no tiene el parámetro priceRange, se limpia el filtro
@@ -106,7 +108,7 @@ export class PriceRangeComponent implements OnInit, Filter {
   }
 
   public clearFilter(): void {
-    this.clearUrl();
+    // this.clearUrl();
     // this.cleanControlFilter();
   }
 
@@ -118,11 +120,20 @@ export class PriceRangeComponent implements OnInit, Filter {
   private clearUrl(): void {
     const queryParams = {...this.route.snapshot.queryParams};
     delete queryParams['priceRange'];
-    this.router.navigate([], {relativeTo: this.route, queryParams, replaceUrl: true});
+    // console.log('priceRange', this.route.url);
+    this.router.navigate([], {relativeTo: this.route, queryParams, replaceUrl: true}).then(
+      (value => {
+          console.log('priceRange', value);
+        }
+      ));
   }
 
   get filterOption(): FilterOption {
     return {name: 'priceRange', value: this.lastRangePrice.min + '-' + this.lastRangePrice.max};
+  }
+
+  get paramName(): string {
+    return 'priceRange';
   }
 
 }
