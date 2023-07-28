@@ -10,6 +10,7 @@ import {MatChipsModule} from "@angular/material/chips";
 import {MatSelectModule} from "@angular/material/select";
 import {MaterialModule} from "../../../shared/material.module";
 import { ActiveFilterComponent } from './active-filter/active-filter.component';
+import { SearchComponent } from './search/search.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { ActiveFilterComponent } from './active-filter/active-filter.component';
     FilterComponent,
     PriceRangeComponent,
     SubcategoryComponent,
-    ActiveFilterComponent
+    ActiveFilterComponent,
+    SearchComponent
   ],
   imports: [
     CommonModule,

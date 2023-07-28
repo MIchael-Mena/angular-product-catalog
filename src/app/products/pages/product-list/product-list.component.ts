@@ -4,7 +4,6 @@ import {IProduct} from "../../models/IProduct";
 import {SubcategoryService} from "../../services/subcategory.service";
 import {ISubcategory} from "../../models/ISubcategory";
 import {forkJoin} from "rxjs";
-import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-product-list',

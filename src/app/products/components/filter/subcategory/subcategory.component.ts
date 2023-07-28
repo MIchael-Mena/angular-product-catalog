@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnChanges, OnInit, Output} from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {IProduct} from "../../../models/IProduct";
 import {ISubcategory} from "../../../models/ISubcategory";
 import {FormBuilder, FormControl, FormGroup} from "@angular/forms";
@@ -6,6 +6,7 @@ import {Filter} from "../../../models/Filter";
 import {formatToTextWithoutSpaces, unFormatToTextWithUnderscores} from "../../../../shared/functions/stringUtils";
 import {QueryParam} from "../../../models/QueryParam";
 import {ActivatedRoute} from "@angular/router";
+import {FilterService} from "../../../services/filter.service";
 
 @Component({
   selector: 'app-subcategory',
@@ -14,33 +15,30 @@ import {ActivatedRoute} from "@angular/router";
 })
 export class SubcategoryComponent implements OnInit, Filter {
 
-  @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
-  @Output() onFilterChange: EventEmitter<Filter> = new EventEmitter();
   @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guion bajo
   public form: FormGroup; // Los controles tienen el mismo nombre que los parámetros de la ruta (con guion bajo)
   public showSubcategories: boolean = true;
   public readonly formatToTextWithoutSpaces = formatToTextWithoutSpaces; // Para usarlo en el template
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute, private filterService: FilterService) {
     this.form = this.fb.group({});
+    this.filterService.registerFilter(this);
   }
 
   ngOnInit(): void {
-    this.onLoadFilter.emit(this);
     this.createCheckboxControls();
-    console.log('subcategory');
     this.route.params.subscribe((params) => {
       // Caso donde viene una subcategoría elegida del menu, y mostrar solo la subcategoría
       if (params['subcategory']) {
         this.clearFilter()
         this.markSubcategory(params['subcategory']);
-        // this.emitChange();
+        this.filterService.emitFilterChange(this);
       }
     });
   }
 
   public emitChange(): void {
-    this.onFilterChange.emit(this);
+    this.filterService.emitFilterChange(this);
   }
 
   public markSubcategory(subcategory: string): void {
@@ -53,6 +51,7 @@ export class SubcategoryComponent implements OnInit, Filter {
 
   public clearFilter(): void {
     this.form.reset();
+
   }
 
   public applyFilter(product: IProduct): boolean {
@@ -77,8 +76,26 @@ export class SubcategoryComponent implements OnInit, Filter {
   }
 
   get paramOption(): QueryParam {
-    return {name: 'subcategory', value: this.form.value};
+    let nameOfSomeControlSelected: string = '';
+    let selectedCount = 0; // Variable para contar el número de subcategorías seleccionadas
+
+    Object.keys(this.form.controls)
+      .forEach((controlName) => {
+        if (this.form.controls[controlName].value) {
+          nameOfSomeControlSelected = controlName;
+          selectedCount++; // Incrementamos el contador si encontramos una subcategoría seleccionada
+          if (selectedCount > 1) {
+            return; // Si hay más de una subcategoría seleccionada, salimos del bucle
+          }
+        }
+      });
+
+    return {
+      name: 'subcategory',
+      value: selectedCount === 1 ? unFormatToTextWithUnderscores(nameOfSomeControlSelected) : 'Subc. varias'
+    };
   }
+
 
   public isActivated(): boolean {
     return Object.keys(this.form.controls).some((controlName) => this.form.controls[controlName].value);

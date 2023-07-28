@@ -12,47 +12,43 @@ import {IProduct} from "../../models/IProduct";
 import {Filter} from "../../models/Filter";
 import {ISubcategory} from "../../models/ISubcategory";
 import {ActivatedRoute, Router} from "@angular/router";
-import {SearchFilter} from "../../models/SearchFilter";
-import {SubcategoryComponent} from "./subcategory/subcategory.component";
-import {PriceRangeComponent} from "./price-range/price-range.component";
+
 import {combineLatest, debounceTime} from "rxjs";
+import {FilterService} from "../../services/filter.service";
 import {QueryParam} from "../../models/QueryParam";
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
-  styleUrls: ['./filter.component.scss']
+  styleUrls: ['./filter.component.scss'],
+  providers: [FilterService]
 })
 export class FilterComponent implements OnInit, AfterViewInit {
   // ViewChild permite obtener una referencia a un componente hijo, solo a la primera instancia de un componente
   // @ViewChild(PriceRangeComponent, {static: false}) priceFilter!: PriceRangeComponent;
   // @ViewChild(SubcategoryComponent, {static: false}) subcategoryFilter!: SubcategoryComponent;
 
-  private searchFilter: SearchFilter;
   private filters: Filter[] = [];
   private initialParamsToRemove: string[] = [];
-  public activeFilters: QueryParam[] = [];
 
   @Input() subcategories: ISubcategory[] = [];
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
   @Output() onFilterChange: EventEmitter<(products: IProduct[]) => IProduct[]> =
     new EventEmitter<(products: IProduct[]) => IProduct[]>(); // Emite la función que filtra los productos
 
-  constructor(private route: ActivatedRoute, private router: Router, private cd: ChangeDetectorRef) {
-    this.searchFilter = new SearchFilter(this.router, this.route);
-    this.filters.push(this.searchFilter);
+  constructor(private route: ActivatedRoute, private router: Router,
+              private cd: ChangeDetectorRef, private filterService: FilterService) {
   }
 
   ngOnInit(): void {
-    console.log('ngOnInit');
+    this.filterService.getFiltersActivated.subscribe((filters: Filter[]) => {
+      this.filters = filters;
+    });
+    this.filterService.onDeactivateParam.subscribe((param: QueryParam) => {
+      this.removeParam(param);
+    });
     this.subscribeToParamChanges(); // Si  se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
-    this.clearParamsAndEmit(this.initialParamsToRemove);
-
-    /*    this.filters.forEach((filter: Filter) => {
-          if (filter.isActivated()) {
-            this.activeFilters.push(filter.paramOption);
-          }
-        });*/
+    this.removeParamsAndEmit(this.initialParamsToRemove);
 
     this.isLoading.emit(false);
   }
@@ -67,15 +63,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         }, 0);*/
     // this.cd.detectChanges(); // Detecta los cambios en la vista del componente (No funciono en este caso)
-  }
-
-  public updateFilterState(filter: Filter): void {
-    if (filter.isActivated()) {
-      this.activeFilters.push(filter.paramOption);
-    } else {
-      const index = this.activeFilters.indexOf(filter.paramOption);
-      this.activeFilters.splice(index, 1);
-    }
   }
 
   private subscribeToParamChanges() {
@@ -96,7 +83,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   private applyFilters(products: IProduct[]): IProduct[] {
-    // console.log('applyFilters');
     return products.filter((product: IProduct) => {
       return this.filters.every((filter: Filter) => filter.applyFilter(product));
     });
@@ -109,7 +95,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   private clearFilters(): void {
     const paramsToRemove = this.filters.map((filter: Filter) => filter.paramOption.name);
-    this.clearParamsAndEmit(paramsToRemove);
+    this.removeParamsAndEmit(paramsToRemove);
     /*    const queryParams = {...this.route.snapshot.queryParams};
         this.filters.forEach((filter: Filter) => {
           filter.clearFilter();
@@ -118,19 +104,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
         this.updateQueryParams(queryParams);*/
   }
 
-  public clearFilter(filter: string): void {
-    // this.filters.find((f: Filter) => f.filterOption.name === filter)?.clearFilter();
+  public removeParam(param: QueryParam): void {
+    this.removeParamsAndEmit([param.name]);
   }
 
   public addParamToRemoveOfUrl(paramName: string): void {
     if (this.isLoading) {
       this.initialParamsToRemove.push(paramName);
     } else {
-      this.clearParamsAndEmit([paramName]);
+      this.removeParamsAndEmit([paramName]);
     }
   }
 
-  private clearParamsAndEmit(paramsToRemove: string[]): void {
+  private removeParamsAndEmit(paramsToRemove: string[]): void {
     const queryParams = {...this.route.snapshot.queryParams};
     paramsToRemove.forEach((paramName: string) => {
       delete queryParams[paramName];
@@ -144,9 +130,5 @@ export class FilterComponent implements OnInit, AfterViewInit {
           console.log('urlNavigate', value);
         }
       ));
-  }
-
-  public addFilter(filter: Filter) {
-    this.filters.push(filter);
   }
 }

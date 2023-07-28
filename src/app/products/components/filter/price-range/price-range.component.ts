@@ -1,4 +1,4 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {IPriceRange} from "../../../models/IPriceRange";
 import {debounceTime} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
@@ -6,6 +6,7 @@ import {IProduct} from "../../../models/IProduct";
 import {Filter} from "../../../models/Filter";
 import {QueryParam} from "../../../models/QueryParam";
 import {ActivatedRoute, Router} from "@angular/router";
+import {FilterService} from "../../../services/filter.service";
 
 @Component({
   selector: 'app-price-range',
@@ -15,22 +16,20 @@ import {ActivatedRoute, Router} from "@angular/router";
 export class PriceRangeComponent implements OnInit, Filter {
 
   @Output() onInvalidUrl: EventEmitter<string> = new EventEmitter();
-  @Output() onLoadFilter: EventEmitter<Filter> = new EventEmitter();
-  @Output() onFilterChange: EventEmitter<Filter> = new EventEmitter();
   private maxPrice: number = 100000000;
   private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
   public showRangePrice: boolean = true;
   public form: FormGroup = <FormGroup>{};
   private firstTime: boolean = true;
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute, private router: Router) {
+  constructor(private fb: FormBuilder, private route: ActivatedRoute,
+              private router: Router, private filterService: FilterService) {
+    this.filterService.registerFilter(this);
   }
 
   ngOnInit(): void {
-    this.onLoadFilter.emit(this);
     this.setupForm();
     this.setupFormChangeSubscription();
-    console.log('priceRange');
     this.route.queryParams.subscribe((params) => {
       const priceRange = params['priceRange'];
       if (priceRange) {
@@ -43,18 +42,20 @@ export class PriceRangeComponent implements OnInit, Filter {
           // e inicialmente se debe emitir al padre el estado del filtro
           if (this.firstTime) {
             this.lastRangePrice = {min: initialPrice, max: finalPrice};
+            this.filterService.emitFilterChange(this);
+          } else {
+            this.form.controls['initialPrice'].setValue(initialPrice);
+            this.form.controls['finalPrice'].setValue(finalPrice);
           }
 
-          this.form.controls['initialPrice'].setValue(initialPrice);
-          this.form.controls['finalPrice'].setValue(finalPrice);
         } else {
-          // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia el filtro
-          // this.clearUrl();
+          // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia la url
+          // en el padre y se emite un evento para que el padre limpie el filtro
           this.onInvalidUrl.emit('priceRange');
         }
       } else {
         // Caso donde la url no tiene el parámetro priceRange, se limpia el filtro
-        this.cleanControlFilter();
+        this.clearFilter();
       }
     });
     this.firstTime = false;
@@ -71,7 +72,7 @@ export class PriceRangeComponent implements OnInit, Filter {
       ) {
         this.lastRangePrice = {min: initialPriceValue, max: finalPriceValue};
         this.updateUrl(this.lastRangePrice.min, this.lastRangePrice.max);
-        this.onFilterChange.emit(this);
+        this.filterService.emitFilterChange(this);
       }
     });
   }
@@ -115,24 +116,9 @@ export class PriceRangeComponent implements OnInit, Filter {
   }
 
   public clearFilter(): void {
-    // this.clearUrl();
-    // this.cleanControlFilter();
-  }
-
-  private cleanControlFilter(): void {
     this.lastRangePrice = {min: 0, max: this.maxPrice};
     this.form.reset();
-  }
-
-  private clearUrl(): void {
-    const queryParams = {...this.route.snapshot.queryParams};
-    delete queryParams['priceRange'];
-    // console.log('priceRange', this.route.url);
-    this.router.navigate([], {relativeTo: this.route, queryParams, replaceUrl: true}).then(
-      (value => {
-          console.log('priceRange', value);
-        }
-      ));
+    this.filterService.emitFilterChange(this);
   }
 
   get paramOption(): QueryParam {
@@ -140,7 +126,7 @@ export class PriceRangeComponent implements OnInit, Filter {
   }
 
   public isActivated(): boolean {
-    return this.form.controls['initialPrice'].value !== 0 || this.form.controls['finalPrice'].value !== 0;
+    return this.lastRangePrice.min !== 0 || this.lastRangePrice.max !== this.maxPrice;
   }
 
 }

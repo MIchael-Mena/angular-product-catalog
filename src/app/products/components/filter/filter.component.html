@@ -1,5 +1,6 @@
 <section class="mt-md-2">
 
+  <app-search></app-search>
   <app-active-filter></app-active-filter>
 
   <div class="d-inline-flex justify-content-between w-100 px-3 align-items-center my-2">
@@ -11,13 +12,9 @@
     </mat-icon>
   </div>
 
-  <app-price-range (onFilterChange)="this.updateFilterState($event)"
-                   (onInvalidUrl)="this.addParamToRemoveOfUrl($event)"
-                   (onLoadFilter)="this.addFilter($event)"></app-price-range>
+  <app-price-range (onInvalidUrl)="this.addParamToRemoveOfUrl($event)"></app-price-range>
 
-  <app-subcategory (onFilterChange)="this.updateFilterState($event)"
-                   (onLoadFilter)="this.addFilter($event)"
-                   [subcategories]="this.subcategories"></app-subcategory>
+  <app-subcategory [subcategories]="this.subcategories"></app-subcategory>
 
 </section>
 

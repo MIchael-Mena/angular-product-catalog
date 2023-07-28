@@ -1,6 +1,5 @@
-import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FilterService} from "../../../services/filter.service";
-import {Filter} from "../../../models/Filter";
 import {QueryParam} from "../../../models/QueryParam";
 
 @Component({
@@ -10,23 +9,18 @@ import {QueryParam} from "../../../models/QueryParam";
 })
 export class ActiveFilterComponent implements OnInit {
 
-  // @Input() activeFilters: string[] = ['Filtro 1', 'Filtro 2', 'Filtro 3']
-  @Input() activeFilters: QueryParam[] = [];
-  @Output() onDeactivateFilter: EventEmitter<string> = new EventEmitter<string>();
+  activeParamsOfFilters: QueryParam[] = [];
 
   constructor(private filterService: FilterService) {
   }
 
   ngOnInit(): void {
-    /*    this.filterService.filtersActivated.subscribe((paramFilters: QueryParam[]) => {
-          this.activeFilters = paramFilters
-        });*/
+    this.filterService.getParamsOfFiltersActivated.subscribe((params: QueryParam[]) => {
+      this.activeParamsOfFilters = params;
+    });
   }
 
-  deactivateFilter(param: QueryParam) {
-    const index = this.activeFilters.indexOf(param);
-    this.activeFilters.splice(index, 1);
-    // this.onDeactivateFilter.emit(param.name);
-    console.log('deactivateFilter');
+  deactivateFilter(param: QueryParam): void {
+    this.filterService.deactivateFilterByParam(param);
   }
 }
