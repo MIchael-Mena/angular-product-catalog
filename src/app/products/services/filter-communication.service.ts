@@ -1,23 +1,32 @@
 import {Injectable} from '@angular/core';
 import {Observable, Subject} from "rxjs";
 import {Filter} from "../models/Filter";
-import {QueryParam} from "../models/QueryParam";
+import {ParamOption} from "../models/ParamOption";
 
 @Injectable({
   providedIn: 'root'
 })
-export class FilterService {
+export class FilterCommunicationService {
 
   private filtersSubject: Subject<Filter[]> = new Subject<Filter[]>();
-  private queryParamSubject: Subject<QueryParam[]> = new Subject<QueryParam[]>();
-  private queryParamToDeactivateSubject: Subject<QueryParam> = new Subject<QueryParam>();
+  private queryParamSubject: Subject<ParamOption[]> = new Subject<ParamOption[]>();
+  private urlParamsSubject: Subject<ParamOption[]> = new Subject<ParamOption[]>();
+  private queryParamToDeactivateSubject: Subject<ParamOption> = new Subject<ParamOption>();
   private filters: Filter[] = [];
 
   public registerFilter(filter: Filter): void {
     this.filters.push(filter);
   }
 
-  get getParamsOfFiltersActivated(): Observable<QueryParam[]> {
+  public removeParam(paramOption: ParamOption[]): void {
+    this.urlParamsSubject.next(paramOption);
+  }
+
+  get onRemoveParam(): Observable<ParamOption[]> {
+    return this.urlParamsSubject.asObservable();
+  }
+
+  get getParamsOfFiltersActivated(): Observable<ParamOption[]> {
     return this.queryParamSubject.asObservable();
   }
 
@@ -25,11 +34,11 @@ export class FilterService {
     return this.filtersSubject.asObservable();
   }
 
-  get onDeactivateParam(): Observable<QueryParam> {
+  get onDeactivateParam(): Observable<ParamOption> {
     return this.queryParamToDeactivateSubject.asObservable();
   }
 
-  public deactivateFilterByParam(param: QueryParam): void {
+  public deactivateFilterByParam(param: ParamOption): void {
     this.queryParamToDeactivateSubject.next(param);
   }
 

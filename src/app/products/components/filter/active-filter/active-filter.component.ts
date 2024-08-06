@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import {FilterService} from "../../../services/filter.service";
-import {QueryParam} from "../../../models/QueryParam";
+import {FilterCommunicationService} from "../../../services/filter-communication.service";
+import {ParamOption} from "../../../models/ParamOption";
 
 @Component({
   selector: 'app-active-filter',
@@ -9,18 +9,18 @@ import {QueryParam} from "../../../models/QueryParam";
 })
 export class ActiveFilterComponent implements OnInit {
 
-  activeParamsOfFilters: QueryParam[] = [];
+  activeParamsOfFilters: ParamOption[] = [];
 
-  constructor(private filterService: FilterService) {
+  constructor(private filterService: FilterCommunicationService) {
   }
 
   ngOnInit(): void {
-    this.filterService.getParamsOfFiltersActivated.subscribe((params: QueryParam[]) => {
+    this.filterService.getParamsOfFiltersActivated.subscribe((params: ParamOption[]) => {
       this.activeParamsOfFilters = params;
     });
   }
 
-  deactivateFilter(param: QueryParam): void {
+  deactivateFilter(param: ParamOption): void {
     this.filterService.deactivateFilterByParam(param);
   }
 }

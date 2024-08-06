@@ -14,14 +14,14 @@ import {ISubcategory} from "../../models/ISubcategory";
 import {ActivatedRoute, Router} from "@angular/router";
 
 import {combineLatest, debounceTime} from "rxjs";
-import {FilterService} from "../../services/filter.service";
-import {QueryParam} from "../../models/QueryParam";
+import {FilterCommunicationService} from "../../services/filter-communication.service";
+import {ParamOption} from "../../models/ParamOption";
 
 @Component({
   selector: 'app-filter',
   templateUrl: './filter.component.html',
   styleUrls: ['./filter.component.scss'],
-  providers: [FilterService]
+  providers: [FilterCommunicationService]
 })
 export class FilterComponent implements OnInit, AfterViewInit {
   // ViewChild permite obtener una referencia a un componente hijo, solo a la primera instancia de un componente
@@ -37,15 +37,19 @@ export class FilterComponent implements OnInit, AfterViewInit {
     new EventEmitter<(products: IProduct[]) => IProduct[]>(); // Emite la función que filtra los productos
 
   constructor(private route: ActivatedRoute, private router: Router,
-              private cd: ChangeDetectorRef, private filterService: FilterService) {
+              private cd: ChangeDetectorRef, private filterService: FilterCommunicationService) {
   }
 
   ngOnInit(): void {
     this.filterService.getFiltersActivated.subscribe((filters: Filter[]) => {
       this.filters = filters;
     });
-    this.filterService.onDeactivateParam.subscribe((param: QueryParam) => {
-      this.removeParam(param);
+    this.filterService.onDeactivateParam.subscribe((param: ParamOption) => {
+      this.removeParamsAndEmit([param.name]);
+      this.findFilterByParam(param)!.clearFilter();
+    });
+    this.filterService.onRemoveParam.subscribe((params: ParamOption[]) => {
+      // this.updateUrl()
     });
     this.subscribeToParamChanges(); // Si  se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
     this.removeParamsAndEmit(this.initialParamsToRemove);
@@ -63,6 +67,20 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
         }, 0);*/
     // this.cd.detectChanges(); // Detecta los cambios en la vista del componente (No funciono en este caso)
+  }
+
+  private updateUrl(command: string[], queryParams: { [key: string]: string }) {
+    this.router.navigate(command,
+      {
+        relativeTo: this.route,
+        queryParams,
+        queryParamsHandling: 'merge'
+      });
+    /*    const queryParams = {...this.route.snapshot['queryParams']};
+        params.forEach((param: QueryParam) => {
+          queryParams[param.name] = param.value;
+        });
+        this.updateQueryParams(queryParams);*/
   }
 
   private subscribeToParamChanges() {
@@ -90,11 +108,14 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   public clearFiltersAndEmit() {
     this.clearFilters();
-    this.emitFilters();
+    // this.emitFilters();
   }
 
   private clearFilters(): void {
-    const paramsToRemove = this.filters.map((filter: Filter) => filter.paramOption.name);
+    const paramsToRemove = this.filters.map((filter: Filter) => {
+      filter.clearFilter();
+      return filter.paramOption.name
+    });
     this.removeParamsAndEmit(paramsToRemove);
     /*    const queryParams = {...this.route.snapshot.queryParams};
         this.filters.forEach((filter: Filter) => {
@@ -102,10 +123,6 @@ export class FilterComponent implements OnInit, AfterViewInit {
           delete queryParams[filter.paramName];
         });
         this.updateQueryParams(queryParams);*/
-  }
-
-  public removeParam(param: QueryParam): void {
-    this.removeParamsAndEmit([param.name]);
   }
 
   public addParamToRemoveOfUrl(paramName: string): void {
@@ -117,7 +134,7 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   private removeParamsAndEmit(paramsToRemove: string[]): void {
-    const queryParams = {...this.route.snapshot.queryParams};
+    const queryParams = {...this.route.snapshot['queryParams']};
     paramsToRemove.forEach((paramName: string) => {
       delete queryParams[paramName];
     });
@@ -125,10 +142,20 @@ export class FilterComponent implements OnInit, AfterViewInit {
   }
 
   private updateQueryParams(queryParams: { [key: string]: string | number | boolean }): void {
-    this.router.navigate([], {relativeTo: this.route, queryParams, replaceUrl: true}).then(
-      (value => {
-          console.log('urlNavigate', value);
-        }
-      ));
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      // replaceUrl: true
+    })
+      .then(
+        (value => {
+            console.log('urlNavigate', value);
+          }
+        ));
+  }
+
+  private findFilterByParam(param: ParamOption): Filter | undefined {
+    return this.filters.find((filter: Filter) => filter.paramOption.name === param.name);
+
   }
 }

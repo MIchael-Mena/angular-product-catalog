@@ -1,4 +1,4 @@
-export function formatToTextWithoutSpaces(text: string): string {
+export function formatToTextWithUnderscores(text: string): string {
   return text.replace(/\s+/g, '-');
 }
 

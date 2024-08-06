@@ -1,8 +1,10 @@
 <mat-chip-listbox aria-label="Filtros activos">
   <mat-chip *ngFor="let param of activeParamsOfFilters" (removed)="this.deactivateFilter(param)">
-    {{param.value}}
+    {{ param.value }}
     <button matChipRemove aria-label="'remove ' + filter">
       <mat-icon style="overflow: visible">cancel</mat-icon>
     </button>
+    <mat-icon matChipRemove>cancel</mat-icon>
+
   </mat-chip>
 </mat-chip-listbox>

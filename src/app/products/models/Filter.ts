@@ -1,5 +1,5 @@
 import {IProduct} from "./IProduct";
-import {QueryParam} from "./QueryParam";
+import {ParamOption} from "./ParamOption";
 
 export interface Filter {
 
@@ -7,7 +7,7 @@ export interface Filter {
 
   clearFilter(): void
 
-  get paramOption(): QueryParam
+  get paramOption(): ParamOption
 
   isActivated(): boolean
 

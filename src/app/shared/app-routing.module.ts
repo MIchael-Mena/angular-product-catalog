@@ -14,7 +14,7 @@ const routes: Routes = [
 @NgModule({
   imports: [RouterModule.forRoot(
     routes,
-    {useHash: true} // Para evitar recargar la página cuando el usuario escriba manualmente la ruta
+    // {useHash: true} // Para evitar recargar la página cuando el usuario escriba manualmente la ruta
   )],
   exports: [RouterModule]
 })

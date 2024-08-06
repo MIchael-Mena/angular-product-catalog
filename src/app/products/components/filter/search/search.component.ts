@@ -2,9 +2,9 @@ import {Component, OnInit} from '@angular/core';
 import {IProduct} from "../../../models/IProduct";
 import {ActivatedRoute, Router} from "@angular/router";
 import {unFormatToTextWithUnderscores} from "../../../../shared/functions/stringUtils";
-import {QueryParam} from "../../../models/QueryParam";
+import {ParamOption} from "../../../models/ParamOption";
 import {Filter} from "../../../models/Filter";
-import {FilterService} from "../../../services/filter.service";
+import {FilterCommunicationService} from "../../../services/filter-communication.service";
 
 @Component({
   selector: 'app-search',
@@ -16,7 +16,7 @@ export class SearchComponent implements Filter, OnInit {
   public search: string = '';
   public countResults: number = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute, private filterService: FilterService) {
+  constructor(private router: Router, private route: ActivatedRoute, private filterService: FilterCommunicationService) {
     this.filterService.registerFilter(this);
   }
 
@@ -55,8 +55,12 @@ export class SearchComponent implements Filter, OnInit {
     this.filterService.emitFilterChange(this)
   }
 
-  get paramOption(): QueryParam {
-    return {name: 'search', value: this.search};
+  get paramOption(): ParamOption {
+    return {
+      name: 'search',
+      paramType: 'queryParam',
+      value: this.search
+    };
   }
 
   public isActivated(): boolean {
