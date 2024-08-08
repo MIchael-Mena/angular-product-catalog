@@ -44,13 +44,13 @@ export class FilterComponent implements OnInit, AfterViewInit {
     this.filterService.getFiltersActivated.subscribe((filters: Filter[]) => {
       this.filters = filters;
     });
-    this.filterService.onDeactivateParam.subscribe((param: ParamOption) => {
-      this.removeParamsAndEmit([param.name]);
-      this.findFilterByParam(param)!.clearFilter();
-    });
-    this.filterService.onRemoveParam.subscribe((params: ParamOption[]) => {
-      // this.updateUrl()
-    });
+    // this.filterService.onDeactivateParam.subscribe((param: ParamOption) => {
+    //   this.removeParamsAndEmit([param.name]);
+    //   this.findFilterByParam(param)!.clearFilter();
+    // });
+    // this.filterService.onRemoveParam.subscribe((params: ParamOption[]) => {
+    //   // this.updateUrl()
+    // });
     this.subscribeToParamChanges(); // Si  se usa ViewChild (no se usa addFilter()), entonces debe ir en AfterViewInit
     this.removeParamsAndEmit(this.initialParamsToRemove);
 

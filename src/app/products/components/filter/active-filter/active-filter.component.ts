@@ -7,6 +7,7 @@ import {ParamOption} from "../../../models/ParamOption";
   templateUrl: './active-filter.component.html',
   styleUrls: ['./active-filter.component.scss']
 })
+// Debe escuchar los cambios de la url y actualizar los filtros activos
 export class ActiveFilterComponent implements OnInit {
 
   activeParamsOfFilters: ParamOption[] = [];

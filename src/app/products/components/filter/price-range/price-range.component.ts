@@ -35,7 +35,6 @@ export class PriceRangeComponent implements OnInit, Filter {
     this.route.queryParams.subscribe((params) => {
       const priceRange = params['priceRange'];
       if (priceRange) {
-        console.log('priceRange valid');
         if (this.verifyFormatPriceRange(priceRange)) {
           // Caso donde la url tiene el parámetro priceRange con un formato correcto al inicializar el componente
           // Se puede poner + antes de la variable para convertir el string a number
@@ -47,7 +46,10 @@ export class PriceRangeComponent implements OnInit, Filter {
         } else {
           // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia la url
           // en el padre y se emite un evento para que el padre limpie el filtro
-          this.onInvalidUrl.emit('priceRange');
+          // this.onInvalidUrl.emit('priceRange');
+          console.log('remove price range');
+          this.removePriceRangeFromUrl();
+          this.clearFilter();
         }
       } else {
         // Caso donde la url no tiene el parámetro priceRange, se limpia el filtro
@@ -55,7 +57,17 @@ export class PriceRangeComponent implements OnInit, Filter {
         this.clearFilter();
       }
     });
+  }
 
+  private removePriceRangeFromUrl(): void {
+    const queryParams = {...this.route.snapshot.queryParams};
+    delete queryParams['priceRange'];
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    });
   }
 
   private setupFormChangeSubscription(): void {
@@ -77,6 +89,7 @@ export class PriceRangeComponent implements OnInit, Filter {
   }
 
   private updateUrl(initialPrice: number, finalPrice: number): void {
+    console.log('update url');
     const queryParams = {priceRange: `${initialPrice}-${finalPrice}`};
     this.router.navigate([], {
       relativeTo: this.route,
@@ -112,6 +125,7 @@ export class PriceRangeComponent implements OnInit, Filter {
   public clearFilter(): void {
     // this.lastRangePrice = {min: 0, max: this.maxPrice};
     this.form.reset();
+    // Si reseteo el form llama a setupFormChangeSubscription y se actualiza la url
     // this.filterService.emitFilterChange(this);
   }
 
