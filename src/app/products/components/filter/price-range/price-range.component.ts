@@ -110,7 +110,7 @@ export class PriceRangeComponent implements OnInit, Filter {
     const priceValidators = [Validators.min(0), Validators.max(this.maxPrice),
       Validators.pattern(/^-?(0|[1-9]\d*)(\.\d+)?$/)];
     this.form = this.fb.group({
-      initialPrice: [0, priceValidators],
+      initialPrice: [0, priceValidators], // El primer valor del array es el valor por defecto que tendrá el input
       finalPrice: [0, priceValidators],
     });
   }
