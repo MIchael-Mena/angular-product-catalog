@@ -1,4 +1,4 @@
-import {Component, EventEmitter, NgZone, OnInit, Output} from '@angular/core';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {IPriceRange} from "../../../models/IPriceRange";
 import {debounceTime} from "rxjs";
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
