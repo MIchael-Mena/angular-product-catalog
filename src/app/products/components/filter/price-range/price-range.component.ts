@@ -124,7 +124,10 @@ export class PriceRangeComponent implements OnInit, Filter {
 
   public clearFilter(): void {
     // this.lastRangePrice = {min: 0, max: this.maxPrice};
-    this.form.reset();
+    this.form.reset(
+      {initialPrice: 0, finalPrice: 0},
+      {emitEvent: false}
+    );
     // Si reseteo el form llama a setupFormChangeSubscription y se actualiza la url
     // this.filterService.emitFilterChange(this);
   }
