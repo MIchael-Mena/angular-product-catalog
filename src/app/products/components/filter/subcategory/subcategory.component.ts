@@ -36,15 +36,18 @@ export class SubcategoryComponent implements OnInit, Filter {
     if (subcategory) {
       // Caso donde viene una subcategoría elegida del menu, y mostrar solo la subcategoría
       if (this.markSubcategory(subcategory)) {
-        this.filterService.emitFilterChange(this);
+        this.filterService.emitFilterChange();
       }
     } else if (subcategories) {
       const subcategoriesArray = subcategories.split(',')
       subcategoriesArray.forEach((subcategory: string) => {
         this.markSubcategory(subcategory)
       });
-      this.filterService.emitFilterChange(this);
+      this.filterService.emitFilterChange();
     }
+  }
+
+  public removeQueryParam(): void {
   }
 
   public emitChange(): void {
@@ -54,7 +57,7 @@ export class SubcategoryComponent implements OnInit, Filter {
 
     this.updateRoute();
 
-    this.filterService.emitFilterChange(this);
+    this.filterService.emitFilterChange();
   }
 
   private updateRoute(): void {
@@ -63,7 +66,7 @@ export class SubcategoryComponent implements OnInit, Filter {
     if (this.selectedSubcategories.length === 0) {
       const queryParams = {...this.route.snapshot.queryParams};
       delete queryParams['subcategories'];
-      this.router.navigate(command, {relativeTo: this.route, queryParams});
+      this.router.navigate(command, {relativeTo: this.route, queryParams}).then();
     } else {
       const queryParams = {subcategories: this.selectedSubcategories.join(',')};
       this.router.navigate(command,
@@ -72,7 +75,7 @@ export class SubcategoryComponent implements OnInit, Filter {
           queryParams,
           queryParamsHandling: 'merge'
         }
-      );
+      ).then();
     }
   }
 
@@ -111,7 +114,6 @@ export class SubcategoryComponent implements OnInit, Filter {
   get paramOption(): ParamOption {
     return {
       name: this.route.snapshot.params['subcategory'] ? 'subcategory' : 'subcategories',
-      paramType: this.route.snapshot.params['subcategory'] ? 'params' : 'queryParam',
       value: this.selectedSubcategories.length === 1 ?
         unFormatToTextWithUnderscores(this.selectedSubcategories[0]) : 'Subc. varias'
     };

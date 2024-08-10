@@ -4,6 +4,7 @@ import {IProduct} from "../../models/IProduct";
 import {SubcategoryService} from "../../services/subcategory.service";
 import {ISubcategory} from "../../models/ISubcategory";
 import {forkJoin} from "rxjs";
+import {FilterCommunicationService} from "../../services/filter-communication.service";
 
 @Component({
   selector: 'app-product-list',
@@ -19,16 +20,16 @@ export class ProductListComponent implements OnInit {
   public filtersIsLoading: boolean = true;
 
   constructor(public productService: ProductService,
+              private filterService: FilterCommunicationService,
               public subcategoryService: SubcategoryService) {
   }
 
   ngOnInit(): void {
     // this.paramsIsSet = Boolean(this.route.snapshot.params);
     this.getData();
-  }
-
-  public filterProducts(filter: (products: IProduct[]) => IProduct[]): void {
-    this.filteredProducts = filter(this.products);
+    this.filterService.onFilterChange().subscribe((filters: (products: IProduct[]) => IProduct[]) => {
+      this.filteredProducts = filters(this.products);
+    });
   }
 
   private assignSubcategories(products: IProduct[]): void {

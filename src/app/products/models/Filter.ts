@@ -11,4 +11,6 @@ export interface Filter {
 
   isActivated(): boolean
 
+  removeQueryParam(): void
+
 }

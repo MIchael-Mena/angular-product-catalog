@@ -42,13 +42,13 @@ export class PriceRangeComponent implements OnInit, Filter {
 
           this.lastRangePrice = {min: initialPrice, max: finalPrice};
           this.form.patchValue({initialPrice, finalPrice}, {emitEvent: false});
-          this.filterService.emitFilterChange(this);
+          this.filterService.emitFilterChange();
         } else {
           // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia la url
           // en el padre y se emite un evento para que el padre limpie el filtro
           // this.onInvalidUrl.emit('priceRange');
           console.log('remove price range');
-          this.removePriceRangeFromUrl();
+          this.removeQueryParam();
           this.clearFilter();
         }
       } else {
@@ -59,7 +59,7 @@ export class PriceRangeComponent implements OnInit, Filter {
     });
   }
 
-  private removePriceRangeFromUrl(): void {
+  public removeQueryParam(): void {
     const queryParams = {...this.route.snapshot.queryParams};
     delete queryParams['priceRange'];
     this.router.navigate([], {
@@ -67,7 +67,7 @@ export class PriceRangeComponent implements OnInit, Filter {
       queryParams,
       queryParamsHandling: 'merge',
       replaceUrl: true
-    });
+    }).then();
   }
 
   private setupFormChangeSubscription(): void {
@@ -95,7 +95,7 @@ export class PriceRangeComponent implements OnInit, Filter {
       relativeTo: this.route,
       queryParams,
       queryParamsHandling: 'merge',
-    });
+    }).then();
   }
 
   private verifyPriceRangeChanged(initialPriceValue: number, finalPriceValue: number): boolean {
@@ -135,7 +135,6 @@ export class PriceRangeComponent implements OnInit, Filter {
   get paramOption(): ParamOption {
     return {
       name: 'priceRange',
-      paramType: 'queryParam',
       value: this.lastRangePrice.min + '-' + this.lastRangePrice.max
     };
   }
