@@ -11,12 +11,13 @@ import {FilterCommunicationService} from "../../../services/filter-communication
   templateUrl: './search.component.html',
   styleUrls: ['./search.component.scss']
 })
-export class SearchComponent implements Filter, OnInit {
+export class SearchComponent extends Filter implements OnInit {
 
   public search: string = '';
   public countResults: number = 0;
 
-  constructor(private router: Router, private route: ActivatedRoute, private filterService: FilterCommunicationService) {
+  constructor(router: Router, route: ActivatedRoute, private filterService: FilterCommunicationService) {
+    super(route, router);
     this.filterService.registerFilter(this);
   }
 
@@ -40,7 +41,7 @@ export class SearchComponent implements Filter, OnInit {
 
   public updateSearch(search: string): void {
     this.search = unFormatToTextWithUnderscores(search);
-    this.filterService.emitFilterChange(this);
+    this.filterService.emitFilterChange();
   }
 
   public applyFilter(product: IProduct): boolean {
@@ -52,13 +53,12 @@ export class SearchComponent implements Filter, OnInit {
 
   public clearFilter(): void {
     this.search = '';
-    this.filterService.emitFilterChange(this)
+    this.filterService.emitFilterChange()
   }
 
   get paramOption(): ParamOption {
     return {
       name: 'search',
-      paramType: 'queryParam',
       value: this.search
     };
   }

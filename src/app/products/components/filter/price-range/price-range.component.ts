@@ -17,7 +17,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
 
   @Output() onInvalidUrl: EventEmitter<string> = new EventEmitter();
   private maxPrice: number = 100000000;
-  private lastRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
+  private lastValidRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
   public showRangePrice: boolean = true;
   public form: FormGroup = <FormGroup>{};
 
@@ -29,7 +29,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
 
   ngOnInit(): void {
     this.setupForm();
-    this.setupFormChangeSubscription();
+    this.subscribeToFormChanges();
     this.initializePriceRangeFromUrl();
   }
 
@@ -41,7 +41,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
         const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
         if (this.verifyFormatPriceRange(priceRange) && this.validatePrinceRange(initialPrice, finalPrice)) {
           // Caso donde la url tiene el parámetro priceRange con un formato correcto al inicializar el componente
-          this.lastRangePrice = {min: initialPrice, max: finalPrice};
+          this.lastValidRangePrice = {min: initialPrice, max: finalPrice};
           this.form.patchValue({initialPrice, finalPrice}, {emitEvent: false});
           this.filterService.emitFilterChange();
         } else {
@@ -56,7 +56,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
     });
   }
 
-  private setupFormChangeSubscription(): void {
+  private subscribeToFormChanges(): void {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((formValue) => {
       const initialPriceValue = formValue.initialPrice ? formValue.initialPrice : 0;
       const finalPriceValue = formValue.finalPrice ? formValue.finalPrice : this.maxPrice;
@@ -86,7 +86,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
   }
 
   private verifyPriceRangeChanged(initialPriceValue: number, finalPriceValue: number): boolean {
-    return this.lastRangePrice.min !== initialPriceValue || this.lastRangePrice.max !== finalPriceValue;
+    return this.lastValidRangePrice.min !== initialPriceValue || this.lastValidRangePrice.max !== finalPriceValue;
   }
 
   public onPriceChange(): void {
@@ -104,8 +104,8 @@ export class PriceRangeComponent extends Filter implements OnInit {
 
   public applyFilter(product: IProduct): boolean {
     return (
-      product.precio >= this.lastRangePrice.min &&
-      product.precio <= this.lastRangePrice.max
+      product.precio >= this.lastValidRangePrice.min &&
+      product.precio <= this.lastValidRangePrice.max
     );
   }
 
@@ -119,12 +119,12 @@ export class PriceRangeComponent extends Filter implements OnInit {
   get paramOption(): ParamOption {
     return {
       name: 'priceRange',
-      value: this.lastRangePrice.min + '-' + this.lastRangePrice.max
+      value: this.lastValidRangePrice.min + '-' + this.lastValidRangePrice.max
     };
   }
 
   public isActivated(): boolean {
-    return this.lastRangePrice.min !== 0 || this.lastRangePrice.max !== this.maxPrice;
+    return this.lastValidRangePrice.min !== 0 || this.lastValidRangePrice.max !== this.maxPrice;
   }
 
 }

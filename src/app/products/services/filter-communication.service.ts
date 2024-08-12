@@ -27,12 +27,6 @@ export class FilterCommunicationService {
     });
   }
 
-  /*  private applyFilters(products: IProduct[]): IProduct[] {
-      return products.filter((product: IProduct) => {
-        return this.filters.every((filter: Filter) => filter.applyFilter(product));
-      });
-    }*/
-
   public onFilterChange(): Observable<FilterFunction> {
     return this.filtersSubject.asObservable();
   }
