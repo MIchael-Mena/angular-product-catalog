@@ -7,12 +7,12 @@
     <h2 class="m-0 p-0">Filtros</h2>
     <mat-icon color="accent" class="icon-md icon-filter"
               title="Limpiar filtros"
-              (click)="this.clearFiltersAndEmit()">
+              (click)="this.clearFilters()">
       clear_all
     </mat-icon>
   </div>
 
-  <app-price-range (onInvalidUrl)="this.addParamToRemoveOfUrl($event)"></app-price-range>
+  <app-price-range></app-price-range>
 
   <app-subcategory [subcategories]="this.subcategories"></app-subcategory>
 

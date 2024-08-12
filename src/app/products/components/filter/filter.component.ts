@@ -27,18 +27,11 @@ export class FilterComponent implements OnInit, AfterViewInit {
 
   @Input() subcategories: ISubcategory[] = [];
   @Output() isLoading: EventEmitter<boolean> = new EventEmitter<boolean>();
-  @Output() onFilterChange: EventEmitter<(products: IProduct[]) => IProduct[]> =
-    new EventEmitter<(products: IProduct[]) => IProduct[]>(); // Emite la función que filtra los productos
-  private filters: Filter[] = [];
 
-  constructor(private route: ActivatedRoute, private router: Router,
-              private cd: ChangeDetectorRef, private filterService: FilterCommunicationService) {
+  constructor(private router: Router, private route: ActivatedRoute) {
   }
 
   ngOnInit(): void {
-    // this.filterService.onFilterChange().subscribe((filters: Filter[]) => {
-    //
-    // });
     this.isLoading.emit(false);
   }
 
@@ -63,17 +56,8 @@ export class FilterComponent implements OnInit, AfterViewInit {
           });
     }*/
 
-  public emitFilters(): void {
-    console.log('emitChanges');
-    this.onFilterChange.emit((products: IProduct[]) => {
-      return this.applyFilters(products);
-    });
-  }
-
-  private applyFilters(products: IProduct[]): IProduct[] {
-    return products.filter((product: IProduct) => {
-      return this.filters.every((filter: Filter) => filter.applyFilter(product));
-    });
+  clearFilters(): void {
+    this.router.navigate([], {queryParams: {}}).then();
   }
 
 }

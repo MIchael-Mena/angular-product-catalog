@@ -13,7 +13,7 @@ import {FilterCommunicationService} from "../../../services/filter-communication
   templateUrl: './price-range.component.html',
   styleUrls: ['./price-range.component.scss']
 })
-export class PriceRangeComponent implements OnInit, Filter {
+export class PriceRangeComponent extends Filter implements OnInit {
 
   @Output() onInvalidUrl: EventEmitter<string> = new EventEmitter();
   private maxPrice: number = 100000000;
@@ -21,66 +21,54 @@ export class PriceRangeComponent implements OnInit, Filter {
   public showRangePrice: boolean = true;
   public form: FormGroup = <FormGroup>{};
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute,
-              private router: Router, private filterService: FilterCommunicationService) {
+  constructor(private fb: FormBuilder, route: ActivatedRoute,
+              router: Router, private filterService: FilterCommunicationService) {
+    super(route, router);
     this.filterService.registerFilter(this);
   }
 
   ngOnInit(): void {
-
     this.setupForm();
-
     this.setupFormChangeSubscription();
+    this.initializePriceRangeFromUrl();
+  }
 
+  private initializePriceRangeFromUrl() {
     this.route.queryParams.subscribe((params) => {
       const priceRange = params['priceRange'];
       if (priceRange) {
-        if (this.verifyFormatPriceRange(priceRange)) {
+        // Se puede poner + antes de la variable para convertir el string a number
+        const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
+        if (this.verifyFormatPriceRange(priceRange) && this.validatePrinceRange(initialPrice, finalPrice)) {
           // Caso donde la url tiene el parámetro priceRange con un formato correcto al inicializar el componente
-          // Se puede poner + antes de la variable para convertir el string a number
-          const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
-
           this.lastRangePrice = {min: initialPrice, max: finalPrice};
           this.form.patchValue({initialPrice, finalPrice}, {emitEvent: false});
           this.filterService.emitFilterChange();
         } else {
           // Caso donde la url tiene el parámetro priceRange con un formato incorrecto, se limpia la url
-          // en el padre y se emite un evento para que el padre limpie el filtro
-          // this.onInvalidUrl.emit('priceRange');
-          console.log('remove price range');
-          this.removeQueryParam();
+          this.removeQueryParam('priceRange');
           this.clearFilter();
         }
       } else {
         // Caso donde la url no tiene el parámetro priceRange, se limpia el filtro
-        console.log('no priceRange');
         this.clearFilter();
       }
     });
-  }
-
-  public removeQueryParam(): void {
-    const queryParams = {...this.route.snapshot.queryParams};
-    delete queryParams['priceRange'];
-    this.router.navigate([], {
-      relativeTo: this.route,
-      queryParams,
-      queryParamsHandling: 'merge',
-      replaceUrl: true
-    }).then();
   }
 
   private setupFormChangeSubscription(): void {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((formValue) => {
       const initialPriceValue = formValue.initialPrice ? formValue.initialPrice : 0;
       const finalPriceValue = formValue.finalPrice ? formValue.finalPrice : this.maxPrice;
-      if (
-        this.form.valid && initialPriceValue < finalPriceValue &&
-        this.verifyPriceRangeChanged(initialPriceValue, finalPriceValue)
-      ) {
+      if (this.validatePrinceRange(initialPriceValue, finalPriceValue)) {
         this.updateUrl(initialPriceValue, finalPriceValue);
       }
     });
+  }
+
+  private validatePrinceRange(initialPriceValue: number, finalPriceValue: number): boolean {
+    return this.form.valid && initialPriceValue < finalPriceValue &&
+      this.verifyPriceRangeChanged(initialPriceValue, finalPriceValue)
   }
 
   private verifyFormatPriceRange(priceRange: string): boolean {
@@ -89,7 +77,6 @@ export class PriceRangeComponent implements OnInit, Filter {
   }
 
   private updateUrl(initialPrice: number, finalPrice: number): void {
-    console.log('update url');
     const queryParams = {priceRange: `${initialPrice}-${finalPrice}`};
     this.router.navigate([], {
       relativeTo: this.route,
@@ -123,13 +110,10 @@ export class PriceRangeComponent implements OnInit, Filter {
   }
 
   public clearFilter(): void {
-    // this.lastRangePrice = {min: 0, max: this.maxPrice};
     this.form.reset(
       {initialPrice: 0, finalPrice: 0},
-      {emitEvent: false}
+      {emitEvent: false} // No emite el evento de cambio de valor, para evitar ejecutar setupFormChangeSubscription
     );
-    // Si reseteo el form llama a setupFormChangeSubscription y se actualiza la url
-    // this.filterService.emitFilterChange(this);
   }
 
   get paramOption(): ParamOption {

@@ -1,16 +1,34 @@
 import {IProduct} from "./IProduct";
 import {ParamOption} from "./ParamOption";
+import {ActivatedRoute, Router} from "@angular/router";
 
-export interface Filter {
+export abstract class Filter {
 
-  applyFilter(product: IProduct): boolean
+  protected route: ActivatedRoute;
+  protected router: Router;
 
-  clearFilter(): void
+  protected constructor(route: ActivatedRoute, router: Router) {
+    this.route = route;
+    this.router = router;
+  }
 
-  get paramOption(): ParamOption
+  abstract applyFilter(product: IProduct): boolean
 
-  isActivated(): boolean
+  abstract clearFilter(): void
 
-  removeQueryParam(): void
+  abstract get paramOption(): ParamOption
+
+  abstract isActivated(): boolean
+
+  removeQueryParam(queryName: string): void {
+    const queryParams = {...this.route.snapshot.queryParams};
+    delete queryParams[queryName];
+    this.router.navigate([], {
+      relativeTo: this.route,
+      queryParams,
+      queryParamsHandling: 'merge',
+      replaceUrl: true
+    }).then();
+  }
 
 }
