@@ -13,7 +13,7 @@ import {FilterCommunicationService} from "../../../services/filter-communication
   templateUrl: './subcategory.component.html',
   styleUrls: ['./subcategory.component.scss']
 })
-export class SubcategoryComponent implements OnInit, Filter {
+export class SubcategoryComponent extends Filter implements OnInit {
 
   @Output() onParamToggle: EventEmitter<string> = new EventEmitter<string>();
   @Input() subcategories: ISubcategory[] = []; // Contiene las subcategorías sin guion bajo
@@ -23,7 +23,8 @@ export class SubcategoryComponent implements OnInit, Filter {
   public readonly formatToTextWithoutSpaces = formatToTextWithUnderscores; // Para usarlo en el template
 
   constructor(private fb: FormBuilder, private filterService: FilterCommunicationService,
-              private route: ActivatedRoute, private router: Router) {
+              route: ActivatedRoute, router: Router) {
+    super(route, router);
     this.form = this.fb.group({});
     this.filterService.registerFilter(this);
   }
@@ -45,9 +46,6 @@ export class SubcategoryComponent implements OnInit, Filter {
       });
       this.filterService.emitFilterChange();
     }
-  }
-
-  public removeQueryParam(): void {
   }
 
   public emitChange(): void {
