@@ -31,11 +31,4 @@ export abstract class Filter {
     }).then();
   }
 
-  // Devuelve un objeto con los parámetros de la url
-  // Ejemplo: Si la url es 'http://localhost:4200/products?priceRange=0-100&search=camisa'
-  // Debería devolver {priceRange: '0-100', search: 'camisa'}
-  get allQueryParams(): ParamOption[] {
-    return [] as ParamOption[];
-  }
-
 }
