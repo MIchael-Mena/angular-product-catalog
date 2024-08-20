@@ -8,13 +8,17 @@ interface FilterFunction {
   (products: IProduct[]): IProduct[];
 }
 
+interface QueryParams {
+  [key: string]: string;
+}
+
 @Injectable({
   providedIn: 'root'
 })
 export class FilterCommunicationService {
 
   private filtersSubject: Subject<FilterFunction> = new Subject<FilterFunction>();
-  // private currentQueryParams: Map<string, string> = new Map<string, string>();
+  // private paramsSubject: Subject<QueryParams> = new Subject<QueryParams>();
   private currentQueryParams: { [key: string]: string } = {};
   // TODO: importantes el backend deberia hacer el filtrado de los productos y no el front
   // a futuro se deberia eliminar este array de filters y en su lugar emitir los valores del
@@ -23,13 +27,12 @@ export class FilterCommunicationService {
 
   public registerFilter(filter: Filter): void {
     this.filters.push(filter);
-    // this.currentQueryParams.set(filter.paramOption.name, filter.paramOption.value);
     this.currentQueryParams[filter.paramOption.name] = filter.paramOption.value;
   }
 
   public emitFilterChange(newQueryParam: ParamOption): void {
-    // this.currentQueryParams.set(newValue.name, newValue.value);
     this.currentQueryParams[newQueryParam.name] = newQueryParam.value;
+    // this.paramsSubject.next(this.currentQueryParams);
 
     this.filtersSubject.next((products: IProduct[]): IProduct[] => {
       return products.filter((product: IProduct) => {
@@ -42,20 +45,18 @@ export class FilterCommunicationService {
     return this.filtersSubject.asObservable();
   }
 
+  /*  public onFilterChange(): Observable<QueryParams> {
+      return this.paramsSubject.asObservable();
+    }*/
+
   public getQueryParamValue(option: string): string {
-    // return this.currentQueryParams.get(option) || '';
     return this.currentQueryParams[option] || '';
   }
 
   // Devuelve un objeto con los parámetros de la url
   // Ejemplo: Si la url es 'http://localhost:4200/products?priceRange=0-100&search=camisa'
   // Debería devolver {priceRange: '0-100', search: 'camisa'}
-  get allQueryParams(): { [key: string]: string } {
-    // const queryParams: { [key: string]: string } = {};
-    // this.currentQueryParams.forEach((value, key) => {
-    //   queryParams[key] = value;
-    // });
-    // return queryParams;
+  get allQueryParams(): QueryParams {
     return this.currentQueryParams;
   }
 
