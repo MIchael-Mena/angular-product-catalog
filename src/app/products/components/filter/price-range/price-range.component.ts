@@ -17,7 +17,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
 
   @Output() onInvalidUrl: EventEmitter<string> = new EventEmitter();
   private maxPrice: number = 100000000;
-  private lastValidRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
+  // private lastValidRangePrice: IPriceRange = {min: 0, max: this.maxPrice};
   public showRangePrice: boolean = true;
   public form: FormGroup = <FormGroup>{};
 
@@ -34,6 +34,27 @@ export class PriceRangeComponent extends Filter implements OnInit {
   }
 
   private initializePriceRangeFromUrl() {
+    this.route.queryParams.subscribe((params) => {
+      const priceRange = params['priceRange'];
+      if (priceRange !== this.filterService.getQueryParamValue('priceRange')) {
+        if (this.verifyFormatPriceRange(priceRange)) {
+          const [initialPrice, finalPrice] = priceRange.split('-').map(Number)
+          if (this.validatePrinceRange(initialPrice, finalPrice)) {
+            this.form.patchValue({initialPrice, finalPrice}, {emitEvent: false});
+            this.filterService.emitFilterChange({name: 'priceRange', value: priceRange});
+          } else {
+            this.removeQueryParam('priceRange');
+            this.clearFilter();
+          }
+        } else {
+          this.removeQueryParam('priceRange');
+          this.clearFilter();
+        }
+      }
+    });
+  }
+
+  /*private initializePriceRangeFromUrl() {
     this.route.queryParams.subscribe((params) => {
       const priceRange = params['priceRange'];
       if (priceRange) {
@@ -54,7 +75,7 @@ export class PriceRangeComponent extends Filter implements OnInit {
         this.clearFilter();
       }
     });
-  }
+  }*/
 
   private subscribeToFormChanges(): void {
     this.form.valueChanges.pipe(debounceTime(500)).subscribe((formValue) => {

@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {Observable, Subject} from "rxjs";
+import {BehaviorSubject, Observable, Subject} from "rxjs";
 import {Filter} from "../models/Filter";
 import {IProduct} from "../models/IProduct";
 import {ParamOption} from "../models/ParamOption";
@@ -9,7 +9,7 @@ interface FilterFunction {
 }
 
 interface QueryParams {
-  [key: string]: string;
+  [key: string]: Observable<string>;
 }
 
 @Injectable({
@@ -19,7 +19,7 @@ export class FilterCommunicationService {
 
   private filtersSubject: Subject<FilterFunction> = new Subject<FilterFunction>();
   // private paramsSubject: Subject<QueryParams> = new Subject<QueryParams>();
-  private currentQueryParams: { [key: string]: string } = {};
+  private currentQueryParams: QueryParams = {};
   // TODO: importantes el backend deberia hacer el filtrado de los productos y no el front
   // a futuro se deberia eliminar este array de filters y en su lugar emitir los valores del
   // queryparams para que el backend haga el filtrado
@@ -27,11 +27,16 @@ export class FilterCommunicationService {
 
   public registerFilter(filter: Filter): void {
     this.filters.push(filter);
-    this.currentQueryParams[filter.paramOption.name] = filter.paramOption.value;
+    // this.currentQueryParams[filter.paramOption.name] = filter.paramOption.value;
   }
 
   public emitFilterChange(newQueryParam: ParamOption): void {
-    this.currentQueryParams[newQueryParam.name] = newQueryParam.value;
+    if (!this.currentQueryParams[newQueryParam.name]) {
+      this.currentQueryParams[newQueryParam.name] = new BehaviorSubject(newQueryParam.value);
+    } else {
+      this.currentQueryParams[newQueryParam.name].next(newQueryParam.value);
+    }
+    // this.currentQueryParams[newQueryParam.name] = newQueryParam.value;
     // this.paramsSubject.next(this.currentQueryParams);
 
     this.filtersSubject.next((products: IProduct[]): IProduct[] => {
@@ -56,8 +61,8 @@ export class FilterCommunicationService {
   // Devuelve un objeto con los parámetros de la url
   // Ejemplo: Si la url es 'http://localhost:4200/products?priceRange=0-100&search=camisa'
   // Debería devolver {priceRange: '0-100', search: 'camisa'}
-  get allQueryParams(): QueryParams {
-    return this.currentQueryParams;
-  }
+  /*  get allQueryParams(): QueryParams {
+      return this.currentQueryParams;
+    }*/
 
 }
